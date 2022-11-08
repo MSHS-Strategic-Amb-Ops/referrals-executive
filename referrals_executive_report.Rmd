@@ -358,7 +358,7 @@ referrals_raw <- referrals_conn %>%
 
 # Import Referrals Data for Addtional Referral Details -------------------------
 # referralFactAll <- sqlQuery(conn1, "SELECT TOP 10* FROM PRDREPORT.FullAccess.ReferralFact")
-referralFact_conn <- tbl(conn1, "ReferralFact")
+referralFact_conn <- tbl(conn1, "ReferralFact")git
 
 # referralFact <- sqlQuery(conn1, "SELECT 
 #                           ReferralKey, StartInstant, _CreationInstant, _LastUpdatedInstant, LastEnteredWorkqueueDateKey_X,
