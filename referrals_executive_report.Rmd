@@ -1,12 +1,11 @@
 ---
-title: "Untitled"
 output: html_document
 ---
 
 
 <style type="text/css">
 div.main-container {
-  max-width: 1600px;
+  max-width: 2000px;
   margin-left: 50px;
   margin-right: 50px;
 }
@@ -206,9 +205,10 @@ suppressMessages({
   library(DBI)
   library(odbc)
   library(dbplyr)
-  install.packages("pool")
   library(pool)
+  library(emojifont)
 })
+
 
 ```
 
@@ -345,7 +345,7 @@ reporting_monthNum <- format(as.Date(report_run_date), "%m")
 # Connect to Database ----------------------------------------------------------
 # conn1 <- odbcConnect("Caboodle") # Connect to Server
 
-conn1 <- dbConnect(odbc(),"Caboodle")
+conn1 <- dbPool(drv = odbc(), dsn = "Caboodle", timeout = 30)
 
 # Import Referrals+Visit Data --------------------------------------------------
 # referrals_raw <- sqlQuery(conn1, "SELECT * FROM PRDREPORT.FullAccess.Referrals") # Master Referrals Data
@@ -358,24 +358,35 @@ referrals_raw <- referrals_conn %>%
 
 # Import Referrals Data for Addtional Referral Details -------------------------
 # referralFactAll <- sqlQuery(conn1, "SELECT TOP 10* FROM PRDREPORT.FullAccess.ReferralFact")
-referralFact_conn <- tbl(conn1, "ReferralFact")git
+referralFact_conn <- tbl(conn1, "ReferralFact")
 
-# referralFact <- sqlQuery(conn1, "SELECT 
-#                           ReferralKey, StartInstant, _CreationInstant, _LastUpdatedInstant, LastEnteredWorkqueueDateKey_X,
-#                           FirstEncounterCreatedInstant,
-#                           LastEnteredWorkqueueTimeKey_X, LastEnteredWorkqueueName_X,
-#                           Class, Priority, Redirected, Rejected, TriageRejectionReason, InAnyWorkqueue, StatusReason, SchedulingStatus,  
-#                           FirstCallMadeInstant, FirstEncounterCreatedInstant, FirstEncounterInstant, ExpirationInstant, 
-#                           WasPatientContactedWithin12Hours_X, 
-#                           ProfessionalChargeAmount, ProfessionalChargeEstimate, HospitalChargeEstimate
-#                           FROM PRDREPORT.FullAccess.ReferralFact")
+referralFact_raw <- referralFact_conn %>%
+  mutate(StartInstant = as.Date(StartInstant)) %>%
+  filter(StartInstant >= as.Date("2022-04-01") & StartInstant <= report_run_date) %>%
+  select(ReferralKey, StartInstant, `_CreationInstant`, `_LastUpdatedInstant`, LastEnteredWorkqueueDateKey_X,
+                          FirstEncounterCreatedInstant,
+                          LastEnteredWorkqueueTimeKey_X, LastEnteredWorkqueueName_X,
+                          Class, Priority, Redirected, Rejected, TriageRejectionReason, InAnyWorkqueue, StatusReason, SchedulingStatus,
+                          FirstCallMadeInstant, FirstEncounterCreatedInstant, FirstEncounterInstant, ExpirationInstant,
+                          WasPatientContactedWithin12Hours_X,
+                          ProfessionalChargeAmount, ProfessionalChargeEstimate, HospitalChargeEstimate) %>%
+  collect()
 
+referralFact_all <- referralFact_conn %>%
+  mutate(StartInstant = as.Date(StartInstant)) %>%
+  filter(StartInstant == as.Date("2022-11-03")) %>%
+  collect()
 
-# visitFact <- sqlQuery(conn1, "SELECT TOP 10 * FROM PRDREPORT.FullAccess.VisitFact")
+# visitFact_conn <- tbl(conn1, "VisitFact")
+# visitFact_raw <- visitFact_conn %>%
+#   filter(AppointmentStatus == "Arrived") %>%
+#   filter(!is.na(PaymenetDue)) %>%
+#   head(10000) %>%
+#   collect()
 # referral_fact_all <- sqlQuery(conn1, "SELECT TOP 200 * FROM PRDREPORT.FullAccess.ReferralFact ORDER BY StartInstant")
 
 # Append Additional Referral Columns -------------------------------------------
-referrals_merged <- left_join(referrals_raw, subset(referralFact, select = -c(StartInstant, Priority)))
+referrals_merged <- left_join(referrals_raw, subset(referralFact_raw, select = -c(StartInstant, Priority)))
 referrals_merged <- referrals_merged %>%
   mutate(SentByDepID = as.character(SentByDepID),
          ReceivedByDepID = as.character(ReceivedByDepID))
@@ -386,25 +397,8 @@ referrals_merged <- referrals_merged %>%
 ```{r Referral WQ Data Import, echo = FALSE, warning = FALSE, message = FALSE}
 
 # Import WQ Data ---------------------------------------------------------------
-wq_history_raw <- sqlQuery(conn1, "SELECT * FROM PRDREPORT.FullAccess.ReferralWorkqueueEventFactX") # Workqueue history data
-wq_reasons <- sqlQuery(conn1, "SELECT * FROM PRDREPORT.FullAccess.ReferralWQReasons") # Workqueue reasons 
-
-```
-
-
-```{r Manual Department Mapping, echo = FALSE, warning = FALSE, message = FALSE}
-
-# Site/Specialty Mapping ---------------------------------------------------
-# epic_dept_mapping <- read.csv(file.choose())
-# epic_dept_mapping$DEPARTMENT_ID <- as.character(epic_dept_mapping$DEPARTMENT_ID)
-# sent_epic_dept_mapping <- epic_dept_mapping 
-# colnames(sent_epic_dept_mapping) <- c("SentSite_m","SentSpecialty_m","SentByDepID","SentDeptName_m")
-# 
-# receiving_epic_dept_mapping <- epic_dept_mapping 
-# colnames(receiving_epic_dept_mapping) <- c("ReceivingSite_m","ReceivingSpecialty_m","ReceivedByDepID","ReceivingDeptName_m")
-# 
-# referrals_merged <- left_join(referrals_merged, sent_epic_dept_mapping)
-# referrals_merged <- left_join(referrals_merged, receiving_epic_dept_mapping)
+wq_history_conn <- tbl(conn1, "ReferralWorkqueueEventFactX")
+wq_reasons_conn <- tbl(conn1, "ReferralWQReasons")
 
 ```
 
@@ -423,7 +417,7 @@ referrals_merged <- referrals_merged %>%
                                    ,str_detect(toupper(Priority), "2 DAYS") ~ "Within 2 Days"
                                    ,str_detect(toupper(Priority), "1 WEEK") ~ "Within 1 Week"
                                    ,str_detect(toupper(Priority), "2 WEEKS") ~ "Within 2 Weeks"
-                                   ,str_detect(toupper(Priority), "3-6 Days") ~ "Within 1 Week"
+                                   ,str_detect(toupper(Priority), "3-6 Days") ~ "Within 1 Week" # Question: Should this be a separate category?
                                    ,str_detect(toupper(Priority), "7-14 Days") ~ "Within 2 Weeks"
                                    ,Priority == "Routine" ~ "Routine"
                                    , TRUE ~ "Not Specified"))
@@ -453,208 +447,162 @@ referral_vol <- referrals_processed %>%
            ProfessionalChargeEstimate, HospitalChargeEstimate, Redirected, Rejected, TriageRejectionReason, InAnyWorkqueue) %>%
   summarise(total = n()) %>%
   mutate(SentBySpecialty = case_when(SentByDept %in% c("MS EPICCARE LINK","MS RYAN CENTER LINK") ~ "ECL"
-                                ,str_detect(toupper(SentByDept), "EMERGENCY") ~ "ED"
-                                ,SentByDept == "EMERGENCY DEPARTMENT PSYCH" ~ "ED Psych"
-                                ,SentByDept == "CPEP PSYCH ED BI" ~ "ED Psych"
+                                # ,str_detect(toupper(SentByDept), "EMERGENCY") ~ "ED"
+                                # ,SentByDept == "EMERGENCY DEPARTMENT PSYCH" ~ "ED Psych"
+                                # ,SentByDept == "CPEP PSYCH ED BI" ~ "ED Psych"
                                 , TRUE ~ SentBySpecialty)) %>%
   mutate(SentBySite = case_when(SentByDept %in% c("MS EPICCARE LINK","MS RYAN CENTER LINK") ~ "ECL"
-                                     ,SentByDept == "EMERGENCY DEPT BI" ~ "MSBI"
-                                     ,SentByDept == "EMERGENCY DEPT MORNINGSIDE" ~ "MSM"
-                                     ,SentByDept == "EMERGENCY DEPT WEST" ~ "MSW"
-                                     ,SentByDept == "EMERGENCY DEPARTMENT" ~ "MSH"
-                                     ,SentByDept == "EMERGENCY DEPT QUEENS" ~ "MSQ"
-                                     ,SentByDept == "EMERGENCY DEPT BI BROOKLYN" ~ "MSB"
-                                     ,SentByDept == "EMERGENCY DEPARTMENT PSYCH" ~ "MSH"
-                                     ,SentByDept == "CPEP PSYCH ED BI" ~ "MSBI"
-                                     ,TRUE ~ SentBySite)) %>%
-  mutate(referral_age = difftime(report_run_date, as.Date(StartInstant, "%Y-%m%-%d"), units = "days")) 
+                                     # ,SentByDept == "EMERGENCY DEPT BI" ~ "MSBI"
+                                     # ,SentByDept == "EMERGENCY DEPT MORNINGSIDE" ~ "MSM"
+                                     # ,SentByDept == "EMERGENCY DEPT WEST" ~ "MSW"
+                                     # ,SentByDept == "EMERGENCY DEPARTMENT" ~ "MSH"
+                                     # ,SentByDept == "EMERGENCY DEPT QUEENS" ~ "MSQ"
+                                     # ,SentByDept == "EMERGENCY DEPT BI BROOKLYN" ~ "MSB"
+                                     # ,SentByDept == "EMERGENCY DEPARTMENT PSYCH" ~ "MSH"
+                                     # ,SentByDept == "CPEP PSYCH ED BI" ~ "MSBI"
+                                     ,TRUE ~ SentBySite))
+
+referral_vol$referral_age <- difftime(report_run_date, as.Date(referral_vol$StartInstant, "%Y-%m%-%d"), units = "days")
   
-  
+```
+
+
+```{r 32BJ Volume,  echo = FALSE, warning = FALSE, message = FALSE}
+
+# sent_vol_32bj <- referral_vol %>%
+#   filter(IS32BJ_YN == "Y") %>%
+#   group_by(createdMonthYear, SentBySpecialty) %>%
+#   summarise(total_sent = n())
+# 
+# receiving_vol_32bj <- referral_vol %>%
+#   filter(IS32BJ_YN == "Y") %>%
+#   group_by(createdMonthYear, ReceivedBySpecialty) %>%
+#   summarise(total_received = n())
+# 
+# write.xlsx(sent_vol_32bj, "/SharedDrive/deans/Presidents/SixSigma/Individual Folders/Current Employees/Engineers/So Youn Kweon/server-upload/32BJ Referral Sent Volume.xlsx")
+# write.xlsx(receiving_vol_32bj, "/SharedDrive/deans/Presidents/SixSigma/Individual Folders/Current Employees/Engineers/So Youn Kweon/server-upload/32BJ Referral Received Volume.xlsx")
 ```
 
 
 ```{r WQ Data Processing, echo = FALSE, warning = FALSE, message = FALSE}
 
 # Subset WQ History Data based on Referrals Data -------------------------------
-wq_history_merged <- left_join(referral_vol[,c("ReferralKey", "InAnyWorkqueue")], wq_history_raw)
+wq_history_merged <- left_join(referral_vol[,c("ReferralKey", "ReferralEpicId", "InAnyWorkqueue", "priority_type")], 
+                               wq_history_conn %>% 
+                                 filter(ReferralKey >= 0) %>%
+                                 filter(ReferralType %in% c("TO","FROM")) %>% # Remove unspecified wq types 
+                                 filter(`_CreationInstant` >= as.Date("2022-04-01")) %>%
+                                 collect())
 
-wq_history_processed <- wq_history_merged %>%
-  mutate(eventDate = as.Date(lubridate::ymd(EventDateKey)),
+wq_history_merged <- wq_history_merged %>% 
+  filter(!is.na(EventDateKey)) %>%
+  mutate(EventDate = as.Date(lubridate::ymd(EventDateKey)),
+         EventTime = paste0(" ",sub('(\\d{2})$', ':\\1', EventTimeKey)),
+         EventTime = gsub(" :", "00:", EventTime),
+         EventTime = gsub(" ","",EventTime),
          releaseDate = as.Date(lubridate::ymd(ReleaseDateKey))) %>%
-  distinct() 
+  mutate(EventDateTime = as.POSIXct(paste(EventDate, EventTime), format="%Y-%m-%d %H:%M"))
+
+wq_history_merged$releaseDate <- case_when(is.na(wq_history_merged$releaseDate) ~ Sys.Date(),
+                                           TRUE ~ wq_history_merged$releaseDate) 
 
 
+wq_history_merged <- wq_history_merged %>%
+  arrange(EventDateTime, releaseDate) %>%
+  arrange(ReferralKey) %>%
+  group_by(ReferralKey, EpicWorkqueueId, releaseDate) %>%
+  mutate(ID = seq_len(n())) %>%
+  mutate(wq_entered = min(EventDateTime),
+         wq_exited = max(releaseDate),
+         wq_latest_reason = case_when(EventDateTime == wq_entered & releaseDate == wq_exited ~ ReferralWorkqueueReason,
+                                      TRUE ~ ""))
+
+
+# Unique WQ Volume Data with WQ Entered and Existed Times
+wq_volume_data <- wq_history_merged %>%
+  filter(wq_latest_reason != "") %>%
+  group_by(ReferralKey, ReferralEpicId, InAnyWorkqueue, ReferralType, EpicWorkqueueId, wq_entered, wq_exited, wq_latest_reason) %>%
+  summarise(referral_type = n()) %>%
+  mutate(wq_entered = format(as.Date(wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%Y-%m-%d"),
+         wq_enteredWeek = floor_date(as.Date(wq_entered, "%Y-%m-%d %HH:%MM:%SS"), unit="week", week_start = 7),
+         wq_enteredYear = format(as.Date(wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%Y"),
+         wq_enteredMonNum = as.numeric(format(as.Date(wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%m")),
+         wq_enteredMonth = format(as.Date(wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%B"),
+         wq_enteredMonthYear = format(as.Date(wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%m-%Y"),
+         wq_enteredDay = format(as.Date(wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%A")) %>%
+  mutate(wq_exitedWeek = floor_date(as.Date(wq_exited, "%Y-%m-%d"), unit="week", week_start = 7),
+         wq_exitedYear = format(as.Date(wq_exited, "%Y-%m-%d"),"%Y"),
+         wq_exitedMonNum = as.numeric(format(as.Date(wq_exited, "%Y-%m-%d"),"%m")),
+         wq_exitedMonth = format(as.Date(wq_exited, "%Y-%m-%d"),"%B"),
+         wq_exitedMonthYear = format(as.Date(wq_exited, "%Y-%m-%d"),"%m-%Y"),
+         wq_exitedDay = format(as.Date(wq_exited, "%Y-%m-%d"),"%A")) %>%
+  mutate(wq_latest_reason = toupper(wq_latest_reason)) %>%
+  mutate(reason_type = case_when(ReferralType == "FROM" & str_detect(wq_latest_reason, "DEACTIVATED OR INVALID|NO DEPT|WTC NEED") ~ "Missing department",
+                                 ReferralType == "FROM" & str_detect(wq_latest_reason, "OUTGOING") ~ "Outgoing Referral needs scheduling",
+                                 ReferralType == "FROM" & str_detect(wq_latest_reason, "TRIAGE") ~ "Triage rejected",
+                                 ReferralType == "FROM" & str_detect(wq_latest_reason, "PSYCH") ~ "Psych referrals",
+                                 ReferralType == "TO" & str_detect(wq_latest_reason, "NEEDS SCHEDULING|NEEDS TO BE WORKED|INCOMING REFERRAL NEEDS AUTH") 
+                                 ~ "Both scheduling and authorization outstanding",
+                                 ReferralType == "TO" & str_detect(wq_latest_reason, "AUTHORIZED AND NEED SCHEDULING|NEED SCHEDULING") ~ "Authorized but scheduling needed",
+                                 ReferralType == "TO" & str_detect(wq_latest_reason, "NEED AUTHORIZATION|NO AUTHORIZATION|INVALID AUTH NUMBER") ~ "Authorization needed",
+                                 ReferralType == "TO" & str_detect(wq_latest_reason, "UNABLE TO CONTACT") ~ "Unable to Contact Patient",
+                                 ReferralType == "TO" & str_detect(wq_latest_reason, " RFL INVALID AUTH NUMBER|W/O LINKED REFERRAL") ~ "Scheduled but Authorization is outstanding",
+                                 TRUE ~ "Other"
+                                 ))
+
+wq_volume_data$referral_age <- difftime(wq_volume_data$wq_exited, as.Date(wq_volume_data$wq_entered, "%Y-%m%-%d"), units = "days")
+# wq_volume_data$ wq_enteredDay <- format(as.Date(wq_volume_data$wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%A")
+# wq_volume_data$wq_exitedDay = format(as.Date(wq_volume_data$wq_exited, "%Y-%m-%d"),"%A")
+# wq_volume_data$wq_entered <- format(as.Date(wq_volume_data$wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%Y-%m-%d")
+  
 ```
 
 
-```{r WQ History Data Import, echo = FALSE, warning = FALSE, message = FALSE}
+```{r WQ Reasons Processing, echo = FALSE, warning = FALSE, message = FALSE}
 
-# WQ History Data Processing ---------------------------------------------------
-wq_history <- wq_history_raw %>%
-  mutate(StartInstant = as.Date(as.character(EventDateKey), format = "%Y%m%d")) %>%
-  filter(StartInstant >= as.Date("2022-04-01") & StartInstant <= Sys.Date())
-
-
-wq_history$InAnyWorkqueue <- referrals_processed$InAnyWorkqueue[match(wq_history$ReferralKey, referrals_processed$ReferralKey)]
-wq_history$Class <- referrals_processed$Class[match(wq_history$ReferralKey, referrals_processed$ReferralKey)]
-wq_history$priority_type <- referrals_processed$priority_type[match(wq_history$ReferralKey, referrals_processed$ReferralKey)]
-
-
-# Check on Missing WQ / Referrals Data
-wq_history$InWQ <- "Yes"
-referrals_processed$InRef <- "Yes"
-
-wq_history$InRef <- referrals_processed$InRef[match(wq_history$ReferralKey, referrals_processed$ReferralKey)]
-# WQNotInRef <- wq_history %>% filter(is.na(InRef))
-# 
-# referrals_raw$InWQ <- wq_history$InWQ[match(referrals_raw$ReferralKey, wq_history$ReferralKey)]
-# RefNotInWQ <- referrals_raw %>% filter(is.na(InWQ))
-
-
-wq_history_reasons <- wq_history %>%
-  filter(InRef == "Yes") %>%
-  mutate(ReferralWQReasonNew = case_when(str_detect(ReferralWorkqueueReason, "EXPIRED|EXPIRES|EXPIRING|EXPIRATION") ~ "Authorization and Scheduling"
-                                         ,TRUE ~ ReferralWorkqueueReason)) %>%
-  group_by(ReferralKey, ReferralType) %>%
-  mutate(CreatedDate = min(`_CreationInstant`),
-         LastUpdated = max(`_LastUpdatedInstant`),
-         Inactive = ifelse((InAnyWorkqueue == 1 & CreatedDate == LastUpdated), "Inactive", "Active")) %>%
-  ungroup() %>%
-  group_by(ReferralKey) %>%
-  slice(which.max(`_LastUpdatedInstant`))
-
-
-# WQ Volume Processing ---------------------------------------------------------
-wq_history_reasons$wq_run_date <- as.Date(wq_run_date, "%Y-%m-%d")
-wq_history_reasons <- wq_history_reasons %>%
-  mutate(CreatedDateYear = as.Date(CreatedDate, "%Y-%m-%d"),
-         LastUpdatedDateYear = as.Date(LastUpdated, "%Y-%m-%d"),
-         Days = difftime(wq_run_date,  CreatedDateYear, units = "days"))
-
-wq_history_reasons <- wq_history_reasons %>%
-  mutate(CreatedWeek = floor_date(as.Date(CreatedDateYear, "%Y-%m-%d"), unit="week", week_start = 7),
-         CreatedYear = format(as.Date(CreatedDateYear, "%Y-%m-%d"),"%Y"),
-         CreatedMonNum = as.numeric(format(as.Date(CreatedDateYear, "%Y-%m-%d"),"%m")),
-         CreatedMonth = format(as.Date(CreatedDateYear, "%Y-%m-%d"),"%B"),
-         LastUpdatedDateYear = as.Date(LastUpdated, "%Y-%m-%d"),
-         LastUpdatedWeek = floor_date(as.Date(LastUpdatedDateYear, "%Y-%m-%d"), unit="week", week_start = 7),
-         LastUpdatedYear = format(as.Date(LastUpdatedDateYear, "%Y-%m-%d"),"%Y"),
-         LastUpdatedMonNum = as.numeric(format(as.Date(LastUpdatedDateYear, "%Y-%m-%d"),"%m")),
-         LastUpdatedMonth = format(as.Date(LastUpdatedDateYear, "%Y-%m-%d"),"%B"))
-         
-
-
+wq_reasons_raw <- wq_reasons_conn %>%
+  collect() %>%
+  mutate(wq_type = case_when(str_detect(WorkqueueName, " TO ") ~ "TO",
+                             str_detect(WorkqueueName, " FROM ") ~ "FROM",
+                             str_detect(WorkqueueName, "TRIAGE") ~ "TRIAGE",
+                             str_detect(WorkqueueName, "AUTHORIZATION REQUIRED") ~ "AUTHORIZATION",
+                             str_detect(WorkqueueName, "PAS") ~ "PAS",
+                             TRUE ~ ""))
 
 ## WQ Reasons Grouping ---------------------------------------------------------
-wq_history_reasons <- wq_history_reasons %>%
-  mutate(ReferralWQReasonNew = toupper(ReferralWQReasonNew)) %>%
-  mutate(reason_type = case_when(str_detect(ReferralWQReasonNew, "DEACTIVATED OR INVALID|NO DEPT|WTC NEED") ~ "Missing Department"
-                                ,str_detect(ReferralWQReasonNew, "NEED AUTHORIZATION") ~ "Authorization Needed"
-                                ,str_detect(ReferralWQReasonNew, "AUTHORIZED AND NEED SCHEDULING") ~ "Autorized but scheduling needed"
-                                ,str_detect(ReferralWQReasonNew, "BARCLAYS|COMMERCIALIZATION|FLAG") ~ "Commercialization Team"
-                                ,str_detect(ReferralWQReasonNew, "PSYCH") ~ "Psych Referrals"
-                                ,str_detect(ReferralWQReasonNew, "CLINICALS REQUESTED|TRIAGE REJECTED") ~ "Triage Rejected"
-                                ,str_detect(ReferralWQReasonNew, "OUTGOING") ~ "Outgoing Referrals"
-                                ,TRUE ~ "Authorization and Scheduling Needed"))
+wq_reasons_raw <- wq_reasons_raw %>%
+  mutate(ReferralWorkqueueReason = toupper(ReferralWorkqueueReason)) %>%
+  mutate(reason_type = case_when(wq_type == "FROM" & str_detect(ReferralWorkqueueReason, "DEACTIVATED OR INVALID|NO DEPT|WTC NEED") ~ "Missing Department",
+                                 wq_type == "FROM" & str_detect(ReferralWorkqueueReason, "OUTGOING") ~ "Outgoing Referral Needs Scheduling",
+                                 wq_type == "FROM" & str_detect(ReferralWorkqueueReason, "TRIAGE") ~ "Triage Rejected",
+                                 wq_type == "FROM" & str_detect(ReferralWorkqueueReason, "PSYCH") ~ "Psych Referrals",
+                                 wq_type == "TO" & str_detect(ReferralWorkqueueReason, "AUTHORIZED AND NEED SCHEDULING|NEED SCHEDULING") ~ "Authorized but Scheduling Needed",
+                                 wq_type == "TO" & str_detect(ReferralWorkqueueReason, "NEED AUTHORIZATION|NO AUTHORIZATION") ~ "Authorization Needed",
+                                 wq_type == "TO" & str_detect(ReferralWorkqueueReason, "UNABLE TO CONTACT") ~ "Unable to Contact Patient",
+                                 TRUE ~ "Other"
+                                 )) %>%
+  mutate(creation_date = as.Date(lubridate::ymd(CreationDateKey)),
+         entry_date = as.Date(lubridate::ymd(EntryDateKey))) %>%
+  mutate(days_since_creation = difftime(Sys.Date(), creation_date, units = "days"),
+         days_wq = difftime(Sys.Date(), entry_date, units = "days"))
 
-reasons <- wq_history_reasons %>% group_by(ReferralType, ReferralWQReasonNew, reason_type) %>% summarise(total = n())
+
+wq_reasons_raw$priority_type <- referral_vol$priority_type[match(wq_reasons_raw$ReferralEpicId, referral_vol$ReferralEpicId)]
+wq_reasons_raw$WasPatientContactedWithin12Hours_X <- referral_vol$WasPatientContactedWithin12Hours_X[match(wq_reasons_raw$ReferralEpicId, referral_vol$ReferralEpicId)]
+
+
+# library(plyr)
+# duplicated_rows <- ddply(wq_reasons_raw,.(ReferralEpicId),nrow)
+
+wq_reasons_raw <- wq_reasons_raw %>%
+  distinct()
 
 ```
 
 
+```{r Graph and Table Functions, echo = FALSE, warning = FALSE, message = FALSE}
 
-```{r Epic Wisconsin WQ Data Processing, echo = FALSE, warning = FALSE, message = FALSE}
-
-# WQ Data Processing -----------------------------------------------------------
-wq_processed_main <- wq_data[,1:23]
-wq_processed_main <- wq_processed_main %>%
-  mutate(wq_type = case_when(str_detect(`WQF Name`, "TRIAGE") ~ "Triage WQ"
-                             ,str_detect(`WQF Name`, "REFERRAL TO") ~ "Receiving WQ"
-                             ,str_detect(`WQF Name`, "REFERRAL FROM") ~ "Sending WQ"
-                             ,TRUE ~ ""))
-wq_processed_rules <- dplyr::select(wq_data[,24:length(wq_data)],contains("Name")) # Filter out Rule Name Columns
-wq_processed_data <- bind_cols(wq_processed_main, wq_processed_rules)
-rm(wq_processed_main, wq_processed_rules)
-
-## WQ Processing
-wq_processed <- wq_processed_data %>%
-  pivot_longer(25:length(wq_processed_data),
-               names_to = "rule_num",
-               values_to = "rule_name") %>%
-  filter(!is.na(rule_name)) %>%
-  mutate(rule_name = toupper(rule_name))
-
-
-### Sending WQ Rules Processing
-wq_sending <- wq_processed %>%
-  filter(wq_type == "Sending WQ") %>%
-  distinct() %>%
-  mutate(rule_type = case_when(str_detect(rule_name, "DEACTIVATED OR INVALID") ~ "Department"
-                               ,str_detect(rule_name, "NO DEPT") ~ "Department"
-                               ,str_detect(rule_name,"WTC NEED") ~ "Department"
-                               ,str_detect(rule_name, "BARCLAYS") ~ "Commercialization"
-                               ,str_detect(rule_name, "COMMERCIALIZATION") ~ "Commercialization"
-                               ,str_detect(rule_name, "PSYCH") ~ "Psych"
-                               ,str_detect(rule_name, "CLINICALS REQUESTED") ~ "Triage"
-                               ,str_detect(rule_name, "TRIAGE REJECTED") ~ "Triage"
-                               ,str_detect(rule_name, "OUTGOING") ~ "Outgoing"
-                               ,str_detect(rule_name, "FLAG") ~ "Commercialization"
-                               ,TRUE ~ "Other")) %>%
-  dplyr::select(-c(rule_num, rule_name)) %>%
-  distinct() %>%
-  mutate(rule_status = ifelse(is.na(rule_type),NA,"Yes")) %>%
-  pivot_wider(names_from = "rule_type",
-              values_from = "rule_status") %>%
-  mutate(Reason = case_when(Department == "Yes" ~ "Missing Department"
-                            ,Commercialization == "Yes" ~ "Commercialization Team"
-                            ,Psych == "Yes" ~ "Psych Referrals"
-                            ,Triage == "Yes" ~ "Triage Rejected"
-                            ,Outgoing == "Yes" ~ "Outgoing Referral"
-                            ,TRUE ~ "Other"
-                            ))
-
-
-### Receiving WQ Rules Processing
-wq_receiving <- wq_processed %>%
-  filter(wq_type == "Receiving WQ") %>%
-  distinct() %>%
-  mutate(rule_type = case_when(str_detect(rule_name, "UNABLE TO CONTACT") ~ "Contact"
-                               ,str_detect(rule_name, "SCHEDULING") ~ "Scheduling"
-                               ,str_detect(rule_name,"INVALID AUTH") ~ "Authorization"
-                               ,str_detect(rule_name, "NEEDS AUTH") ~ "Authorization"
-                               ,str_detect(rule_name, "AUTH MESSAGE") ~ "Authorization"
-                               ,str_detect(rule_name, "W/O LINKED REFERRAL") ~ "Visit"
-                               ,TRUE ~ "Scheduling")) %>%
-  dplyr::select(-c(rule_num, rule_name)) %>%
-  distinct() %>%
-  mutate(rule_status = ifelse(is.na(rule_type),"","Yes")) %>%
-  pivot_wider(names_from = "rule_type",
-              values_from = "rule_status") %>%
-  mutate(Reason = case_when(Contact == "Yes" ~ "Could not contact patient"
-                            ,(is.na(Scheduling) & Visit == "Yes") ~ "Completed but visit not linked"
-                            ,(Scheduling == "Yes" & is.na(Authorization)) ~ "Authorized but scheduling needed"
-                            ,(is.na(Scheduling) & Authorization == "Yes") ~ "Scheduled but authorization needed"
-                            ,TRUE ~ "Both scheduling and authorization needed"
-                            ))
-
-wq_merged <- bind_rows(wq_sending, wq_receiving)
-wq_merged <- wq_merged %>%
-  mutate(priority_type = case_when(str_detect(toupper(Priority), "CONVENIENCE") ~ "Patient Convenience"
-                                   ,str_detect(toupper(Priority), "2 DAYS") ~ "Within 2 Days"
-                                   ,str_detect(toupper(Priority), "1 WEEK") ~ "Within 1 Week"
-                                   ,str_detect(toupper(Priority), "2 WEEKS") ~ "Within 2 Weeks"
-                                   ,str_detect(toupper(Priority), "3-6 Days") ~ "Within 1 Week"
-                                   ,str_detect(toupper(Priority), "7-14 Days") ~ "Within 2 Weeks"
-                                   ,str_detect(toupper(Priority), "1 Month") ~ "Within 1 Month"
-                                   ,Priority == "Routine" ~ "Routine"
-                                   , TRUE ~ "Not Specified")) %>%
-  mutate(days = as.numeric(Sys.Date() - as.Date(`Creation Date`)))
-```
-
-
-
-```{r Reactable Functions, echo = FALSE, warning = FALSE, message = FALSE}
-
+# Creating Data Bars for Reactable ---------------------------------------------
  library(htmltools)
   bar_style <- function(width = 1, fill = "#e6e6e6", height = "75%",
                       align = c("left", "right"), color = NULL) {
@@ -673,13 +621,131 @@ wq_merged <- wq_merged %>%
     backgroundPosition = "center",
     color = color
   )
-}
+  }
+  
+# Creating Value Boxes (3 per row) ---------------------------------------------
+  createValueBoxes <- function(df, box_color, h = 8, w = 14, padding=0.5, rows = 2){
+  # required packages
+  library(ggplot2)
+  library(emojifont)
+  # verify our inputs
+  if (!is.data.frame(df)) {
+    stop(paste("Argument", deparse(substitute(df)), "must be a data.frame."))
+    }
+  if(!all(i <- rlang::has_name(df,c("values", "infos", "icons")))){
+    stop(sprintf(
+      "%s does not contain: %s",
+      deparse(substitute(df)),
+      paste(columns[!i], collapse=", ")))
+  }
+  
+  boxes = nrow(df) # number of items passed
+  # calculate the grid
+  cols = boxes/rows
+  plotdf <- data.frame(
+    x = rep(seq(0, (w+padding)*cols-1, w+padding), times=rows),
+    y = rep(seq(0, (h+padding)*rows-1, h+padding), each=cols),
+    h = rep(h, boxes),
+    w = rep(w, boxes),
+    value = df$values,
+    info = df$infos,
+    icon = fontawesome(df$icons),
+    font_family = c(rep("fontawesome-webfont", boxes)),
+    color = factor(1:boxes)
+  )
+  print(plotdf)
+  ggplot(plotdf, aes(x, y, height = h, width = w, label = info)) +
+    ## Create the tiles using the `color` column
+    geom_tile(aes(fill = color)) +
+    ## Add the numeric values as text in `value` column
+    geom_text(color = "white", fontface = "bold", size = 18,
+              aes(label = value, x = x - w/2.2, y = y + h/4), hjust = 0) +
+    ## Add the labels for each box stored in the `info` column
+    geom_text(color = "white", fontface = "bold", size = 12,
+              aes(label = info, x = x - w/2.2, y = y-h/4), hjust = 0) +
+    coord_fixed() +
+    scale_fill_manual(values = c(rep(box_color,3)))+
+    ## Use `geom_text()` to add the icons by specifying the unicode symbol.
+    geom_text(size = 24, aes(label = icon, family = font_family,
+                             x = x + w/4, y = y + h/8), alpha = 0.25) +
+    theme_void() +
+    guides(fill = FALSE)
+  
+  } 
+  
+  
+  # Creating Value Boxes (2 per row) ---------------------------------------------
+  createValueBoxes_2boxes <- function(df, box_color, h = 8, w = 14, padding=0.5, rows = 2){
+  # required packages
+  library(ggplot2)
+  library(emojifont)
+  # verify our inputs
+  if (!is.data.frame(df)) {
+    stop(paste("Argument", deparse(substitute(df)), "must be a data.frame."))
+    }
+  if(!all(i <- rlang::has_name(df,c("values", "infos", "icons")))){
+    stop(sprintf(
+      "%s does not contain: %s",
+      deparse(substitute(df)),
+      paste(columns[!i], collapse=", ")))
+  }
+  
+  boxes = nrow(df) # number of items passed
+  # calculate the grid
+  cols = boxes/rows
+  plotdf <- data.frame(
+    x = rep(seq(0, (w+padding)*cols-1, w+padding), times=rows),
+    y = rep(seq(0, (h+padding)*rows-1, h+padding), each=cols),
+    h = rep(h, boxes),
+    w = rep(w, boxes),
+    value = df$values,
+    info = df$infos,
+    icon = fontawesome(df$icons),
+    font_family = c(rep("fontawesome-webfont", boxes)),
+    color = factor(1:boxes)
+  )
+  print(plotdf)
+  ggplot(plotdf, aes(x, y, height = h, width = w, label = info)) +
+    ## Create the tiles using the `color` column
+    geom_tile(aes(fill = color)) +
+    ## Add the numeric values as text in `value` column
+    geom_text(color = "white", fontface = "bold", size = 18,
+              aes(label = value, x = x - w/2.2, y = y + h/4), hjust = 0) +
+    ## Add the labels for each box stored in the `info` column
+    geom_text(color = "white", fontface = "bold", size = 12,
+              aes(label = info, x = x - w/2.2, y = y-h/4), hjust = 0) +
+    coord_fixed() +
+    scale_fill_manual(values = c(rep(box_color,3)))+
+    ## Use `geom_text()` to add the icons by specifying the unicode symbol.
+    geom_text(size = 24, aes(label = icon, family = font_family,
+                             x = x + w/4, y = y + h/8), alpha = 0.25) +
+    theme_void() +
+    guides(fill = FALSE)
+  
+  } 
+
+# Formatting Dollar/big Number Values -------------------------------------------
+  comprss <- function(tx) { 
+      div <- findInterval(as.numeric(gsub("\\,", "", tx)), 
+         c(0, 1e3, 1e6, 1e9, 1e12) )  # modify this if negative numbers are possible
+      paste(round( as.numeric(gsub("\\,","",tx))/10^(3*(div-1)), 2), 
+           c("","K","M","B","T")[div] )}
+  
+# Reactable Conditional Formatting ---------------------------------------------
+  
+  make_color_pal <- function(colors, bias = 1) {
+  get_color <- colorRamp(colors, bias = bias)
+  function(x) rgb(get_color(x), maxColorValue = 255)
+  }
+  
+  pct_colorGn <- make_color_pal(c("#ffffff", "#f2fbd2", "#c9ecb4", "#93d3ab", "#35b0ab"), bias = 2)
+  pct_color_GnRd <- make_color_pal(c("#fd84a9", "white", "#85e085"), bias = 2)
 
 ```
 
 
 ```{r Sinai Logo, echo=FALSE, out.width = '30%'}
-knitr::include_graphics("Mount_Sinai_Logo_H.png")
+# knitr::include_graphics("Mount_Sinai_Logo_H.png")
 ```
 
 # Ambulatory Referrals Exeuctive Summary {.tabset .tabset-fade .tabset-pills}
@@ -691,370 +757,32 @@ knitr::include_graphics("Mount_Sinai_Logo_H.png")
 _________________________________________________________________________________________________________________________________________________________________
 
 
-```{r YTD Top Sending Specialties, echo = FALSE, warning = FALSE, message = FALSE}
- 
-# Data for internal received specialties -------------------------
-mshs_ytdReceived_internal_top <- referral_vol %>%
-  filter(createdYear == reporting_year) %>%
-  filter(createdMonNum != 11) %>%
-  filter(Class == "Internal") %>%
-  group_by(ReceivedBySpecialty) %>%
-  summarise(total_internal = n()) %>%
-  mutate(perc_internal = total_internal/sum(total_internal)) %>%
-  filter(ReceivedBySpecialty != "*Unspecified") %>%
-  arrange(desc(total_internal)) %>%
-  rename(`Internal Demand` = ReceivedBySpecialty)
-
-
-mshs_ytdReceived_external_top <- referral_vol %>%
-  filter(createdYear == reporting_year) %>%
-  filter(createdMonNum != 11) %>%
-  filter(Class == "Incoming") %>%
-  group_by(ReceivedBySpecialty) %>%
-  summarise(total_external = n()) %>%
-  mutate(perc_external = total_external/sum(total_external)) %>%
-  filter(ReceivedBySpecialty != "*Unspecified") %>%
-  arrange(desc(total_external)) %>%
-  rename(`External Demand` = ReceivedBySpecialty)
-
-
-
-# Table Output -----------------------------------------------------------------
-mshs_ytdReceived_internal_top15 <- mshs_ytdReceived_internal_top [1:15,] %>%
-  bind_rows(summarise(.,
-                      across(where(is.numeric), sum),
-                      across(where(is.character), ~"Total Internal Demand"))) %>%
-  mutate(blank = "") 
-
-
-mshs_ytdReceived_external_top15 <- mshs_ytdReceived_external_top[1:15,] %>%
-  bind_rows(summarise(.,
-                      across(where(is.numeric), sum),
-                      across(where(is.character), ~"Total External Demand"))) 
-
-ytd_demand_specialty_summary <- bind_cols(mshs_ytdReceived_internal_top15, mshs_ytdReceived_external_top15)
-
-
-  # Table Output 
-  reactable(
-    ytd_demand_specialty_summary,
-    # groupBy = c("Campus","Campus.Specialty"),
-    # defaultPageSize = 5,
-    # elementId = "site-grouping-table",
-    style = list(fontFamily = 'Calibri',
-                 fontSize = '14px'),
-    defaultColDef = colDef(align = "center", 
-                           headerStyle = list(fontWeight = "Bold", fontSize = "14px"),
-                           headerClass = "bar-sort-header"),  
-    rowStyle = function(index) {
-            if (index %in% c(16)) {
-              list(`border-top` = "2px solid rgb(184,184,184)",
-                   fontWeight = "Bold")
-            }
-          },
-    highlight = TRUE,
-    # filterable = TRUE,
-    pagination = FALSE,
-    # height = 800,
-    wrap = TRUE,
-    # bordered = TRUE,
-     # rowStyle = function(index) {
-     #        if (index %in% as.vector(col_border_num$total)) {
-     #          list(`border-bottom` = "thin solid")
-     #        }
-     #      },
-    columnGroups = list(
-    colGroup(name = paste0("Internal Demand - Apr-Oct 2022"), 
-             columns = c("Internal Demand", "total_internal", "perc_internal"),
-             headerStyle = list(color = "#d80b8c", fontSize = "16px")),
-    colGroup(name = paste0("External Demand - Apr-Oct 2022"), 
-             columns = c("External Demand", "total_external", "perc_external"),
-             headerStyle = list(color = "#00aeef", fontSize = "16px"))
-    ),
-    columns = list(
-      `Internal Demand` = colDef(
-        name = "Top 15 Specialties",
-        maxWidth = 250,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        style = list(fontWeight = "Bold"),
-        align = "left"
-        # footer = "*Excludes MSDD and NETWORK"
-        ),
-      total_internal = colDef(
-        name = "Total Internal Referrals", align = "left", 
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        style = function(value) {
-        if(value > max(mshs_ytdReceived_internal_top$total_internal)) {
-            bar_style(width = 0, fill = "hsl(208, 70%, 90%)")
-          } else{
-            bar_style(width = value / max(mshs_ytdReceived_internal_top$total_internal), fill = "hsl(321, 87%, 85%)")
-          } 
-          },
-        format = colFormat(separators = TRUE)
-        ),
-      perc_internal = colDef(
-        name = "% of Total Internal Referrals",
-        maxWidth = 120,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        align = "center",
-        format = colFormat(percent = TRUE, digits = 1)
-      ),
-       blank = colDef(
-        name = "",
-        maxWidth = 30
-      ),
-      `External Demand` = colDef(
-        name = "Top 15 Specialties",
-        maxWidth = 250,
-       headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        style = list(fontWeight = "Bold"),
-        align = "left"
-        # footer = "*Excludes MSDD and NETWORK"
-        ),
-      total_external = colDef(
-        name = "Total External Referrals", align = "left", 
-        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        style = function(value) {
-          if(value > max(mshs_ytdReceived_external_top$total_external)) {
-            bar_style(width = 0, fill = "hsl(208, 70%, 90%)")
-          } else{
-            bar_style(width = value / max(mshs_ytdReceived_external_top$total_external), fill = "hsl(196, 100%, 85%)")
-          } 
-          },
-        format = colFormat(separators = TRUE)
-        ),
-      perc_external = colDef(
-        name = "% of Total External Referrals",
-        maxWidth = 120,
-        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        align = "center",
-        format = colFormat(percent = TRUE, digits = 1)
-      )
-      
-      
-      
-    ) # Close Columns
-  ) # Close Reactable
-
-```
-
-
-```{r Weekly Top Sending Specialties, echo = FALSE, warning = FALSE, message = FALSE}
- 
-# Data for weekly top sending and received specialties -------------------------
-mshs_weeklySent_top <- referral_vol %>%
-  filter(createdWeek %in% c(reporting_week, reporting_week_prior)) %>%
-  group_by(SentBySpecialty, createdWeek) %>%
-  summarise(total_sent = n()) %>%
-  pivot_wider(names_from = createdWeek,
-              values_from = total_sent, 
-              values_fill = 0) %>%
-  `colnames<-`(c("SentBySpecialty","prior_week","current_week")) %>%
-  mutate(var = current_week - prior_week, 
-         specialty_total = sum(current_week)) %>%
-  arrange(desc(specialty_total))
-
-
-mshs_weeklyReceived_top <- referral_vol %>%
-  filter(createdWeek %in% c(reporting_week, reporting_week_prior)) %>%
-  group_by(ReceivedBySpecialty, createdWeek) %>%
-  summarise(total_received = n()) %>%
-  pivot_wider(names_from = createdWeek,
-              values_from = total_received, 
-              values_fill = 0) %>%
-  `colnames<-`(c("ReceivedBySpecialty","prior_week","current_week")) %>%
-  mutate(var = current_week - prior_week, 
-         specialty_total = sum(current_week)) %>%
-  arrange(desc(specialty_total))
-
-
-# Table Output -----------------------------------------------------------------
-total_sent <- sum(mshs_weeklySent_top$current_week)
-mshs_weeklySent_top10 <- mshs_weeklySent_top[1:10,] %>%
-  dplyr::select(SentBySpecialty, current_week, var) %>%
-  summarise(current_week_sent = as.numeric(sum(current_week)),
-            perc_total_sent = round(sum(current_week_sent)/total_sent,2),
-            var_sent = sum(var)) %>%
-  arrange(desc(current_week_sent)) %>%
-  bind_rows(summarise(.,
-                      across(where(is.numeric), sum),
-                      across(where(is.character), ~"Total Sent"))) %>%
-  mutate(blank = "") 
-
-
-total_received <- sum(mshs_weeklyReceived_top$current_week)
-mshs_weeklyReceived_top10 <- mshs_weeklyReceived_top[1:10,] %>%
-  dplyr::select(ReceivedBySpecialty, current_week, var) %>%
-  summarise(current_week_received = as.numeric(sum(current_week)),
-            perc_total_received = round(sum(current_week_received)/total_sent,2),
-            var_received = sum(var)) %>%
-  arrange(desc(current_week_received)) %>%
-  bind_rows(summarise(.,
-                      across(where(is.numeric), sum),
-                      across(where(is.character), ~"Total Received"))) 
-
-vol_summary <- bind_cols(mshs_weeklySent_top10, mshs_weeklyReceived_top10)
-
-
-  # Table Output 
-  reactable(
-    vol_summary,
-    # groupBy = c("Campus","Campus.Specialty"),
-    # defaultPageSize = 5,
-    # elementId = "site-grouping-table",
-    style = list(fontFamily = 'Calibri',
-                 fontSize = '14px'),
-    defaultColDef = colDef(align = "center", 
-                           headerStyle = list(fontWeight = "Bold", fontSize = "14px"),
-                           headerClass = "bar-sort-header"),  
-    rowStyle = function(index) {
-            if (index %in% c(11)) {
-              list(`border-top` = "2px solid rgb(184,184,184)",
-                   fontWeight = "Bold")
-            }
-          },
-    highlight = TRUE,
-    # filterable = TRUE,
-    pagination = FALSE,
-    # height = 800,
-    wrap = TRUE,
-    # bordered = TRUE,
-     # rowStyle = function(index) {
-     #        if (index %in% as.vector(col_border_num$total)) {
-     #          list(`border-bottom` = "thin solid")
-     #        }
-     #      },
-    columnGroups = list(
-    colGroup(name = paste0("Referrals Sent (",format(reporting_week, "%B %d"), " to ", 
-                           format(reporting_week_next-1, "%B %d"),")"), 
-             columns = c("SentBySpecialty", "current_week_sent", "perc_total_sent", "var_sent"),
-             headerStyle = list(color = "#d80b8c", fontSize = "16px")),
-    colGroup(name = paste0("Referrals Received (",format(reporting_week, "%B %d"), " to ", 
-                           format(reporting_week_next-1, "%B %d"), ")"),
-             columns = c("ReceivedBySpecialty", "current_week_received", "perc_total_received", "var_received"),
-             headerStyle = list(color = "#00aeef", fontSize = "16px"))
-    ),
-    columns = list(
-      SentBySpecialty = colDef(
-        name = "Top 10 Sending Specialties",
-        maxWidth = 250,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        style = list(fontWeight = "Bold"),
-        align = "left"
-        # footer = "*Excludes MSDD and NETWORK"
-        ),
-      current_week_sent = colDef(
-        name = "Weekly Volume Sent",
-        maxWidth = 150,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        
-        
-        align = "center",
-        format = colFormat(separators = TRUE)
-      ),
-      perc_total_sent = colDef(
-        name = "% of Total Sent",
-        maxWidth = 80,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        align = "center",
-        format = colFormat(percent = TRUE)
-      ),
-      # var_sent = colDef(cell = function(value) {
-      #   color <- if(value>0){
-      #     "hsl(0, 100%, 50%)"
-      #   } else{
-      #     "hsl(120, 60%, 50%)"
-      #   }
-      #   badge <- status_badge(color = color)
-      #   # tagList(badge, if (is.na(value)) "  \u2013 " else value)
-      #   },
-      #   name = "Change in Volume from Previous Week",
-      #   minWidth = 150, 
-      #   headerStyle = list(background = "#c7c6ef", color = "black", align = "center"),
-      #   align = "left")
-      var_sent = colDef(
-      name = "Change in Volume from Previous Week",
-      maxWidth = 150,
-      headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
-      align = "center",
-      format = colFormat(separators = TRUE),
-      cell = function(value) {
-        if (value>0) paste0("+",value)
-        else value
-      },
-      style = function(value) {
-        color <- if (is.na(value)) {"#aaa"}
-        else if (value > 0) {
-          "#008000"
-        } else "#e00000"
-        list(fontWeight = 600, color = color)
-      }
-      ),
-      blank = colDef(
-        name = "",
-        maxWidth = 30
-      ),
-      ReceivedBySpecialty = colDef(
-        name = "Top 10 Receiving Specialties",
-        maxWidth = 250,
-        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        style = list(fontWeight = "Bold"),
-        align = "left"
-        # footer = "*Excludes MSDD and NETWORK"
-        ),
-      current_week_received = colDef(
-        name = "Weekly Volume Received",
-        maxWidth = 150,
-        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        align = "center",
-        format = colFormat(separators = TRUE)
-      ),
-      perc_total_received = colDef(
-        name = "% of Total Received",
-        maxWidth = 80,
-        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        align = "center",
-        format = colFormat(percent = TRUE)
-      ),
-      var_received = colDef(
-      name = "Change in Volume from Previous Week",
-      maxWidth = 150,
-      headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
-      align = "center",
-      format = colFormat(separators = TRUE),
-      cell = function(value) {
-        if (value>0) paste0("+",value)
-        else value
-      },
-      style = function(value) {
-        color <- if (is.na(value)) {"#aaa"}
-        else if (value > 0) {
-          "#008000"
-        } else "#e00000"
-        list(fontWeight = 600, color = color)
-      }
-      )
-    ) # Close Columns
-  ) # Close Reactable
-    
-  
-```
-
-
-```{r Weekly Snapshot Referrals, echo = FALSE, warning = FALSE, message = FALSE}
+```{r YTD Snapshot Referrals, echo = FALSE, warning = FALSE, message = FALSE}
 
 # Referrals Snapshot 
 ## 1. Total Referrals Created YTD
-referral_ytd <- referral_vol %>%
+referral_received_ytd <- referral_vol %>%
   filter(createdYear == reporting_year) %>%
+  filter(Class != "Outgoing") %>%
   group_by(createdYear) %>%
   summarise(total =n())
 
+## Estimated Revenue Generated from Arrived Referrals
+referral_est_rev_ytd <- referral_vol %>%
+  filter(createdYear == reporting_year) %>%
+  filter(Class != "Outgoing") %>%
+  filter(ApptStatusFinal == "Arrived") %>%
+  # filter(ApptStatusFinal == "Pending" & as.Date(ExpirationInstant, "%Y-%m-%d") < report_run_date) %>%
+  group_by(createdYear) %>%
+  summarise(total = n(),
+            total_prof_charge_est = sum(ProfessionalChargeEstimate, na.rm = T),
+            total_hosp_charge_est = sum(HospitalChargeEstimate, na.rm = T))
 
 ## Total Referrals Expired + Missed Professional Revenue + Missed Technical Revenue
 referral_expired_ytd <- referral_vol %>%
   filter(createdYear == reporting_year) %>%
-  filter(ApptStatusFinal == "Pending" & as.Date(ExpirationInstant, "%Y-%m-%d") < report_run_date) %>%
+  filter(ApptStatusFinal == "Pending" & referral_age >180) %>%
+  # filter(ApptStatusFinal == "Pending" & as.Date(ExpirationInstant, "%Y-%m-%d") < report_run_date) %>%
   group_by(createdYear) %>%
   summarise(total = n(),
             total_prof_charge_est = sum(ProfessionalChargeEstimate, na.rm = T),
@@ -1074,6 +802,7 @@ referral_vol_class_ytd <- referral_vol %>%
 ## 4 & 5. Average Conversion Rate
 referral_outcome_ytd <- referral_vol %>%
   filter(createdYear == reporting_year) %>%
+  filter(Class != "Outgoing") %>%
   group_by(ApptStatusFinal) %>%
   summarise(total = n()) %>%
   pivot_wider(names_from = ApptStatusFinal,
@@ -1157,528 +886,134 @@ referral_rejected_ytd <- referral_vol %>%
 ```
 
 
-```{r Weekly Snapshot WQ, echo = FALSE, warning = FALSE, message = FALSE}
+```{r Referrals YTD Snapshot Output, echo = FALSE, warning = FALSE, message = FALSE,  results='hide'}
+# Referrals YTD Snapshot ------------------------------------------------------- 
+referrals_ytd_snapshot <- data.frame(
+values =
+  c(prettyNum(referral_received_ytd$total, big.mark = ","),
+    paste0(paste0(referral_outcome_ytd$conversion_rate,"%")," | ", paste0(referral_outcome_ytd$completion_rate,"%")),
+    paste0("$",comprss(referral_est_rev_ytd$total_prof_charge_est + referral_est_rev_ytd$total_hosp_charge_est))), 
 
-## Total Sending WQ Volume
-sending_wq_vol_week <- 
-
-## Total REceiving WQ Volume
-
-## Average WEekday Volume Added to Sending WQ
-
-## Average WEekday Volume Added to Receiving WQ
-
-## Total Resolution Rate on Seding WQ
-
-## Total Resolution Rate on Receiving WQ
-
-## Average/ Median Days in Sending WQ
-
-## Average/ Median Days in Receiving WQ
-
-## Referrals Within 7 Days Aging 
-
-## % Referrals Aged Last Week?
-
-
-```
-
-
-```{r Monthly Volume Trending, echo = FALSE, warning = FALSE, message = FALSE}
-
-# Referrals by MSHS 
-referral_received_monthly_mshs <- referral_vol %>%
-  group_by(createdMonthYear, ApptStatusFinal) %>%
-  summarise(total = n()) %>%
-  pivot_wider(names_from = ApptStatusFinal,
-              values_from = total,
-              values_fill = 0) %>%
-  mutate(Scheduled = Canceled + `No Show` + Scheduled,
-         Total = Arrived + Scheduled + Pending) %>%
-  dplyr::select(-c(Canceled,`No Show`)) %>%
-  mutate(conversion_rate = round((Arrived + Scheduled)/Total,2)*100,
-         completion_rate = round(Arrived/Total,2)*100) %>%
-  arrange(createdMonthYear)
-
-
-
-hchart(referral_sent_monthly_mshs, 
-       hcaes(x = createdMonthYear, y = Total), name = "Total Referrals Created",
-       type = 'column',
-       color='#a5a7a5',
-       dataLabels = list(enabled = TRUE, format='{point.y}'), 
-       showInLegend = TRUE) %>%
-  hc_yAxis_multiples(
-    list(title = list(text = "Referral Volume"), lineWidth = 3),
-    list(title = list(text = "% of Total Referrals"), labels = list(enabled = TRUE, format='{value}%'), showLastLabel = FALSE, opposite = TRUE)
-    ) %>%
-  hc_xAxis(title = list(text = ""),
-           categories = referral_sent_monthly_mshs$createdMonthYear,
-           type = "datetime",
-           # labels = list(format = '{value:%m/%d}')
-           dateTimeLabelFormats = list(month = '%Y-%m')
-           ) %>%
-  hc_add_series(name = "Conversion Rate",
-                data = referral_sent_monthly_mshs$conversion_rate,
-                type = "line", yAxis = 1,
-                color='#00aeef',
-                lineColor='#00aeef',
-                dataLabels = list(enabled = TRUE, format='{point.y}%'),
-                showInLegend = TRUE) %>%
-  hc_add_series(name = "Completion Rate",
-                data = referral_sent_monthly_mshs$completion_rate,
-                type = "line", yAxis = 1,
-                color='#d80b8c',
-                lineColor='#d80b8c',
-                dataLabels = list(enabled = TRUE, format='{point.y}%'),
-                showInLegend = TRUE) %>%
-  hc_legend(align = "left", verticalAlign = "top", itemStyle = list(fontFamily ='Calibri',color ='black', fontSize = "14px")) %>%
-  hc_title(text = "MSHS Referral Volume and Outcome", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
-  hc_subtitle(text = paste0("Based on referrals created from ","2022-04-01"," to ",report_run_date),
-              align = "left", style = list(fontFace = "italic", fontSize = "16px", fontFamily = "Calibri")) %>%
-  hc_tooltip(shared = TRUE, borderColor = "black")
-
-
-# Referrals by Site 
-referral_monthly_site <- referral_vol %>%
-  group_by(createdMonthYear, SentBySite, ApptStatusFinal) %>%
-  summarise(total = n()) %>%
-  pivot_wider(names_from = ApptStatusFinal,
-              values_from = total,
-              values_fill = 0) %>%
-  mutate(Scheduled = Canceled + `No Show` + Scheduled,
-         Total = Arrived + Scheduled + Pending) %>%
-  dplyr::select(-c(Canceled,`No Show`)) %>%
-  mutate(conversion_rate = (Arrived + Scheduled)/Total,
-         completion_rate = Arrived/Total) 
-
-```
-
-
-```{r Referral Volume Breakdown, echo = FALSE, warning = FALSE, message = FALSE}
-
-# Total MSHS Referral Volume + Conversion Rate + Completion Rate by Site 
-referral_vol_mshs <- referral_vol %>%
-  mutate(SentBySite = "MSHS") %>%
-  group_by(createdYear, createdMonth, createdMonNum, SentBySite, SentBySpecialty, ApptStatusFinal) %>%
-  summarise(total = n()) %>%
-  pivot_wider(names_from = ApptStatusFinal,
-              values_from = total,
-              values_fill = 0) %>%
-  mutate(Scheduled = Canceled + `No Show` + Scheduled,
-         Total = Arrived + Scheduled + Pending) %>%
-  dplyr::select(-c(Canceled,`No Show`)) %>%
-  mutate(conversion_rate = (Arrived + Scheduled)/Total,
-         completion_rate = Arrived/Total) 
-
-# Total Referral Volume + Conversion Rate + Completion Rate by Site 
-referral_vol_site <- referral_vol %>%
-  group_by(createdYear, createdMonth, createdMonNum, SentBySite, SentBySpecialty, ApptStatusFinal) %>%
-  summarise(total = n()) %>%
-  pivot_wider(names_from = ApptStatusFinal,
-              values_from = total,
-              values_fill = 0) %>%
-  mutate(Scheduled = Canceled + `No Show` + Scheduled,
-         Total = Arrived + Scheduled + Pending) %>%
-  dplyr::select(-c(Canceled,`No Show`)) %>%
-  mutate(conversion_rate = (Arrived + Scheduled)/Total,
-         completion_rate = Arrived/Total) 
-
-referral_vol_merged <- bind_rows(referral_vol_mshs, referral_vol_site)
-
-
-
-  
-
-
-library(dplyr)
-
-set.seed(10)
-
-data <- sample_n(MASS::Cars93[23:40, ], 30, replace = TRUE) %>%
-  mutate(Price = Price * 3, Units = sample(1:5, 30, replace = TRUE)) %>%
-  mutate(Avg.Price = Price / Units) %>%
-  dplyr::select(Model, Manufacturer, Price, Units, Avg.Price)
-
-reactable(
-  data,
-  groupBy = "Manufacturer",
-  columns = list(
-    Price = colDef(aggregate = "sum", format = colFormat(currency = "USD")),
-    Units = colDef(aggregate = "sum"),
-    Avg.Price = colDef(
-      # Calculate the aggregate Avg.Price as `sum(Price) / sum(Units)`
-      aggregate = JS("function(values, rows) {
-        let totalPrice = 0
-        let totalUnits = 0
-        rows.forEach(function(row) {
-          totalPrice += row['Price']
-          totalUnits += row['Units']
-        })
-        return totalPrice / totalUnits
-      }"),
-      format = colFormat(currency = "USD")
-    )
-  )
+infos =
+  c("Total Referrals YTD",
+    "Conversion | Completion Rate",
+    "Est. Total Charges Generated\nfrom Completed Appointments"), 
+icons =
+  c("fa-gear", "fa-diamond", "fa-tasks")
 )
 
-```
+createValueBoxes(referrals_ytd_snapshot, "#212070", rows=1)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r Weekly Snapshot - Total WQ Volume, echo = FALSE, warning = FALSE, message = FALSE}
-
-# Total WQ Volume 
-# Average WQ volume added/removed
-# % of urgent referralas on WQ (Within 2 Days)
-# Percent of WQ Volume Nearing Expiration <= 7 days 
-
-wq_snapshot <- data.frame(
-  # metric = c("total_wq_vol","avg_added", "avg_removed", "perc_urgent", "med_days_urgent"),
-  # 
-  # value = c(sum(currentWQ_vol$total),
-  #           
-  #           round(mean((WQ_added %>%
-  #                        mutate(CreatedDay = format(CreatedDateYear,"%a")) %>%
-  #                        filter(CreatedDay %!in% c("Sat","Sun")) %>%
-  #                        group_by(CreatedDateYear) %>%
-  #                        summarise(total = sum(total)))$total)),
-  #           
-  #           round(mean((WQ_removed %>%
-  #                                mutate(LastUpdatedDay = format(LastUpdatedDateYear,"%a")) %>%
-  #                                filter(LastUpdatedDay %!in% c("Sat","Sun")) %>%
-  #                                group_by(LastUpdatedDateYear) %>%
-  #                                summarise(total = sum(total)))$total)),
-  #           (currentWQ_vol %>%
-  #                  group_by(priority_type) %>%
-  #                  summarise(total = sum(total)) %>%
-  #                  mutate(perc = round(total/sum(total),2)) %>%
-  #                  filter(priority_type == "Within 2 Days"))$perc,
-  #           
-  #           as.numeric(round(median((wq_history_reasons %>%
-  #                                              filter(InAnyWorkqueue == 1 & priority_type == "Within 2 Days"))$Days, na.rm = TRUE))))
-  total_wq_vol = sum(currentWQ_vol$total),
-  avg_added = round(mean((WQ_added %>%
-                         mutate(CreatedDay = format(CreatedDateYear,"%a")) %>%
-                         filter(CreatedDay %!in% c("Sat","Sun")) %>%
-                         group_by(CreatedDateYear) %>%
-                         summarise(total = sum(total)))$total)),
-  avg_removed = round(mean((WQ_removed %>%
-                                 mutate(LastUpdatedDay = format(LastUpdatedDateYear,"%a")) %>%
-                                 filter(LastUpdatedDay %!in% c("Sat","Sun")) %>%
-                                 group_by(LastUpdatedDateYear) %>%
-                                 summarise(total = sum(total)))$total)),
-  perc_urgent = (currentWQ_vol %>%
-                   group_by(priority_type) %>%
-                   summarise(total = sum(total)) %>%
-                   mutate(perc = round(total/sum(total),2)) %>%
-                   filter(priority_type == "Within 2 Days"))$perc,
-  med_days_urgent = as.numeric(round(median((wq_history_reasons %>%
-                                               filter(InAnyWorkqueue == 1 & priority_type == "Within 2 Days"))$Days, na.rm = TRUE)))
-  
-  )
-
-
-
-# Load packages
-library(reactablefmtr)
-library(tidyverse)
-install.packages("palmerpenguins")
-library(palmerpenguins)
-library(dataui)
-require(dataui)
-remotes::install_github("timelyportfolio/dataui")
-
-df <- penguins %>%
-  filter(!is.na(sex)) %>%
-  group_by(species, sex) %>%
-  summarize(flipper_length = list(flipper_length_mm))
-
-reactable(
-  df,
-  columns = list(
-    species = colDef(maxWidth = 90),
-    sex = colDef(maxWidth = 85),
-    flipper_length = colDef(
-      cell = react_sparkline(df)
-    )
-  )
+# Referral Outcome YRD Snapshot ------------------------------------------------------- 
+referrals_outcome_ytd_snapshot <- data.frame(
+values =
+  c(paste0(paste0(round(referral_vol_class_ytd$Incoming,3)*100,"%")," | ", paste0(round(referral_vol_class_ytd$Outgoing,3)*100,"%")),
+    paste0(round(referral_contacted_ytd$perc,2)*100,"%"),
+    paste0(round(referral_timeframe_ytd$perc,2)*100,"%")), 
+ 
+infos =
+  c("% Incoming | Outgoing Referrals",
+    "% Referrals Contacted/Scheduled <12 Hours",
+    "% Referrals Scheduled On-Time YTD\nBased on Priority"), 
+icons =
+  c("fa-gear", "fa-diamond", "fa-tasks")
 )
 
-reactable(
-    wq_snapshot,
-    # groupBy = c("Campus","Campus.Specialty"),
-    # defaultPageSize = 5,
-    # elementId = "site-grouping-table",
-    style = list(fontFamily = 'Calibri',
-                 fontSize = '14px'),
-    defaultColDef = colDef(align = "center", 
-                           headerStyle = list(fontWeight = "Bold", fontSize = "16px"),
-                           headerClass = "bar-sort-header"),  
-    highlight = TRUE,
-    # filterable = TRUE,
-    pagination = FALSE,
-    # height = 800,
-    wrap = TRUE,
-    # bordered = TRUE,
-    # rowStyle = function(index) {
-    #         if (index %in% c(nrow(wq_vol_summary))) {
-    #           list(
-    #             # `border-top` = "2px solid rgb(184,184,184)",
-    #                fontWeight = "Bold")
-    #         } 
-    #   else if (index %in% c(1)) {
-    #           list(
-    #             # `border-top` = "2px solid rgb(184,184,184)",
-    #             #    `border-left` = "2px solid rgb(184,184,184)",
-    #             #    `border-right` = "2px solid rgb(184,184,184)",
-    #                fontWeight = "Bold", color = "red")
-    #         } else if (index %in% c(2)) {
-    #           list(
-    #             # `border-left` = "2px solid rgb(184,184,184)",
-    #             #    `border-right` = "2px solid rgb(184,184,184)",
-    #             #    `border-bottom` = "2px solid rgb(184,184,184)",
-    #                fontWeight = "Bold")
-    #         }
-    #       },
-    # format(as.POSIXlt(Sys.time()), "%Y-%m-%d %H:%M")
-    columnGroups = list(
-    colGroup(name = "Weekly Snapshot of Referral Workqueue",
-             columns = c("total_wq_vol","avg_added", "avg_removed", "perc_urgent", "med_days_urgent"),
-             headerStyle = list(background = "white", color = "#212070", fontWeight = "Bold", fontSize = "14px"),
-             align ="left")
-    ),
-    columns = list(
-      total_wq_vol = colDef(
-        name = "Total WQ Volume",
-        maxWidth = 200,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        format = colFormat(separators = TRUE)
-        # footer = "*Excludes MSDD and NETWORK"
-        ),
-      avg_added = colDef(
-        name = "Average Referrals Added per Weekday",
-        maxWidth = 200,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        format = colFormat(separators = TRUE)
-        # footer = "*Excludes MSDD and NETWORK"
-        ),
-      avg_removed = colDef(
-        name = "Average Referrals Removed per Weekday",
-        maxWidth = 200,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        format = colFormat(separators = TRUE)
-        # footer = "*Excludes MSDD and NETWORK"
-        ),
-      perc_urgent = colDef(
-        name = "% of Urgent* Referrals in WQ",
-        maxWidth = 200,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        format = colFormat(percent = TRUE)
-        # footer = "*Excludes MSDD and NETWORK"
-        ),
-      med_days_urgent = colDef(
-        name = "Median Days Urgent* Referrals in WQ",
-        maxWidth = 200,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        format = colFormat(suffix = " days"),
-        footer = "*Schedule within 2 days"
-        )
+createValueBoxes(referrals_outcome_ytd_snapshot, "#a5a7a5", rows=1)
 
-    ) # Close Columns
-  ) # Close Reactable
+# Expired Referrals YTD Snapshot ------------------------------------------------------- 
+referrals_expired_ytd_snapshot <- data.frame(
+values =
+  c(paste0(round(referral_expired_ytd$total / referral_outcome_ytd$Total,2)*100,"%"),
+    prettyNum(referral_expired_ytd$total, big.mark = ","),
+    paste0("$",comprss(referral_expired_ytd$total_prof_charge_est + referral_expired_ytd$total_hosp_charge_est))), 
 
+infos =
+  c("% Referrals Expired YTD",
+    "Total Referrals Expired YTD",
+    "Est. Total Missed Charges\nDue to Expired Referrals"), 
+icons =
+  c("fa-gear", "fa-diamond", "fa-tasks")
+)
 
+createValueBoxes(referrals_expired_ytd_snapshot, "#d80b8c", rows=1)
 
 ```
 
+```{r YTD Top Sending Specialties, echo = FALSE, warning = FALSE, message = FALSE}
+ 
+# Data for internal received specialties -------------------------
+mshs_ytdReceived_internal_top <- referral_vol %>%
+  filter(createdYear == reporting_year) %>%
+  filter(createdMonNum != 11) %>%
+  filter(Class == "Internal") %>%
+  filter(ReceivedBySpecialty != "*Unspecified") %>%
+  group_by(ReceivedBySpecialty, ApptStatusFinal) %>%
+  summarise(total_internal = n()) %>%
+  pivot_wider(names_from = ApptStatusFinal,
+              values_from = total_internal,
+              values_fill = 0) %>%
+  mutate(Scheduled = Canceled + `No Show` + Scheduled,
+         total_internal = Arrived + Scheduled + Pending) %>%
+  dplyr::select(-c(Canceled,`No Show`)) %>%
+  ungroup() %>%
+  mutate(perc_internal = total_internal/sum(total_internal)) %>%
+  mutate(conversion_rate_internal = round((Arrived + Scheduled)/total_internal,2),
+         completion_rate_internal = round(Arrived/total_internal,2)) %>%
+  dplyr::select(-c(Arrived,Scheduled,Pending)) %>%
+  arrange(desc(total_internal)) %>%
+  rename(`Internal Demand` = ReceivedBySpecialty)
 
-```{r 10 Day WQ Volume History, echo = FALSE, warning = FALSE, message = FALSE}
 
-wq_trend <- wq_history_reasons %>%
-  filter(CreatedDateYear >= max(CreatedDateYear) - 10) %>%
-  group_by(ReferralKey, ReferralType, CreatedDateYear, LastUpdatedDateYear, InAnyWorkqueue) %>%
-  summarise(daysInWQ = n()) %>%
-  mutate(LastUpdatedDateYear = ifelse(InAnyWorkqueue == 1, wq_run_date, LastUpdatedDateYear),
-         daysInWQ = as.numeric(difftime(as.Date(LastUpdatedDateYear),  as.Date(CreatedDateYear), units = "days")))
+mshs_ytdReceived_external_top <- referral_vol %>%
+  filter(createdYear == reporting_year) %>%
+  filter(createdMonNum != 11) %>%
+  filter(Class == "Incoming") %>%
+  filter(ReceivedBySpecialty != "*Unspecified") %>%
+  group_by(ReceivedBySpecialty, ApptStatusFinal) %>%
+  summarise(total_internal = n()) %>%
+  pivot_wider(names_from = ApptStatusFinal,
+              values_from = total_internal,
+              values_fill = 0) %>%
+  mutate(Scheduled = Canceled + `No Show` + Scheduled,
+         total_external = Arrived + Scheduled + Pending) %>%
+  dplyr::select(-c(Canceled,`No Show`)) %>%
+  ungroup() %>%
+  mutate(perc_external = total_external/sum(total_external)) %>%
+  mutate(conversion_rate_external = round((Arrived + Scheduled)/total_external,2),
+         completion_rate_external = round(Arrived/total_external,2)) %>%
+  dplyr::select(-c(Arrived,Scheduled,Pending)) %>%
+  arrange(desc(total_external)) %>%
+  rename(`External Demand` = ReceivedBySpecialty)
 
 
-wq_trend <- data.frame(lapply(wq_trend , rep, wq_trend$DaysInWQ))
-wq_trend <- wq_trend %>%
-  group_by()
-```
 
 
-```{r Weekly Snapshot - WQ Priority, echo = FALSE, warning = FALSE, message = FALSE}
 
-wq_priority <- wq_merged %>%
-  group_by(wq_type, priority_type) %>%
-  summarise(total = n()) %>%
-  pivot_wider(names_from = wq_type,
-              values_from = total) %>%
-  mutate(total = `Receiving WQ` + `Sending WQ`,
-         perc_total = round(total/sum(total),2)) %>% 
-  relocate(`Sending WQ`, .before = `Receiving WQ`) %>%
-  arrange(factor(priority_type, levels = c("Within 2 Days","Within 1 Week","Within 2 Weeks","Routine",
-                                           "Patient Convenience","Not Specified"))) %>%
+
+# Table Output -----------------------------------------------------------------
+mshs_ytdReceived_internal_top15 <- mshs_ytdReceived_internal_top [1:15,] %>%
   bind_rows(summarise(.,
                       across(where(is.numeric), sum),
-                      across(where(is.character), ~"Total"))) %>%
-  mutate(color_pal = case_when(
-          priority_type %in% c("Within 2 Days") ~ "red"
-          ,priority_type == "Total" ~ "white"
-          ,TRUE ~ "darkgrey"
-          ),
-         text_color = case_when(
-          priority_type %in% c("Within 2 Days") ~ "black"
-          ,priority_type == "Total" ~ "white"
-          ,TRUE ~ "black"
-          ))
-  
-
-   # Table Output 
-  reactable(
-    wq_priority,
-    # groupBy = c("Campus","Campus.Specialty"),
-    # defaultPageSize = 5,
-    # elementId = "site-grouping-table",
-    style = list(fontFamily = 'Calibri',
-                 fontSize = '14px'),
-    defaultColDef = colDef(align = "center", 
-                           headerStyle = list(fontWeight = "Bold", fontSize = "14px"),
-                           headerClass = "bar-sort-header"),  
-    highlight = TRUE,
-    # filterable = TRUE,
-    pagination = FALSE,
-    # height = 800,
-    wrap = TRUE,
-    # bordered = TRUE,
-    # rowStyle = function(index) {
-    #         if (index %in% c(nrow(wq_vol_summary))) {
-    #           list(
-    #             # `border-top` = "2px solid rgb(184,184,184)",
-    #                fontWeight = "Bold")
-    #         } 
-    #   else if (index %in% c(1)) {
-    #           list(
-    #             # `border-top` = "2px solid rgb(184,184,184)",
-    #             #    `border-left` = "2px solid rgb(184,184,184)",
-    #             #    `border-right` = "2px solid rgb(184,184,184)",
-    #                fontWeight = "Bold", color = "red")
-    #         } else if (index %in% c(2)) {
-    #           list(
-    #             # `border-left` = "2px solid rgb(184,184,184)",
-    #             #    `border-right` = "2px solid rgb(184,184,184)",
-    #             #    `border-bottom` = "2px solid rgb(184,184,184)",
-    #                fontWeight = "Bold")
-    #         }
-    #       },
-    # format(as.POSIXlt(Sys.time()), "%Y-%m-%d %H:%M")
-    columnGroups = list(
-    colGroup(name = "WQ Volume by Priority",
-             columns = c("priority_type","Sending WQ","Receiving WQ","total","perc_total"),
-             headerStyle = list(color = "#212070", fontSize = "16px"),
-             align ="left")
-    ),
-    columns = list(
-      priority_type = colDef(
-        name = "Priority",
-        maxWidth = 200,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        style = list(fontWeight = "Bold"),
-        align = "left"
-        # footer = "*Excludes MSDD and NETWORK"
-        ),
-      `Sending WQ` = colDef(
-        name = "Total Sending Referrals",
-        maxWidth = 130,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        align = "center",
-        format = colFormat(separators = TRUE)
-      ),
-      `Receiving WQ` = colDef(
-        name = "Total Receiving Referrals",
-        maxWidth = 130,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        align = "center",
-        format = colFormat(separators = TRUE)
-      ),
-      total = colDef(
-        name = "Total WQ Volume",
-        maxWidth = 130,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        align = "center",
-        format = colFormat(separators = TRUE)
-      ),
-      perc_total = colDef(
-        name = "% of Total WQ Volume",
-        maxWidth = 130,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        align = "center",
-        cell = data_bars(wq_priority, 
-                         background = "white",
-                         text_color_ref = "text_color",
-                         fill_color_ref = "color_pal", 
-                         text_position = "outside-end",  
-                         number_fmt = scales::percent)
-        # format = colFormat(percent = TRUE)
-      ),
-      text_color = colDef(show = FALSE),
-      color_pal = colDef(show = FALSE)
-    ) # Close Columns
-  ) # Close Reactable
-
-
-```
-
-
-```{r Weekly Snapshot - WQ Reasons, echo = FALSE, warning = FALSE, message = FALSE}
-
-# Sending WQ 
-wq_sending_reasons <- wq_sending %>%
-  rename(reason_sending = Reason) %>%
-  group_by(reason_sending) %>%
-  summarise(total_sending = n()) %>%
-  mutate(perc_total_sending = round(total_sending/sum(total_sending),2)) %>%
-  arrange(desc(total_sending)) %>%
-  bind_rows(summarise(.,
-                      across(where(is.numeric), sum),
-                      across(where(is.character), ~"Total Sending WQ Volume"))) %>%
+                      across(where(is.character), ~"Total Internal Demand"))) %>%
   mutate(blank = "") 
+mshs_ytdReceived_internal_top15[16, c("conversion_rate_internal")] <- NA
+mshs_ytdReceived_internal_top15[16, c("completion_rate_internal")] <- NA
 
-# Receiving WQ 
-wq_receiving_reasons <- wq_receiving %>%
-  rename(reason_receiving = Reason) %>%
-  group_by(reason_receiving) %>%
-  summarise(total_receiving = n()) %>%
-  mutate(perc_total_receiving = round(total_receiving/sum(total_receiving),2)) %>%
-  arrange(desc(perc_total_receiving)) 
 
-wq_receiving_reasons[nrow(wq_receiving_reasons)+as.numeric((nrow(wq_sending_reasons)-nrow(wq_receiving_reasons))-1),] <- NA
-wq_receiving_reasons <- bind_rows(wq_receiving_reasons,
-                                  data.frame(reason_receiving = "Total Receiving WQ Volume",
-                                             total_receiving = sum(wq_receiving_reasons$total_receiving, na.rm = TRUE),
-                                             perc_total_receiving = sum(wq_receiving_reasons$perc_total_receiving, na.rm = TRUE)))
+mshs_ytdReceived_external_top15 <- mshs_ytdReceived_external_top[1:15,] %>%
+  bind_rows(summarise(.,
+                      across(where(is.numeric), sum),
+                      across(where(is.character), ~"Total External Demand"))) 
+mshs_ytdReceived_external_top15[16, c("conversion_rate_external")] <- NA
+mshs_ytdReceived_external_top15[16, c("completion_rate_external")] <- NA
 
-wq_vol_summary <- bind_cols(wq_sending_reasons, wq_receiving_reasons)
+ytd_demand_specialty_summary <- bind_cols(mshs_ytdReceived_internal_top15, mshs_ytdReceived_external_top15)
 
 
   # Table Output 
   reactable(
-    wq_vol_summary,
+    ytd_demand_specialty_summary,
     # groupBy = c("Campus","Campus.Specialty"),
     # defaultPageSize = 5,
     # elementId = "site-grouping-table",
@@ -1688,7 +1023,7 @@ wq_vol_summary <- bind_cols(wq_sending_reasons, wq_receiving_reasons)
                            headerStyle = list(fontWeight = "Bold", fontSize = "14px"),
                            headerClass = "bar-sort-header"),  
     rowStyle = function(index) {
-            if (index %in% c(nrow(wq_sending_reasons))) {
+            if (index %in% c(16)) {
               list(`border-top` = "2px solid rgb(184,184,184)",
                    fontWeight = "Bold")
             }
@@ -1704,142 +1039,347 @@ wq_vol_summary <- bind_cols(wq_sending_reasons, wq_receiving_reasons)
      #          list(`border-bottom` = "thin solid")
      #        }
      #      },
-    # format(as.POSIXlt(Sys.time()), "%Y-%m-%d %H:%M")
-    # columnGroups = list(
-    # colGroup(name = "Seding WQ Volume", 
-    #          columns = c("reason_sending", "total_sending", "perc_total_sending"),
-    #          headerStyle = list(color = "#212070", fontSize = "16px"),
-    #          align ="left"),
-    # colGroup(name = "Receiving WQ Volume ", 
-    #          columns = c("reason_receiving", "total_receiving", "perc_total_receiving"),
-    #          headerStyle = list(color = "#212070", fontSize = "16px"),
-    #          align = "left")
-    # ),
+    columnGroups = list(
+    colGroup(name = paste0("Internal Demand - Apr-Oct 2022"), 
+             columns = c("Internal Demand", "total_internal", "perc_internal","conversion_rate_internal","completion_rate_internal"),
+             headerStyle = list(color = "#d80b8c", fontSize = "16px")),
+    colGroup(name = paste0("External Demand - Apr-Oct 2022"), 
+             columns = c("External Demand", "total_external", "perc_external","conversion_rate_external","completion_rate_external"),
+             headerStyle = list(color = "#00aeef", fontSize = "16px"))
+    ),
     columns = list(
-      reason_sending = colDef(
-        name = "Reasons for Remaining on Sending WQ",
-        maxWidth = 300,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
+      `Internal Demand` = colDef(
+        name = "Top 15 Specialties",
+        maxWidth = 250,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
         style = list(fontWeight = "Bold"),
         align = "left"
         # footer = "*Excludes MSDD and NETWORK"
         ),
-      total_sending = colDef(
-        name = "Total Sending Referrals",
-        maxWidth = 130,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        align = "center",
+      total_internal = colDef(
+        name = "Total Internal Referrals", align = "left", 
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
+        style = function(value) {
+        if(value > max(mshs_ytdReceived_internal_top$total_internal)) {
+            bar_style(width = 0, fill = "hsl(208, 70%, 90%)")
+          } else{
+            bar_style(width = value / max(mshs_ytdReceived_internal_top$total_internal), fill = "hsl(321, 87%, 85%)")
+          } 
+          },
         format = colFormat(separators = TRUE)
-      ),
-      perc_total_sending = colDef(
-        name = "% of Total Sending Referrals",
-        maxWidth = 130,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
+        ),
+      perc_internal = colDef(
+        name = "% of Total Internal Referrals",
+        maxWidth = 120,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
         align = "center",
-        format = colFormat(percent = TRUE)
+        format = colFormat(percent = TRUE, digits = 1)
       ),
-      blank = colDef(
+      conversion_rate_internal = colDef(
+        name = "Conversion Rate",
+        align = 'center', 
+        maxWidth = 100,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
+        format = colFormat(percent = TRUE, digits = 0),
+        style = function(value) {
+          # Lighter color for <1%
+          if (is.na(value)) {
+            list(color = "#aaa")
+            } else {
+              list(color = "#111", background = pct_color_GnRd(value))
+            }
+        }),
+      completion_rate_internal = colDef(
+        name = "Completion Rate",
+        align = 'center', 
+        maxWidth = 100,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
+        format = colFormat(percent = TRUE, digits = 0),
+        style = function(value) {
+          # Lighter color for <1%
+          if (is.na(value)) {
+            list(color = "#aaa")
+            } else {
+              list(color = "#111", background = pct_color_GnRd(value))
+            }
+        }),
+       blank = colDef(
         name = "",
         maxWidth = 30
       ),
-      reason_receiving = colDef(
-        name = "Reasons for Remaining on Receiving WQ",
-        maxWidth = 300,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
+      `External Demand` = colDef(
+        name = "Top 15 Specialties",
+        maxWidth = 250,
+       headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
         style = list(fontWeight = "Bold"),
         align = "left"
         # footer = "*Excludes MSDD and NETWORK"
         ),
-      total_receiving = colDef(
-        name = "Total Receiving Referrals",
-        maxWidth = 130,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
-        align = "center",
+      total_external = colDef(
+        name = "Total External Referrals", align = "left", 
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
+        style = function(value) {
+          if(value > max(mshs_ytdReceived_external_top$total_external)) {
+            bar_style(width = 0, fill = "hsl(208, 70%, 90%)")
+          } else{
+            bar_style(width = value / max(mshs_ytdReceived_external_top$total_external), fill = "hsl(196, 100%, 85%)")
+          } 
+          },
         format = colFormat(separators = TRUE)
-      ),
-      perc_total_receiving = colDef(
-        name = "% of Total Receiving Referrals",
-        maxWidth = 130,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "14px"),
+        ),
+      perc_external = colDef(
+        name = "% of Total External Referrals",
+        maxWidth = 120,
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
         align = "center",
-        format = colFormat(percent = TRUE)
-      )
+        format = colFormat(percent = TRUE, digits = 1)
+      ),
+      conversion_rate_external = colDef(
+        name = "Conversion Rate",
+        align = 'center', 
+        maxWidth = 100,
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
+        format = colFormat(percent = TRUE, digits = 0),
+        style = function(value) {
+          # Lighter color for <1%
+          if (is.na(value)) {
+            list(color = "#aaa")
+            } else {
+              list(color = "#111", background = pct_color_GnRd(value))
+            }
+        }),
+      completion_rate_external = colDef(
+        name = "Completion Rate",
+        align = 'center', 
+        maxWidth = 100,
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
+        format = colFormat(percent = TRUE, digits = 0),
+        style = function(value) {
+          # Lighter color for <1%
+          if (is.na(value)) {
+            list(color = "#aaa")
+            } else {
+              list(color = "#111", background = pct_color_GnRd(value))
+            }
+        })
+      
+      
+      
     ) # Close Columns
   ) # Close Reactable
+
   
 ```
 
 
-## Volume
-```{r Weekly Snapshot Output, echo = FALSE, warning = FALSE, message = FALSE}
+```{r Monthly Volume Trending, echo = FALSE, warning = FALSE, message = FALSE}
+
+# MSHS Referrals Received + Conversion and Completion Rate ---------------------
+referral_received_monthly_mshs <- referral_vol %>%
+  group_by(createdMonthYear, ApptStatusFinal) %>%
+  summarise(total = n()) %>%
+  pivot_wider(names_from = ApptStatusFinal,
+              values_from = total,
+              values_fill = 0) %>%
+  mutate(Scheduled = Canceled + `No Show` + Scheduled,
+         Total = Arrived + Scheduled + Pending) %>%
+  dplyr::select(-c(Canceled,`No Show`)) %>%
+  mutate(conversion_rate = round((Arrived + Scheduled)/Total,2)*100,
+         completion_rate = round(Arrived/Total,2)*100) %>%
+  arrange(createdMonthYear)
+
+hchart(referral_received_monthly_mshs, 
+       hcaes(x = createdMonthYear, y = Total), name = "Total Referrals Created",
+       type = 'column',
+       color='#a5a7a5',
+       dataLabels = list(enabled = TRUE, format='{point.y}'), 
+       showInLegend = TRUE) %>%
+  hc_yAxis_multiples(
+    list(title = list(text = "Total Referrals Created"), lineWidth = 3),
+    list(title = list(text = "% of Total Referrals Created"), labels = list(enabled = TRUE, format='{value}%'), showLastLabel = FALSE, opposite = TRUE)
+    ) %>%
+  hc_xAxis(title = list(text = ""),
+           categories = referral_received_monthly_mshs$createdMonthYear,
+           type = "datetime",
+           # labels = list(format = '{value:%m/%d}')
+           dateTimeLabelFormats = list(month = '%Y-%m')
+           ) %>%
+  hc_add_series(name = "Conversion Rate",
+                data = referral_received_monthly_mshs$conversion_rate,
+                type = "line", yAxis = 1,
+                color='#00aeef',
+                lineColor='#00aeef',
+                dataLabels = list(enabled = TRUE, format='{point.y}%'),
+                showInLegend = TRUE) %>%
+  hc_add_series(name = "Completion Rate",
+                data = referral_received_monthly_mshs$completion_rate,
+                type = "line", yAxis = 1,
+                color='#d80b8c',
+                lineColor='#d80b8c',
+                dataLabels = list(enabled = TRUE, format='{point.y}%'),
+                showInLegend = TRUE) %>%
+  hc_legend(align = "left", verticalAlign = "top", itemStyle = list(fontFamily ='Calibri',color ='black', fontSize = "14px")) %>%
+  hc_title(text = "MSHS Referral Volume and Outcome", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
+  hc_subtitle(text = paste0("Based on referrals created from ","2022-04-01"," to ",report_run_date),
+              align = "left", style = list(fontFace = "italic", fontSize = "16px", fontFamily = "Calibri")) %>%
+  hc_tooltip(shared = TRUE, borderColor = "black")
+
+
+# Site Referrals Received + Conversion and Completion Rate ---------------------
+referral_monthly_site <- referral_vol %>%
+  group_by(createdMonthYear, SentBySite, ApptStatusFinal) %>%
+  summarise(total = n()) %>%
+  pivot_wider(names_from = ApptStatusFinal,
+              values_from = total,
+              values_fill = 0) %>%
+  mutate(Scheduled = Canceled + `No Show` + Scheduled,
+         Total = Arrived + Scheduled + Pending) %>%
+  dplyr::select(-c(Canceled,`No Show`)) %>%
+  mutate(conversion_rate = (Arrived + Scheduled)/Total,
+         completion_rate = Arrived/Total) 
 
 ```
 
 
-## WQ Status
-```{r Weekly Snapshot Output, echo = FALSE, warning = FALSE, message = FALSE}
+```{r YTD Snapshot WQ, echo = FALSE, warning = FALSE, message = FALSE}
 
-wq_sending_reasons <- wq_merged %>%
-  filter(wq_type == "Sending WQ") %>%
-  group_by(Reason, priority_type) %>%
-  summarise(total_sending = n()) %>%
+## Current WQ Volume
+current_wq_vol <- wq_reasons_raw %>%
+  # filter(wq_type %in% c("TO","FROM")) %>%
+  group_by(wq_type, reason_type) %>%
+  summarise(total = n())
+
+## Current Median Days in WQ
+current_wq_days <- wq_reasons_raw %>%
+  group_by(wq_type) %>%
+  summarise(med_days_wq = median(days_wq))
+
+## Current Median Days Since Referral Created
+current_wq_days_creation <- wq_reasons_raw %>%
+  group_by(wq_type) %>%
+  summarise(med_days_creation = median(days_since_creation))
+
+## Current % of Referrals Contacted/Scheduled <12 Hours
+current_wq_contacted <- wq_reasons_raw %>%
+  filter(WasPatientContactedWithin12Hours_X %!in% c("Awaiting Contact Still < 12 Hours")) %>%
+  mutate(contacted_12hours = case_when(WasPatientContactedWithin12Hours_X %in% c("Contacted Within 12 Hours","Appointment Scheduled Without Contact < 12 Hours") 
+                                       ~ "Yes",
+                                       TRUE ~ "No")) %>%
+  group_by(contacted_12hours) %>%
+  summarise(total = n()) %>%
+  mutate(perc = total/sum(total))
+
+
+## Current % of Urgent Referrals (Within 2 Days)
+current_wq_urgent <- wq_reasons_raw %>%
+  group_by(priority_type) %>%
+  summarise(total = n()) %>%
   ungroup() %>%
-  mutate(perc_total_sending = round(total_sending/sum(total_sending),2)) %>%
-  arrange(desc(total_sending)) 
+  mutate(perc = total/sum(total))
 
+## Current Total Referral within 7 Days of Aging
+current_wq_aging <- wq_reasons_raw %>%
+  summarise(aging_7days = sum(days_wq >= 23))
 
-reactable(
-  wq_sending_reasons,
-  groupBy = "Reason",
-  columns = list(
-    priority_type = colDef(
-      aggregate = "count",
-      format = list(
-        aggregated = colFormat(suffix = " types")
-      )
-    ),
-    total_sending = colDef(
-      aggregate = "sum",
-      format = colFormat(separators = TRUE)
-    ),
-    perc_total_sending = colDef(
-      aggregate = "sum",
-      format = colFormat(percent = TRUE)
-    )
-  )
-)
+## Past Week: Average Daily Volume Added 
+wq_vol_added_week <- wq_volume_data %>%
+  filter(wq_enteredWeek == reporting_week) %>%
+  group_by(ReferralType, wq_entered, wq_enteredDay) %>%
+  summarise(total = n()) 
 
+## Past Week: Average Daily Volume Removed
+wq_vol_removed_week <- wq_volume_data %>%
+  filter(wq_exitedWeek == reporting_week) %>%
+  group_by(ReferralType, wq_exited, wq_exitedDay) %>%
+  summarise(total = n()) 
 
-wq_receiving_reasons <- wq_merged %>%
-  filter(wq_type == "Receiving WQ") %>%
-  group_by(Reason, priority_type) %>%
-  summarise(total_sending = n()) %>%
-  ungroup() %>%
-  mutate(perc_total_sending = round(total_sending/sum(total_sending),2)) %>%
-  arrange(desc(total_sending)) 
+## Past Week: Total Aged Volume
+# wq_vol_aging_week <- wq_volume_data %>%
+#   filter(wq_exitedWeek == reporting_week) %>%
+#   group_by(ReferralType, wq_exited, wq_exitedDay) %>%
+#   summarise(total = n()) 
 
-
-reactable(
-  wq_sending_reasons,
-  groupBy = "Reason",
-  columns = list(
-    priority_type = colDef(
-      aggregate = "count",
-      format = list(
-        aggregated = colFormat(suffix = " types")
-      )
-    ),
-    total_sending = colDef(
-      aggregate = "sum",
-      format = colFormat(separators = TRUE)
-    ),
-    perc_total_sending = colDef(
-      aggregate = "sum",
-      format = colFormat(percent = TRUE)
-    )
-  )
-)
+## Past Week: Total Exp Volume
+# wq_vol_expired_week <- wq_volume_data %>%
+#   filter(wq_exitedWeek == reporting_week) %>%
+#   group_by(ReferralType, wq_exited, wq_exitedDay) %>%
+#   summarise(total = n()) 
 
 ```
 
+
+```{r WQ Snapshot Output, echo = FALSE, warning = FALSE, message = FALSE, results='hide'}
+
+# Outstanding WQ Snapshot ------------------------------------------------------- 
+## First Row
+current_wq_snapshot <- data.frame(
+values =
+  c(prettyNum(sum((current_wq_vol %>% filter(wq_type != ""))$total), big.mark = ","), # Excludes undefined WQ Type (Includes TO, FROM, AUTHORIZATION, TRIAGE, PAS)
+    paste0(as.numeric(median(wq_reasons_raw$days_wq)), " days"),
+    paste0(as.numeric(median(wq_reasons_raw$days_since_creation)), " days")), 
+
+infos =
+  c(paste0("Total WQ Volume\nas of ",Sys.Date()),
+    "Median Days in WQ",
+    "Median Days since Referral Created"), 
+icons =
+  c("fa-gear", "fa-diamond", "fa-tasks")
+)
+
+createValueBoxes(current_wq_snapshot , "#212070", rows=1)
+
+## Second Row
+current_wq_snapshot_2 <- data.frame(
+values =
+  c(paste0(round(current_wq_contacted[which(current_wq_contacted$contacted_12hours == "Yes"), "perc"],2)*100,"%"),
+    paste0(round(current_wq_urgent[which(current_wq_urgent$priority_type == "Within 2 Days"), "perc"],2)*100,"%"),
+    prettyNum(current_wq_aging$aging_7days, big.mark = ",")), 
+
+infos =
+  c("% Referrals Contacted/ Scheduled <12 Hours\n*Excludes Awaiting Contact Still < 12 Hours",
+    "% Urgent Referrals in Workqueue",
+    "Total Referrals within 7 Days of Aging"), 
+icons =
+  c("fa-gear", "fa-tasks", "fa-tasks")
+)
+
+createValueBoxes(current_wq_snapshot_2 , "#212070", rows=1)
+
+# Past Week WQ Summary ---------------------------------------------------------
+past_week_wq_snapshot <- data.frame(
+values =
+  c(prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %!in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = round(mean(total))), big.mark = ","),
+    prettyNum(wq_vol_removed_week %>% filter(wq_exitedDay %!in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = round(mean(total))), big.mark = ","),
+    prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = sum(total)), big.mark = ",")),
+
+infos =
+  c("Avg Referrals Added per Weekday",
+    "Avg Referrals Removed per Weekday",
+    "Total Referrals Added during Weekend"), 
+icons =
+  c("fa-gear", "fa-diamond", "fa-tasks")
+)
+
+createValueBoxes(past_week_wq_snapshot , "#a5a7a5", rows=1)
+
+past_week_wq_snapshot_2 <- data.frame(
+values =
+  c(prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %!in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = round(mean(total))), big.mark = ","),
+    prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = sum(total)), big.mark = ",")),
+
+infos =
+  c("Total Referrals Aged",
+    "Total Referrals Expired"), 
+icons =
+  c("fa-gear", "fa-diamond")
+)
+
+createValueBoxes(past_week_wq_snapshot_2 , "#a5a7a5", rows=1)
+
+```
+
+
+```{r Monthly Resolution Rate, echo = FALSE, warning = FALSE, message = FALSE}
+
+```
 
