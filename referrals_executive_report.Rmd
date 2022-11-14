@@ -1020,7 +1020,7 @@ ytd_demand_specialty_summary <- bind_cols(mshs_ytdReceived_internal_top15, mshs_
     style = list(fontFamily = 'Calibri',
                  fontSize = '14px'),
     defaultColDef = colDef(align = "center", 
-                           headerStyle = list(fontWeight = "Bold", fontSize = "14px"),
+                           headerStyle = list(fontWeight = "Bold", fontSize = "12px"),
                            headerClass = "bar-sort-header"),  
     rowStyle = function(index) {
             if (index %in% c(16)) {
