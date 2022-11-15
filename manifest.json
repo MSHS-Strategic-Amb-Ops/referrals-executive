@@ -848,26 +848,26 @@
       }
     },
     "bsts": {
-      "Source": "CRAN",
+      "Source": "RSPM",
       "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "bsts",
-        "Version": "0.9.9",
-        "Date": "2022-11-03",
+        "Version": "0.9.8",
+        "Date": "2022-05-27",
         "Title": "Bayesian Structural Time Series",
         "Author": "Steven L. Scott <steve.the.bayesian@gmail.com>",
         "Maintainer": "Steven L. Scott <steve.the.bayesian@gmail.com>",
         "Description": "Time series regression using dynamic linear models fit using\n  MCMC. See Scott and Varian (2014) <DOI:10.1504/IJMMNO.2014.059942>, among many\n  other sources.",
-        "Depends": "BoomSpikeSlab (>= 1.2.5), zoo (>= 1.8), xts, Boom (>= 0.9.11),\nR(>= 3.4.0)",
+        "Depends": "BoomSpikeSlab (>= 1.2.5), zoo (>= 1.8), xts, Boom (>= 0.9.10),\nR(>= 3.4.0)",
         "Suggests": "testthat",
-        "LinkingTo": "Boom (>= 0.9.11)",
+        "LinkingTo": "Boom (>= 0.9.10)",
         "License": "LGPL-2.1 | MIT + file LICENSE",
         "Encoding": "UTF-8",
         "NeedsCompilation": "yes",
-        "Packaged": "2022-11-06 20:47:53 UTC; steve",
-        "Repository": "CRAN",
-        "Date/Publication": "2022-11-07 08:50:11 UTC",
-        "Built": "R 4.2.1; x86_64-pc-linux-gnu; 2022-11-08 15:25:01 UTC; unix"
+        "Packaged": "2022-05-29 22:58:07 UTC; steve",
+        "Repository": "RSPM",
+        "Date/Publication": "2022-05-30 07:00:12 UTC",
+        "Built": "R 4.2.1; x86_64-pc-linux-gnu; 2022-11-15 20:40:55 UTC; unix"
       }
     },
     "bupaR": {
@@ -6932,7 +6932,7 @@
       "checksum": "a9eecd26adf41248a8f7bf9a61dcdedd"
     },
     "referrals_executive_report.Rmd": {
-      "checksum": "b6765321a31f06ac86c9800fd2cd08d7"
+      "checksum": "9820d015a5542dd3a21f68e143742b1d"
     }
   },
   "users": null
