@@ -12,7 +12,7 @@
   "packages": {
     "BH": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "BH",
         "Type": "Package",
@@ -34,7 +34,7 @@
     },
     "Boom": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "Boom",
         "Version": "0.9.10",
@@ -57,7 +57,7 @@
     },
     "BoomSpikeSlab": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "BoomSpikeSlab",
         "Version": "1.2.5",
@@ -80,7 +80,7 @@
     },
     "DBI": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "DBI",
         "Title": "R Database Interface",
@@ -112,7 +112,7 @@
     },
     "DT": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "DT",
         "Type": "Package",
@@ -139,7 +139,7 @@
     },
     "DiagrammeR": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "DiagrammeR",
@@ -167,7 +167,7 @@
     },
     "KernSmooth": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "KernSmooth",
         "Priority": "recommended",
@@ -192,7 +192,7 @@
     },
     "MASS": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "MASS",
         "Priority": "recommended",
@@ -221,7 +221,7 @@
     },
     "Matrix": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "Matrix",
         "Version": "1.5-1",
@@ -254,7 +254,7 @@
     },
     "R6": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "R6",
         "Title": "Encapsulated Classes with Reference Semantics",
@@ -278,7 +278,7 @@
     },
     "RColorBrewer": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "RColorBrewer",
         "Version": "1.1-3",
@@ -299,7 +299,7 @@
     },
     "RODBC": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "RODBC",
         "Version": "1.3-19",
@@ -325,7 +325,7 @@
     },
     "RSQLite": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "RSQLite",
         "Title": "SQLite Interface for R",
@@ -357,7 +357,7 @@
     },
     "Rcpp": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "Rcpp",
         "Title": "Seamless R and C++ Integration",
@@ -382,7 +382,7 @@
     },
     "RcppEigen": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "RcppEigen",
         "Type": "Package",
@@ -409,7 +409,7 @@
     },
     "Rttf2pt1": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "Rttf2pt1",
         "Title": "'ttf2pt1' Program",
@@ -432,7 +432,7 @@
     },
     "TTR": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "TTR",
         "Type": "Package",
@@ -457,7 +457,7 @@
     },
     "XML": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "XML",
         "Version": "3.99-0.11",
@@ -481,7 +481,7 @@
     },
     "abind": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "abind",
         "Version": "1.4-5",
@@ -502,7 +502,7 @@
     },
     "anytime": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "anytime",
         "Type": "Package",
@@ -530,7 +530,7 @@
     },
     "arm": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "arm",
         "Version": "1.13-1",
@@ -555,7 +555,7 @@
     },
     "askpass": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "askpass",
         "Type": "Package",
@@ -583,7 +583,7 @@
     },
     "assertthat": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "assertthat",
         "Title": "Easy Pre and Post Assertions",
@@ -606,7 +606,7 @@
     },
     "backports": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "backports",
         "Type": "Package",
@@ -632,7 +632,7 @@
     },
     "base64enc": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "base64enc",
         "Version": "0.1-3",
@@ -653,7 +653,7 @@
     },
     "bit": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "bit",
         "Type": "Package",
@@ -681,7 +681,7 @@
     },
     "bit64": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "bit64",
         "Type": "Package",
@@ -709,7 +709,7 @@
     },
     "blob": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "blob",
         "Title": "A Simple S3 Class for Representing Vectors of Binary Data\n('BLOBS')",
@@ -737,7 +737,7 @@
     },
     "boot": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "boot",
         "Priority": "recommended",
@@ -763,7 +763,7 @@
     },
     "brio": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "brio",
         "Title": "Basic R Input Output",
@@ -787,7 +787,7 @@
     },
     "broom": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "broom",
@@ -818,7 +818,7 @@
     },
     "bslib": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "bslib",
         "Title": "Custom 'Bootstrap' 'Sass' Themes for 'shiny' and 'rmarkdown'",
@@ -849,7 +849,7 @@
     },
     "bsts": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "bsts",
         "Version": "0.9.9",
@@ -872,7 +872,7 @@
     },
     "bupaR": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "bupaR",
         "Type": "Package",
@@ -900,7 +900,7 @@
     },
     "cachem": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "cachem",
         "Version": "1.0.6",
@@ -925,7 +925,7 @@
     },
     "callr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "callr",
         "Title": "Call R from R",
@@ -954,7 +954,7 @@
     },
     "cellranger": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "cellranger",
         "Title": "Translate Spreadsheet Cell Ranges to Rows and Columns",
@@ -981,7 +981,7 @@
     },
     "chron": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "chron",
         "Version": "2.3-57",
@@ -1004,7 +1004,7 @@
     },
     "class": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "class",
         "Priority": "recommended",
@@ -1029,7 +1029,7 @@
     },
     "classInt": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "classInt",
         "Version": "0.4-8",
@@ -1057,7 +1057,7 @@
     },
     "cli": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "cli",
         "Title": "Helpers for Developing Command Line Interfaces",
@@ -1085,7 +1085,7 @@
     },
     "clipr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "clipr",
@@ -1114,7 +1114,7 @@
     },
     "coda": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "coda",
         "Version": "0.19-4",
@@ -1136,7 +1136,7 @@
     },
     "colorspace": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "colorspace",
         "Version": "2.0-3",
@@ -1164,7 +1164,7 @@
     },
     "commonmark": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "commonmark",
         "Type": "Package",
@@ -1190,7 +1190,7 @@
     },
     "cpp11": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "cpp11",
         "Title": "A C++11 Interface for R's C Interface",
@@ -1218,7 +1218,7 @@
     },
     "crayon": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "crayon",
         "Title": "Colored Terminal Output",
@@ -1244,7 +1244,7 @@
     },
     "crosstalk": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "crosstalk",
         "Type": "Package",
@@ -1270,7 +1270,7 @@
     },
     "curl": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "curl",
         "Type": "Package",
@@ -1299,7 +1299,7 @@
     },
     "data.table": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "data.table",
         "Version": "1.14.2",
@@ -1326,7 +1326,7 @@
     },
     "datawizard": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "datawizard",
@@ -1357,7 +1357,7 @@
     },
     "dbplyr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "dbplyr",
@@ -1389,7 +1389,7 @@
     },
     "desc": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "desc",
         "Title": "Manipulate DESCRIPTION Files",
@@ -1419,7 +1419,7 @@
     },
     "diffobj": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "diffobj",
         "Type": "Package",
@@ -1448,7 +1448,7 @@
     },
     "digest": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "digest",
         "Author": "Dirk Eddelbuettel <edd@debian.org> with contributions \n by Antoine Lucas, Jarek Tuszynski, Henrik Bengtsson, Simon Urbanek,\n Mario Frasca, Bryan Lewis, Murray Stokely, Hannes Muehleisen,\n Duncan Murdoch, Jim Hester, Wush Wu, Qiang Kou, Thierry Onkelinx, \n Michel Lang, Viliam Simko, Kurt Hornik, Radford Neal, Kendon Bell,\n Matthew de Queljoe, Ion Suruceanu, Bill Denney, Dirk Schumacher,\n and Winston Chang.",
@@ -1473,7 +1473,7 @@
     },
     "downloader": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "downloader",
         "Maintainer": "Winston Chang <winston@stdout.org>",
@@ -1495,7 +1495,7 @@
     },
     "dplyr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "dplyr",
@@ -1526,7 +1526,7 @@
     },
     "dtplyr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "dtplyr",
         "Title": "Data Table Back-End for 'dplyr'",
@@ -1555,7 +1555,7 @@
     },
     "e1071": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "e1071",
         "Version": "1.7-11",
@@ -1577,7 +1577,7 @@
     },
     "edeaR": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "edeaR",
         "Type": "Package",
@@ -1607,7 +1607,7 @@
     },
     "eeptools": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "eeptools",
         "Type": "Package",
@@ -1636,7 +1636,7 @@
     },
     "ellipsis": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "ellipsis",
         "Version": "0.3.2",
@@ -1662,7 +1662,7 @@
     },
     "emojifont": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "emojifont",
         "Type": "Package",
@@ -1690,7 +1690,7 @@
     },
     "evaluate": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "evaluate",
         "Type": "Package",
@@ -1717,7 +1717,7 @@
     },
     "eventdataR": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "eventdataR",
         "Type": "Package",
@@ -1746,7 +1746,7 @@
     },
     "extrafont": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "extrafont",
         "Title": "Tools for Using Fonts",
@@ -1769,7 +1769,7 @@
     },
     "extrafontdb": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "extrafontdb",
         "Title": "Package for holding the database for the extrafont package",
@@ -1789,7 +1789,7 @@
     },
     "fansi": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "fansi",
         "Title": "ANSI Control Sequence Aware String Functions",
@@ -1817,7 +1817,7 @@
     },
     "farver": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "farver",
@@ -1844,7 +1844,7 @@
     },
     "fastmap": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "fastmap",
         "Title": "Fast Data Structures",
@@ -1869,7 +1869,7 @@
     },
     "fasttime": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "fasttime",
         "Version": "1.1-0",
@@ -1888,7 +1888,7 @@
     },
     "feather": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "feather",
         "Title": "R Bindings to the Feather 'API'",
@@ -1916,7 +1916,7 @@
     },
     "flexdashboard": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "flexdashboard",
         "Type": "Package",
@@ -1945,7 +1945,7 @@
     },
     "flextable": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "flextable",
         "Type": "Package",
@@ -1972,7 +1972,7 @@
     },
     "fontawesome": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "fontawesome",
@@ -2001,7 +2001,7 @@
     },
     "forcats": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "forcats",
         "Title": "Tools for Working with Categorical Variables (Factors)",
@@ -2031,7 +2031,7 @@
     },
     "foreign": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "foreign",
         "Priority": "recommended",
@@ -2061,7 +2061,7 @@
     },
     "formattable": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "formattable",
         "Title": "Create 'Formattable' Data Structures",
@@ -2091,7 +2091,7 @@
     },
     "fresh": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "fresh",
         "Title": "Create Custom 'Bootstrap' Themes to Use in 'Shiny'",
@@ -2118,7 +2118,7 @@
     },
     "fs": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "fs",
         "Title": "Cross-Platform File System Operations Based on 'libuv'",
@@ -2149,7 +2149,7 @@
     },
     "gargle": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "gargle",
         "Title": "Utilities for Working with Google APIs",
@@ -2179,7 +2179,7 @@
     },
     "gdtools": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "gdtools",
         "Version": "0.2.4",
@@ -2205,7 +2205,7 @@
     },
     "generics": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "generics",
         "Title": "Common S3 Generics not Provided by Base R Methods Related to\nModel Fitting",
@@ -2233,7 +2233,7 @@
     },
     "ggQC": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "ggQC",
         "Type": "Package",
@@ -2259,7 +2259,7 @@
     },
     "ggfittext": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "ggfittext",
         "Title": "Fit Text Inside a Box in 'ggplot2'",
@@ -2288,7 +2288,7 @@
     },
     "ggforce": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "ggforce",
         "Type": "Package",
@@ -2317,7 +2317,7 @@
     },
     "ggh4x": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "ggh4x",
         "Title": "Hacks for 'ggplot2'",
@@ -2346,7 +2346,7 @@
     },
     "ggiraph": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "ggiraph",
         "Type": "Package",
@@ -2377,7 +2377,7 @@
     },
     "ggplot2": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "ggplot2",
         "Version": "3.3.6",
@@ -2408,7 +2408,7 @@
     },
     "ggthemes": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "ggthemes",
         "Version": "4.2.4",
@@ -2436,7 +2436,7 @@
     },
     "glue": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "glue",
         "Title": "Interpreted String Literals",
@@ -2466,7 +2466,7 @@
     },
     "googledrive": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "googledrive",
         "Title": "An Interface to Google Drive",
@@ -2496,7 +2496,7 @@
     },
     "googlesheets4": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "googlesheets4",
         "Title": "Access Google Sheets using the Sheets API V4",
@@ -2526,7 +2526,7 @@
     },
     "gridBase": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "gridBase",
         "Title": "Integration of base and grid graphics",
@@ -2547,7 +2547,7 @@
     },
     "gridExtra": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "gridExtra",
         "Authors@R": "c(person(\"Baptiste\", \"Auguie\",\n    email = \"baptiste.auguie@gmail.com\",\n    role = c(\"aut\", \"cre\")), person(\"Anton\", \"Antonov\",\n    email = \"tonytonov@gmail.com\",\n    role = c(\"ctb\")))",
@@ -2571,7 +2571,7 @@
     },
     "gtable": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "gtable",
         "Title": "Arrange 'Grobs' in Tables",
@@ -2599,7 +2599,7 @@
     },
     "haven": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "haven",
         "Title": "Import and Export 'SPSS', 'Stata' and 'SAS' Files",
@@ -2630,7 +2630,7 @@
     },
     "here": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "here",
         "Title": "A Simpler Way to Find Your Files",
@@ -2659,7 +2659,7 @@
     },
     "highcharter": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "highcharter",
         "Type": "Package",
@@ -2688,7 +2688,7 @@
     },
     "highr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "highr",
         "Type": "Package",
@@ -2715,7 +2715,7 @@
     },
     "hms": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "hms",
         "Title": "Pretty Time of Day",
@@ -2745,7 +2745,7 @@
     },
     "htmltools": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "htmltools",
         "Type": "Package",
@@ -2775,7 +2775,7 @@
     },
     "htmlwidgets": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "htmlwidgets",
         "Type": "Package",
@@ -2802,7 +2802,7 @@
     },
     "httpuv": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "httpuv",
         "Type": "Package",
@@ -2832,7 +2832,7 @@
     },
     "httr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "httr",
         "Title": "Tools for Working with URLs and HTTP",
@@ -2860,7 +2860,7 @@
     },
     "ids": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "ids",
         "Title": "Generate Random Identifiers",
@@ -2885,7 +2885,7 @@
     },
     "igraph": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "igraph",
         "Version": "1.3.5",
@@ -2912,7 +2912,7 @@
     },
     "influenceR": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "influenceR",
         "Title": "Software Tools to Quantify Structural Importance of Nodes in a\nNetwork",
@@ -2935,7 +2935,7 @@
     },
     "insight": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "insight",
@@ -2966,7 +2966,7 @@
     },
     "isoband": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "isoband",
         "Title": "Generate Isolines and Isobands from Regularly Spaced Elevation\nGrids",
@@ -2994,7 +2994,7 @@
     },
     "janitor": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "janitor",
         "Title": "Simple Tools for Examining and Cleaning Dirty Data",
@@ -3022,7 +3022,7 @@
     },
     "jquerylib": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "jquerylib",
         "Title": "Obtain 'jQuery' as an HTML Dependency Object",
@@ -3046,7 +3046,7 @@
     },
     "jsonlite": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "jsonlite",
         "Version": "1.8.2",
@@ -3072,7 +3072,7 @@
     },
     "kableExtra": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "kableExtra",
         "Type": "Package",
@@ -3101,7 +3101,7 @@
     },
     "knitr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "knitr",
         "Type": "Package",
@@ -3131,7 +3131,7 @@
     },
     "labeling": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "labeling",
         "Type": "Package",
@@ -3153,7 +3153,7 @@
     },
     "later": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "later",
         "Type": "Package",
@@ -3182,7 +3182,7 @@
     },
     "lattice": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "lattice",
         "Version": "0.20-45",
@@ -3211,7 +3211,7 @@
     },
     "lazyeval": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "lazyeval",
         "Version": "0.2.2",
@@ -3235,7 +3235,7 @@
     },
     "leaflet": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "leaflet",
         "Type": "Package",
@@ -3263,7 +3263,7 @@
     },
     "leaflet.providers": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "leaflet.providers",
         "Type": "Package",
@@ -3292,7 +3292,7 @@
     },
     "lifecycle": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "lifecycle",
         "Title": "Manage the Life Cycle of your Package Functions",
@@ -3321,7 +3321,7 @@
     },
     "lme4": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "lme4",
         "Version": "1.1-30",
@@ -3349,7 +3349,7 @@
     },
     "lmtest": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "lmtest",
         "Title": "Testing Linear Regression Models",
@@ -3373,7 +3373,7 @@
     },
     "lubridate": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "lubridate",
@@ -3406,7 +3406,7 @@
     },
     "magrittr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "magrittr",
@@ -3435,7 +3435,7 @@
     },
     "maptools": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "maptools",
         "Version": "1.1-4",
@@ -3462,7 +3462,7 @@
     },
     "markdown": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "markdown",
         "Type": "Package",
@@ -3490,7 +3490,7 @@
     },
     "memoise": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "memoise",
         "Title": "'Memoisation' of Functions",
@@ -3515,7 +3515,7 @@
     },
     "mgcv": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "mgcv",
         "Version": "1.8-40",
@@ -3539,7 +3539,7 @@
     },
     "mime": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "mime",
         "Type": "Package",
@@ -3564,7 +3564,7 @@
     },
     "miniUI": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "miniUI",
         "Type": "Package",
@@ -3587,7 +3587,7 @@
     },
     "minqa": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "minqa",
         "Type": "Package",
@@ -3610,7 +3610,7 @@
     },
     "modelr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "modelr",
         "Title": "Modelling Functions that Work with the Pipe",
@@ -3638,7 +3638,7 @@
     },
     "munsell": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "munsell",
         "Type": "Package",
@@ -3661,7 +3661,7 @@
     },
     "nlme": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "nlme",
         "Version": "3.1-157",
@@ -3691,7 +3691,7 @@
     },
     "nloptr": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "nloptr",
         "Type": "Package",
@@ -3721,7 +3721,7 @@
     },
     "odbc": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "odbc",
         "Title": "Connect to ODBC Compatible Databases (using the DBI Interface)",
@@ -3751,7 +3751,7 @@
     },
     "officedown": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "officedown",
         "Type": "Package",
@@ -3779,7 +3779,7 @@
     },
     "officer": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "officer",
         "Type": "Package",
@@ -3805,7 +3805,7 @@
     },
     "openssl": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "openssl",
         "Type": "Package",
@@ -3833,7 +3833,7 @@
     },
     "packcircles": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "packcircles",
         "Type": "Package",
@@ -3864,7 +3864,7 @@
     },
     "patchwork": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "patchwork",
         "Type": "Package",
@@ -3891,7 +3891,7 @@
     },
     "pillar": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "pillar",
         "Title": "Coloured Formatting for Columns",
@@ -3923,7 +3923,7 @@
     },
     "pkgconfig": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "pkgconfig",
         "Title": "Private Configuration for 'R' Packages",
@@ -3947,7 +3947,7 @@
     },
     "pkgload": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "pkgload",
         "Title": "Simulate Package Installation and Attach",
@@ -3975,7 +3975,7 @@
     },
     "plogr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "plogr",
         "Title": "The 'plog' C++ Logging Library",
@@ -4001,7 +4001,7 @@
     },
     "plotly": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "plotly",
         "Title": "Create Interactive Web Graphics via 'plotly.js'",
@@ -4028,7 +4028,7 @@
     },
     "plyr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "plyr",
         "Title": "Tools for Splitting, Applying and Combining Data",
@@ -4056,7 +4056,7 @@
     },
     "png": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "png",
         "Version": "0.1-7",
@@ -4077,7 +4077,7 @@
     },
     "polyclip": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "polyclip",
         "Version": "1.10-0",
@@ -4104,7 +4104,7 @@
     },
     "pool": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "pool",
@@ -4133,7 +4133,7 @@
     },
     "praise": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "praise",
         "Title": "Praise Users",
@@ -4156,7 +4156,7 @@
     },
     "prettyunits": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "prettyunits",
         "Title": "Pretty, Human Readable Formatting of Quantities",
@@ -4180,7 +4180,7 @@
     },
     "processanimateR": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "processanimateR",
         "Type": "Package",
@@ -4210,7 +4210,7 @@
     },
     "processmapR": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "processmapR",
         "Type": "Package",
@@ -4243,7 +4243,7 @@
     },
     "processmonitR": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "processmonitR",
         "Type": "Package",
@@ -4270,7 +4270,7 @@
     },
     "processx": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "processx",
         "Title": "Execute and Control System Processes",
@@ -4298,7 +4298,7 @@
     },
     "progress": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "progress",
         "Title": "Terminal Progress Bars",
@@ -4323,7 +4323,7 @@
     },
     "promises": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "promises",
         "Type": "Package",
@@ -4353,7 +4353,7 @@
     },
     "proto": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "proto",
         "Version": "1.0.0",
@@ -4377,7 +4377,7 @@
     },
     "proxy": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "proxy",
         "Type": "Package",
@@ -4401,7 +4401,7 @@
     },
     "ps": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "ps",
         "Title": "List, Query, Manipulate System Processes",
@@ -4430,7 +4430,7 @@
     },
     "purrr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "purrr",
         "Title": "Functional Programming Tools",
@@ -4458,7 +4458,7 @@
     },
     "quantmod": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "quantmod",
         "Type": "Package",
@@ -4484,7 +4484,7 @@
     },
     "rappdirs": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "rappdirs",
@@ -4512,7 +4512,7 @@
     },
     "raster": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "raster",
         "Type": "Package",
@@ -4540,7 +4540,7 @@
     },
     "reactR": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "reactR",
         "Type": "Package",
@@ -4569,7 +4569,7 @@
     },
     "reactable": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "reactable",
         "Type": "Package",
@@ -4596,7 +4596,7 @@
     },
     "reactablefmtr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "reactablefmtr",
         "Type": "Package",
@@ -4625,7 +4625,7 @@
     },
     "readr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "readr",
         "Title": "Read Rectangular Text Data",
@@ -4658,7 +4658,7 @@
     },
     "readxl": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "readxl",
         "Title": "Read Excel Files",
@@ -4690,7 +4690,7 @@
     },
     "rematch": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "rematch",
         "Title": "Match Regular Expressions with a Nicer 'API'",
@@ -4714,7 +4714,7 @@
     },
     "rematch2": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "rematch2",
         "Title": "Tidy Output from Regular Expression Matching",
@@ -4740,7 +4740,7 @@
     },
     "reprex": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "reprex",
         "Title": "Prepare Reproducible Example Code via the Clipboard",
@@ -4771,7 +4771,7 @@
     },
     "rgdal": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "rgdal",
         "Title": "Bindings for the 'Geospatial' Data Abstraction Library",
@@ -4798,7 +4798,7 @@
     },
     "rjson": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "rjson",
         "Version": "0.2.21",
@@ -4819,7 +4819,7 @@
     },
     "rlang": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "rlang",
         "Version": "1.0.6",
@@ -4851,7 +4851,7 @@
     },
     "rlist": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "rlist",
         "Type": "Package",
@@ -4880,7 +4880,7 @@
     },
     "rmarkdown": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "rmarkdown",
@@ -4910,7 +4910,7 @@
     },
     "rprojroot": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "rprojroot",
         "Title": "Finding Files in Project Subdirectories",
@@ -4937,7 +4937,7 @@
     },
     "rstudioapi": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "rstudioapi",
         "Title": "Safely Access the RStudio API",
@@ -4962,7 +4962,7 @@
     },
     "rvest": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "rvest",
         "Title": "Easily Harvest (Scrape) Web Pages",
@@ -4992,7 +4992,7 @@
     },
     "rvg": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "rvg",
         "Type": "Package",
@@ -5021,7 +5021,7 @@
     },
     "s2": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "s2",
         "Title": "Spherical Geometry Operators Using the S2 Geometry Library",
@@ -5051,7 +5051,7 @@
     },
     "sass": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Type": "Package",
         "Package": "sass",
@@ -5080,7 +5080,7 @@
     },
     "scales": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "scales",
         "Title": "Scale Functions for Visualization",
@@ -5109,7 +5109,7 @@
     },
     "selectr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "selectr",
         "Type": "Package",
@@ -5135,7 +5135,7 @@
     },
     "sf": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "sf",
         "Version": "1.0-8",
@@ -5165,7 +5165,7 @@
     },
     "shades": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "shades",
         "Version": "1.4.0",
@@ -5190,7 +5190,7 @@
     },
     "shiny": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "shiny",
         "Type": "Package",
@@ -5221,7 +5221,7 @@
     },
     "shinyBS": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "shinyBS",
         "Type": "Package",
@@ -5244,7 +5244,7 @@
     },
     "shinyTime": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "shinyTime",
         "Type": "Package",
@@ -5271,7 +5271,7 @@
     },
     "shinyWidgets": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "shinyWidgets",
         "Title": "Custom Inputs Widgets for Shiny",
@@ -5298,7 +5298,7 @@
     },
     "shinyalert": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "shinyalert",
         "Title": "Easily Create Pretty Popup Messages (Modals) in 'Shiny'",
@@ -5324,7 +5324,7 @@
     },
     "shinycssloaders": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "shinycssloaders",
         "Type": "Package",
@@ -5351,7 +5351,7 @@
     },
     "shinydashboard": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "shinydashboard",
         "Title": "Create Dashboards with 'Shiny'",
@@ -5375,7 +5375,7 @@
     },
     "shinydashboardPlus": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "shinydashboardPlus",
         "Type": "Package",
@@ -5403,7 +5403,7 @@
     },
     "shinyjs": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "shinyjs",
         "Title": "Easily Improve the User Experience of Your Shiny Apps in Seconds",
@@ -5430,7 +5430,7 @@
     },
     "shinyscreenshot": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "shinyscreenshot",
         "Title": "Capture Screenshots of Entire Pages or Parts of Pages in 'Shiny'",
@@ -5456,7 +5456,7 @@
     },
     "showtext": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "showtext",
         "Type": "Package",
@@ -5486,7 +5486,7 @@
     },
     "showtextdb": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "showtextdb",
         "Type": "Package",
@@ -5511,7 +5511,7 @@
     },
     "sjlabelled": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "sjlabelled",
         "Type": "Package",
@@ -5539,7 +5539,7 @@
     },
     "sjmisc": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "sjmisc",
         "Type": "Package",
@@ -5567,7 +5567,7 @@
     },
     "snakecase": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "snakecase",
         "Version": "0.11.0",
@@ -5595,7 +5595,7 @@
     },
     "sourcetools": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "sourcetools",
         "Type": "Package",
@@ -5620,7 +5620,7 @@
     },
     "sp": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "sp",
         "Version": "1.5-0",
@@ -5646,7 +5646,7 @@
     },
     "stringi": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "stringi",
         "Version": "1.7.8",
@@ -5674,7 +5674,7 @@
     },
     "stringr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "stringr",
         "Title": "Simple, Consistent Wrappers for Common String Operations",
@@ -5702,7 +5702,7 @@
     },
     "svDialogs": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "svDialogs",
         "Type": "Package",
@@ -5733,7 +5733,7 @@
     },
     "svGUI": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "svGUI",
         "Type": "Package",
@@ -5762,7 +5762,7 @@
     },
     "svglite": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "svglite",
         "Version": "2.1.0",
@@ -5791,7 +5791,7 @@
     },
     "sys": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "sys",
         "Type": "Package",
@@ -5818,7 +5818,7 @@
     },
     "sysfonts": {
       "Source": "RSPM",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "sysfonts",
         "Type": "Package",
@@ -5845,7 +5845,7 @@
     },
     "systemfonts": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "systemfonts",
         "Type": "Package",
@@ -5874,7 +5874,7 @@
     },
     "terra": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "terra",
         "Type": "Package",
@@ -5904,7 +5904,7 @@
     },
     "testthat": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "testthat",
         "Title": "Unit Testing for R",
@@ -5934,7 +5934,7 @@
     },
     "tibble": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "tibble",
         "Title": "Simple Data Frames",
@@ -5967,7 +5967,7 @@
     },
     "tidycensus": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "tidycensus",
         "Type": "Package",
@@ -5996,7 +5996,7 @@
     },
     "tidyr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "tidyr",
         "Title": "Tidy Messy Data",
@@ -6028,7 +6028,7 @@
     },
     "tidyselect": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "tidyselect",
         "Title": "Select from a Set of Strings",
@@ -6057,7 +6057,7 @@
     },
     "tidyverse": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "tidyverse",
         "Title": "Easily Install and Load the 'Tidyverse'",
@@ -6085,7 +6085,7 @@
     },
     "tigris": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "tigris",
         "Type": "Package",
@@ -6114,7 +6114,7 @@
     },
     "tinytex": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "tinytex",
         "Type": "Package",
@@ -6140,7 +6140,7 @@
     },
     "tippy": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "tippy",
         "Title": "Add Tooltips to 'R markdown' Documents or 'Shiny' Apps",
@@ -6166,7 +6166,7 @@
     },
     "tis": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "tis",
         "Title": "Time Indexes and Time Indexed Series",
@@ -6188,7 +6188,7 @@
     },
     "treemap": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "treemap",
         "Type": "Package",
@@ -6215,7 +6215,7 @@
     },
     "treemapify": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "treemapify",
         "Title": "Draw Treemaps in 'ggplot2'",
@@ -6244,7 +6244,7 @@
     },
     "tweenr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "tweenr",
         "Type": "Package",
@@ -6273,7 +6273,7 @@
     },
     "tzdb": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "tzdb",
         "Title": "Time Zone Database Information",
@@ -6303,7 +6303,7 @@
     },
     "units": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "units",
         "Version": "0.8-0",
@@ -6333,7 +6333,7 @@
     },
     "utf8": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "utf8",
         "Title": "Unicode Text Processing",
@@ -6359,7 +6359,7 @@
     },
     "uuid": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "uuid",
         "Version": "1.1-0",
@@ -6380,7 +6380,7 @@
     },
     "vcd": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "vcd",
         "Version": "1.4-10",
@@ -6404,7 +6404,7 @@
     },
     "vctrs": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "vctrs",
         "Title": "Vector Helpers",
@@ -6435,7 +6435,7 @@
     },
     "viridis": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "viridis",
         "Type": "Package",
@@ -6464,7 +6464,7 @@
     },
     "viridisLite": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "viridisLite",
         "Type": "Package",
@@ -6490,7 +6490,7 @@
     },
     "visNetwork": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "visNetwork",
         "Title": "Network Visualization using 'vis.js' Library",
@@ -6516,7 +6516,7 @@
     },
     "vroom": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "vroom",
         "Title": "Read and Write Rectangular Text Data Quickly",
@@ -6550,7 +6550,7 @@
     },
     "waiter": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "waiter",
         "Title": "Loading Screen for 'Shiny'",
@@ -6577,7 +6577,7 @@
     },
     "waldo": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "waldo",
         "Title": "Find Differences Between R Objects",
@@ -6604,7 +6604,7 @@
     },
     "webshot": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "webshot",
         "Title": "Take Screenshots of Web Pages",
@@ -6632,7 +6632,7 @@
     },
     "withr": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "withr",
         "Title": "Run Code 'With' Temporarily Modified Global State",
@@ -6662,7 +6662,7 @@
     },
     "wk": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "wk",
         "Title": "Lightweight Well-Known Geometry Parsing",
@@ -6688,7 +6688,7 @@
     },
     "writexl": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "writexl",
         "Type": "Package",
@@ -6714,7 +6714,7 @@
     },
     "xfun": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "xfun",
         "Type": "Package",
@@ -6741,7 +6741,7 @@
     },
     "xml2": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "xml2",
         "Title": "Parse XML",
@@ -6770,7 +6770,7 @@
     },
     "xtable": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "xtable",
         "Version": "1.8-4",
@@ -6795,7 +6795,7 @@
     },
     "xts": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "xts",
         "Type": "Package",
@@ -6822,7 +6822,7 @@
     },
     "yaml": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "yaml",
         "Type": "Package",
@@ -6845,7 +6845,7 @@
     },
     "zip": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "zip",
         "Title": "Cross-Platform 'zip' Compression",
@@ -6869,7 +6869,7 @@
     },
     "zipcodeR": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "zipcodeR",
         "Title": "Data & Functions for Working with US ZIP Codes",
@@ -6898,7 +6898,7 @@
     },
     "zoo": {
       "Source": "CRAN",
-      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
+      "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-11-14",
       "description": {
         "Package": "zoo",
         "Version": "1.8-11",
