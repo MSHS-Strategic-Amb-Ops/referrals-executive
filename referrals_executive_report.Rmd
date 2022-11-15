@@ -757,14 +757,14 @@ wq_reasons_raw <- wq_reasons_raw %>%
 
 
 ```{r Sinai Logo, echo=FALSE, out.width = '30%'}
-# knitr::include_graphics("Mount_Sinai_Logo_H.png")
+knitr::include_graphics("Mount_Sinai_Logo_H.png")
+
 ```
 
 # Ambulatory Referrals Summary
 *Report run date: `r report_run_date`*<br/>
-*Report produced for week of `r reporting_week`*<br/>
-*A Full week is comprised of Sunday to Saturday.*<br/>
-___________________________________________________________________________________________________________________________________________________________
+_________________________________________________________________________________________________________________________________________________________________________________________________
+<br/>
 
 ```{r YTD Snapshot Referrals, echo = FALSE, warning = FALSE, message = FALSE}
 
