@@ -33,27 +33,26 @@
       }
     },
     "Boom": {
-      "Source": "CRAN",
+      "Source": "RSPM",
       "Repository": "https://hso-packagemanager.mssm.edu/prod-cran/__linux__/focal/2022-10-04",
       "description": {
         "Package": "Boom",
-        "Version": "0.9.11",
-        "Date": "2022-11-03",
+        "Version": "0.9.10",
+        "Date": "2022-05-27",
         "Title": "Bayesian Object Oriented Modeling",
         "Author": "Steven L. Scott is the sole author and creator of the BOOM project.\n   Some code in the BOOM libraries has been modified from other open source\n   projects.  These include Cephes (obtained from Netlib, written by Stephen\n   L. Moshier), NEWUOA (M.J.D Powell, obtained from Powell's web site), and a\n   modified version of the R math libraries (R core development team).  Original\n   copyright notices have been maintained in all source files.  In these cases,\n   copyright claimed by Steven L. Scott is limited to modifications made to the\n   original code.  Google claims copyright for code written while Steven\n   L. Scott was employed at Google from 2008 - 2018, but BOOM is not an\n   officially supported Google project.",
         "Maintainer": "Steven L. Scott <steve.the.bayesian@gmail.com>",
         "Description": "A C++ library for Bayesian modeling, with an emphasis on Markov\n   chain Monte Carlo.  Although boom contains a few R utilities (mainly plotting\n   functions), its primary purpose is to install the BOOM C++ library on your\n   system so that other packages can link against it.",
         "License": "LGPL-2.1 | file LICENSE",
-        "Depends": "R(>= 3.5.0)",
-        "Imports": "MASS",
+        "Depends": "MASS, R(>= 3.5.0)",
         "Suggests": "testthat",
         "Encoding": "UTF-8",
         "SystemRequirements": "GNU Make, C++11",
         "NeedsCompilation": "yes",
-        "Packaged": "2022-11-04 20:22:37 UTC; steve",
-        "Repository": "CRAN",
-        "Date/Publication": "2022-11-06 05:20:02 UTC",
-        "Built": "R 4.2.1; x86_64-pc-linux-gnu; 2022-11-08 15:22:23 UTC; unix"
+        "Packaged": "2022-05-27 18:56:59 UTC; steve",
+        "Repository": "RSPM",
+        "Date/Publication": "2022-05-27 23:50:06 UTC",
+        "Built": "R 4.2.1; x86_64-pc-linux-gnu; 2022-11-15 16:00:43 UTC; unix"
       }
     },
     "BoomSpikeSlab": {
