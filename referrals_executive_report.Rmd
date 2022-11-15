@@ -1,5 +1,12 @@
 ---
-output: html_document
+output:
+  html_document:
+    toc: yes
+    toc_depth: 6
+    toc_float:
+      collapsed: yes
+    fig_width: 7
+    fig_height: 6
 ---
 
 
@@ -444,7 +451,9 @@ referral_vol <- referrals_processed %>%
            ReceivedBySite, ReceivedByDepID, ReceivedByDept, ReceivedBySpecialty,
            StartInstant, createdYear, createdMonthYear, createdMonNum, createdMonth, createdWeek, ReferralKey, ReferralEpicId, priority_type, ApptStatusFinal, 
            Class, WasPatientContactedWithin12Hours_X, CreationToFirstEncounterDate, ExpirationInstant,
-           ProfessionalChargeEstimate, HospitalChargeEstimate, Redirected, Rejected, TriageRejectionReason, InAnyWorkqueue) %>%
+           ProfessionalChargeEstimate, HospitalChargeEstimate, Redirected, Rejected, TriageRejectionReason, InAnyWorkqueue,
+           Patient_MRN, ICD_10_Chosen, 
+           Status, CloseReason) %>%
   summarise(total = n()) %>%
   mutate(SentBySpecialty = case_when(SentByDept %in% c("MS EPICCARE LINK","MS RYAN CENTER LINK") ~ "ECL"
                                 # ,str_detect(toupper(SentByDept), "EMERGENCY") ~ "ED"
@@ -464,6 +473,9 @@ referral_vol <- referrals_processed %>%
 
 referral_vol$referral_age <- difftime(report_run_date, as.Date(referral_vol$StartInstant, "%Y-%m%-%d"), units = "days")
   
+# status_validation <- referral_vol %>% group_by(Status, CloseReason, ApptStatusFinal) %>% summarise(total = n()) 
+# write.xlsx(status_validation, "/SharedDrive/deans/Presidents/SixSigma/Individual Folders/Current Employees/Engineers/So Youn Kweon/server-upload/Referral Status Validation.xlsx")
+
 ```
 
 
@@ -490,7 +502,7 @@ referral_vol$referral_age <- difftime(report_run_date, as.Date(referral_vol$Star
 wq_history_merged <- left_join(referral_vol[,c("ReferralKey", "ReferralEpicId", "InAnyWorkqueue", "priority_type")], 
                                wq_history_conn %>% 
                                  filter(ReferralKey >= 0) %>%
-                                 filter(ReferralType %in% c("TO","FROM")) %>% # Remove unspecified wq types 
+                                 # filter(ReferralType %in% c("TO","FROM")) %>% # Remove unspecified wq types 
                                  filter(`_CreationInstant` >= as.Date("2022-04-01")) %>%
                                  collect())
 
@@ -523,7 +535,7 @@ wq_volume_data <- wq_history_merged %>%
   filter(wq_latest_reason != "") %>%
   group_by(ReferralKey, ReferralEpicId, InAnyWorkqueue, ReferralType, EpicWorkqueueId, wq_entered, wq_exited, wq_latest_reason) %>%
   summarise(referral_type = n()) %>%
-  mutate(wq_entered = format(as.Date(wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%Y-%m-%d"),
+  mutate(wq_entered = format(as.Date(wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%Y-%m-%d %HH:%MM:%SS"),
          wq_enteredWeek = floor_date(as.Date(wq_entered, "%Y-%m-%d %HH:%MM:%SS"), unit="week", week_start = 7),
          wq_enteredYear = format(as.Date(wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%Y"),
          wq_enteredMonNum = as.numeric(format(as.Date(wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%m")),
@@ -549,8 +561,9 @@ wq_volume_data <- wq_history_merged %>%
                                  ReferralType == "TO" & str_detect(wq_latest_reason, " RFL INVALID AUTH NUMBER|W/O LINKED REFERRAL") ~ "Scheduled but Authorization is outstanding",
                                  TRUE ~ "Other"
                                  ))
-
+wq_volume_data$wq_entered <- format(as.Date(wq_volume_data$wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%Y-%m-%d")
 wq_volume_data$referral_age <- difftime(wq_volume_data$wq_exited, as.Date(wq_volume_data$wq_entered, "%Y-%m%-%d"), units = "days")
+
 # wq_volume_data$ wq_enteredDay <- format(as.Date(wq_volume_data$wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%A")
 # wq_volume_data$wq_exitedDay = format(as.Date(wq_volume_data$wq_exited, "%Y-%m-%d"),"%A")
 # wq_volume_data$wq_entered <- format(as.Date(wq_volume_data$wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%Y-%m-%d")
@@ -600,7 +613,7 @@ wq_reasons_raw <- wq_reasons_raw %>%
 ```
 
 
-```{r Graph and Table Functions, echo = FALSE, warning = FALSE, message = FALSE}
+```{r Graph and Table Functions, echo = FALSE, warning = FALSE, message = FALSE, results='hide'}
 
 # Creating Data Bars for Reactable ---------------------------------------------
  library(htmltools)
@@ -745,17 +758,15 @@ wq_reasons_raw <- wq_reasons_raw %>%
 
 
 ```{r Sinai Logo, echo=FALSE, out.width = '30%'}
-# knitr::include_graphics("Mount_Sinai_Logo_H.png")
+knitr::include_graphics("Mount_Sinai_Logo_H.png")
 ```
 
-# Ambulatory Referrals Exeuctive Summary {.tabset .tabset-fade .tabset-pills}
-
+# Ambulatory Referrals Exeuctive Summary 
 *Report run date: `r report_run_date`*<br/>
 *Report produced for week of `r reporting_week`*<br/>
 *A Full week is comprised of Sunday to Saturday.*<br/>
-
-_________________________________________________________________________________________________________________________________________________________________
-
+___________________________________________________________________________________________________________________________________________________________
+<br/>
 
 ```{r YTD Snapshot Referrals, echo = FALSE, warning = FALSE, message = FALSE}
 
@@ -886,59 +897,201 @@ referral_rejected_ytd <- referral_vol %>%
 ```
 
 
-```{r Referrals YTD Snapshot Output, echo = FALSE, warning = FALSE, message = FALSE,  results='hide'}
+## MSHS
+### 1. Snapshot {.tabset .tabset-fade .tabset-pills}
+#### Referrals
+```{r Referrals YTD Snapshot Output, echo = FALSE, warning = FALSE, message = FALSE,  results='hide', fig.width=12}
 # Referrals YTD Snapshot ------------------------------------------------------- 
-referrals_ytd_snapshot <- data.frame(
-values =
-  c(prettyNum(referral_received_ytd$total, big.mark = ","),
-    paste0(paste0(referral_outcome_ytd$conversion_rate,"%")," | ", paste0(referral_outcome_ytd$completion_rate,"%")),
-    paste0("$",comprss(referral_est_rev_ytd$total_prof_charge_est + referral_est_rev_ytd$total_hosp_charge_est))), 
+# referrals_ytd_snapshot <- data.frame(
+# values =
+#   c(prettyNum(referral_received_ytd$total, big.mark = ","),
+#     paste0(paste0(referral_outcome_ytd$conversion_rate,"%")," | ", paste0(referral_outcome_ytd$completion_rate,"%")),
+#     paste0("$",comprss(referral_est_rev_ytd$total_prof_charge_est + referral_est_rev_ytd$total_hosp_charge_est))), 
+# 
+# infos =
+#   c("Total Referrals YTD",
+#     "Conversion | Completion Rate",
+#     "Est. Total Charges Generated\nfrom Completed Appointments"), 
+# icons =
+#   c("fa-gear", "fa-diamond", "fa-tasks")
+# )
+# 
+# createValueBoxes(referrals_ytd_snapshot, "#212070", rows=1)
+# 
+# # Referral Outcome YRD Snapshot ------------------------------------------------------- 
+# referrals_outcome_ytd_snapshot <- data.frame(
+# values =
+#   c(paste0(paste0(round(referral_vol_class_ytd$Incoming,3)*100,"%")," | ", paste0(round(referral_vol_class_ytd$Outgoing,3)*100,"%")),
+#     paste0(round(referral_contacted_ytd$perc,2)*100,"%"),
+#     paste0(round(referral_timeframe_ytd$perc,2)*100,"%")), 
+#  
+# infos =
+#   c("% Incoming | Outgoing Referrals",
+#     "% Referrals Contacted/Scheduled <12 Hours",
+#     "% Referrals Scheduled On-Time YTD\nBased on Priority"), 
+# icons =
+#   c("fa-gear", "fa-diamond", "fa-tasks")
+# )
+# 
+# createValueBoxes(referrals_outcome_ytd_snapshot, "#a5a7a5", rows=1)
+# 
+# # Expired Referrals YTD Snapshot ------------------------------------------------------- 
+# referrals_expired_ytd_snapshot <- data.frame(
+# values =
+#   c(paste0(round(referral_expired_ytd$total / referral_outcome_ytd$Total,2)*100,"%"),
+#     prettyNum(referral_expired_ytd$total, big.mark = ","),
+#     paste0("$",comprss(referral_expired_ytd$total_prof_charge_est + referral_expired_ytd$total_hosp_charge_est))), 
+# 
+# infos =
+#   c("% Referrals Expired YTD",
+#     "Total Referrals Expired YTD",
+#     "Est. Total Missed Charges\nDue to Expired Referrals"), 
+# icons =
+#   c("fa-gear", "fa-diamond", "fa-tasks")
+# )
+# 
+# createValueBoxes(referrals_expired_ytd_snapshot, "#d80b8c", rows=1)
 
-infos =
-  c("Total Referrals YTD",
-    "Conversion | Completion Rate",
-    "Est. Total Charges Generated\nfrom Completed Appointments"), 
-icons =
-  c("fa-gear", "fa-diamond", "fa-tasks")
+# Referrals YTD Snapshot Tables ------------------------------------------------
+referrals_snapshot_1 <- data.frame(
+  total = prettyNum(referral_received_ytd$total, big.mark = ","),
+  rate = paste0(paste0(referral_outcome_ytd$conversion_rate,"%")," | ", paste0(referral_outcome_ytd$completion_rate,"%")),
+  charges = paste0("$",comprss(referral_est_rev_ytd$total_prof_charge_est + referral_est_rev_ytd$total_hosp_charge_est))
 )
 
-createValueBoxes(referrals_ytd_snapshot, "#212070", rows=1)
+referrals_snapshot_2 <- data.frame(
+  class = paste0(paste0(round(referral_vol_class_ytd$Incoming,3)*100,"%")," | ", paste0(round(referral_vol_class_ytd$Outgoing,3)*100,"%")),
+  contacted = paste0(round(referral_contacted_ytd$perc,2)*100,"%"),
+  onTime = paste0(round(referral_timeframe_ytd$perc,2)*100,"%")
+)
 
-# Referral Outcome YRD Snapshot ------------------------------------------------------- 
-referrals_outcome_ytd_snapshot <- data.frame(
-values =
-  c(paste0(paste0(round(referral_vol_class_ytd$Incoming,3)*100,"%")," | ", paste0(round(referral_vol_class_ytd$Outgoing,3)*100,"%")),
-    paste0(round(referral_contacted_ytd$perc,2)*100,"%"),
-    paste0(round(referral_timeframe_ytd$perc,2)*100,"%")), 
+referrals_snapshot_3 <- data.frame(
+  expired_cnt = prettyNum(referral_expired_ytd$total, big.mark = ","),
+  expired_perc = paste0(round(referral_expired_ytd$total / referral_outcome_ytd$Total,2)*100,"%"),
+  expired_charges = paste0("$",comprss(referral_expired_ytd$total_prof_charge_est + referral_expired_ytd$total_hosp_charge_est))
+)
+
+
+
+reactable(
+    referrals_snapshot_1,
+    style = list(fontFamily = 'Calibri', fontSize = '26px'),
+    defaultColDef = colDef(align = "center", 
+                           headerStyle = list(fontWeight = "Bold", fontSize = "12px"),
+                           headerClass = "bar-sort-header"),  
+    highlight = TRUE,
+    pagination = FALSE,
+    wrap = TRUE,
+    bordered = TRUE,
+    columns = list(
+      total = colDef(
+        name = "Total Referrals YTD",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      rate = colDef(
+        name = "Conversion | Completion Rate",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      charges = colDef(
+        name = "Est. Total Charges Generated\nfrom Completed Appointments",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold", color = "green"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        )
+    ) # Close Columns
+  ) # Close Reactable
+
+
+reactable(
+    referrals_snapshot_2,
+    style = list(fontFamily = 'Calibri', fontSize = '26px'),
+    defaultColDef = colDef(align = "center", 
+                           headerStyle = list(fontWeight = "Bold", fontSize = "12px"),
+                           headerClass = "bar-sort-header"),  
+    highlight = TRUE,
+    pagination = FALSE,
+    wrap = TRUE,
+    bordered = TRUE,
+    columns = list(
+      class = colDef(
+        name = "% Incoming | Outgoing Referrals",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      contacted = colDef(
+        name = "% Referrals Contacted/ Scheduled <12 Hours",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      onTime = colDef(
+        name = "% Referrals Scheduled On-Time YTD Based on Priority",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        )
+    ) # Close Columns
+  ) # Close Reactable
  
-infos =
-  c("% Incoming | Outgoing Referrals",
-    "% Referrals Contacted/Scheduled <12 Hours",
-    "% Referrals Scheduled On-Time YTD\nBased on Priority"), 
-icons =
-  c("fa-gear", "fa-diamond", "fa-tasks")
-)
 
-createValueBoxes(referrals_outcome_ytd_snapshot, "#a5a7a5", rows=1)
+reactable(
+    referrals_snapshot_3,
+    style = list(fontFamily = 'Calibri', fontSize = '26px'),
+    defaultColDef = colDef(align = "center", 
+                           headerStyle = list(fontWeight = "Bold", fontSize = "12px"),
+                           headerClass = "bar-sort-header"),  
+    highlight = TRUE,
+    pagination = FALSE,
+    wrap = TRUE,
+    bordered = TRUE,
+    columns = list(
+      expired_cnt = colDef(
+        name = "Total Referrals Expired",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      expired_perc = colDef(
+        name = "% Referrals Expired YTD",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      expired_charges = colDef(
+        name = "Est. Total Missed Charges\nDue to Expired Referrals",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold", color = "red"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        )
+    ) # Close Columns
+  ) # Close Reactable
 
-# Expired Referrals YTD Snapshot ------------------------------------------------------- 
-referrals_expired_ytd_snapshot <- data.frame(
-values =
-  c(paste0(round(referral_expired_ytd$total / referral_outcome_ytd$Total,2)*100,"%"),
-    prettyNum(referral_expired_ytd$total, big.mark = ","),
-    paste0("$",comprss(referral_expired_ytd$total_prof_charge_est + referral_expired_ytd$total_hosp_charge_est))), 
-
-infos =
-  c("% Referrals Expired YTD",
-    "Total Referrals Expired YTD",
-    "Est. Total Missed Charges\nDue to Expired Referrals"), 
-icons =
-  c("fa-gear", "fa-diamond", "fa-tasks")
-)
-
-createValueBoxes(referrals_expired_ytd_snapshot, "#d80b8c", rows=1)
 
 ```
+
 
 ```{r YTD Top Sending Specialties, echo = FALSE, warning = FALSE, message = FALSE}
  
@@ -1172,7 +1325,7 @@ ytd_demand_specialty_summary <- bind_cols(mshs_ytdReceived_internal_top15, mshs_
 ```
 
 
-```{r Monthly Volume Trending, echo = FALSE, warning = FALSE, message = FALSE}
+```{r Monthly Volume Trending, echo = FALSE, warning = FALSE, message = FALSE, fig.width=8}
 
 # MSHS Referrals Received + Conversion and Completion Rate ---------------------
 referral_received_monthly_mshs <- referral_vol %>%
@@ -1308,78 +1461,222 @@ wq_vol_removed_week <- wq_volume_data %>%
 ```
 
 
+#### Workqueues
 ```{r WQ Snapshot Output, echo = FALSE, warning = FALSE, message = FALSE, results='hide'}
 
 # Outstanding WQ Snapshot ------------------------------------------------------- 
 ## First Row
-current_wq_snapshot <- data.frame(
-values =
-  c(prettyNum(sum((current_wq_vol %>% filter(wq_type != ""))$total), big.mark = ","), # Excludes undefined WQ Type (Includes TO, FROM, AUTHORIZATION, TRIAGE, PAS)
-    paste0(as.numeric(median(wq_reasons_raw$days_wq)), " days"),
-    paste0(as.numeric(median(wq_reasons_raw$days_since_creation)), " days")), 
+# current_wq_snapshot <- data.frame(
+# values =
+#   c(prettyNum(sum((current_wq_vol %>% filter(wq_type != ""))$total), big.mark = ","), # Excludes undefined WQ Type (Includes TO, FROM, AUTHORIZATION, TRIAGE, PAS)
+#     paste0(as.numeric(median(wq_reasons_raw$days_wq)), " days"),
+#     paste0(as.numeric(median(wq_reasons_raw$days_since_creation)), " days")), 
+# 
+# infos =
+#   c(paste0("Total WQ Volume\nas of ",Sys.Date()),
+#     "Median Days in WQ",
+#     "Median Days since Referral Created"), 
+# icons =
+#   c("fa-gear", "fa-diamond", "fa-tasks")
+# )
+# 
+# createValueBoxes(current_wq_snapshot , "#212070", rows=1)
+# 
+# ## Second Row
+# current_wq_snapshot_2 <- data.frame(
+# values =
+#   c(paste0(round(current_wq_contacted[which(current_wq_contacted$contacted_12hours == "Yes"), "perc"],2)*100,"%"),
+#     paste0(round(current_wq_urgent[which(current_wq_urgent$priority_type == "Within 2 Days"), "perc"],2)*100,"%"),
+#     prettyNum(current_wq_aging$aging_7days, big.mark = ",")), 
+# 
+# infos =
+#   c("% Referrals Contacted/ Scheduled <12 Hours\n*Excludes Awaiting Contact Still < 12 Hours",
+#     "% Urgent Referrals in Workqueue",
+#     "Total Referrals within 7 Days of Aging"), 
+# icons =
+#   c("fa-gear", "fa-tasks", "fa-tasks")
+# )
+# 
+# createValueBoxes(current_wq_snapshot_2 , "#212070", rows=1)
+# 
+# # Past Week WQ Summary ---------------------------------------------------------
+# past_week_wq_snapshot <- data.frame(
+# values =
+#   c(prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %!in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = round(mean(total))), big.mark = ","),
+#     prettyNum(wq_vol_removed_week %>% filter(wq_exitedDay %!in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = round(mean(total))), big.mark = ","),
+#     prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = sum(total)), big.mark = ",")),
+# 
+# infos =
+#   c("Avg Referrals Added per Weekday",
+#     "Avg Referrals Removed per Weekday",
+#     "Total Referrals Added during Weekend"), 
+# icons =
+#   c("fa-gear", "fa-diamond", "fa-tasks")
+# )
+# 
+# createValueBoxes(past_week_wq_snapshot , "#a5a7a5", rows=1)
+# 
+# past_week_wq_snapshot_2 <- data.frame(
+# values =
+#   c(prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %!in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = round(mean(total))), big.mark = ","),
+#     prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = sum(total)), big.mark = ",")),
+# 
+# infos =
+#   c("Total Referrals Aged",
+#     "Total Referrals Expired"), 
+# icons =
+#   c("fa-gear", "fa-diamond")
+# )
+# 
+# createValueBoxes(past_week_wq_snapshot_2 , "#a5a7a5", rows=1)
 
-infos =
-  c(paste0("Total WQ Volume\nas of ",Sys.Date()),
-    "Median Days in WQ",
-    "Median Days since Referral Created"), 
-icons =
-  c("fa-gear", "fa-diamond", "fa-tasks")
+
+# Workqueue YTD Snapshot Tables ------------------------------------------------
+wq_snapshot_1 <- data.frame(
+  total = prettyNum(sum((current_wq_vol %>% filter(wq_type != ""))$total), big.mark = ","),
+  wq_days = paste0(as.numeric(median(wq_reasons_raw$days_wq)), " days"),
+  referral_days = paste0(as.numeric(median(wq_reasons_raw$days_since_creation)), " days")
 )
 
-createValueBoxes(current_wq_snapshot , "#212070", rows=1)
-
-## Second Row
-current_wq_snapshot_2 <- data.frame(
-values =
-  c(paste0(round(current_wq_contacted[which(current_wq_contacted$contacted_12hours == "Yes"), "perc"],2)*100,"%"),
-    paste0(round(current_wq_urgent[which(current_wq_urgent$priority_type == "Within 2 Days"), "perc"],2)*100,"%"),
-    prettyNum(current_wq_aging$aging_7days, big.mark = ",")), 
-
-infos =
-  c("% Referrals Contacted/ Scheduled <12 Hours\n*Excludes Awaiting Contact Still < 12 Hours",
-    "% Urgent Referrals in Workqueue",
-    "Total Referrals within 7 Days of Aging"), 
-icons =
-  c("fa-gear", "fa-tasks", "fa-tasks")
+wq_snapshot_2 <- data.frame(
+  urgent =  paste0(round(current_wq_urgent[which(current_wq_urgent$priority_type == "Within 2 Days"), "perc"],2)*100,"%"),
+  contacted = paste0(round(current_wq_contacted[which(current_wq_contacted$contacted_12hours == "Yes"), "perc"],2)*100,"%"),
+  aging = prettyNum(current_wq_aging$aging_7days, big.mark = ",")
 )
 
-createValueBoxes(current_wq_snapshot_2 , "#212070", rows=1)
-
-# Past Week WQ Summary ---------------------------------------------------------
-past_week_wq_snapshot <- data.frame(
-values =
-  c(prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %!in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = round(mean(total))), big.mark = ","),
-    prettyNum(wq_vol_removed_week %>% filter(wq_exitedDay %!in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = round(mean(total))), big.mark = ","),
-    prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = sum(total)), big.mark = ",")),
-
-infos =
-  c("Avg Referrals Added per Weekday",
-    "Avg Referrals Removed per Weekday",
-    "Total Referrals Added during Weekend"), 
-icons =
-  c("fa-gear", "fa-diamond", "fa-tasks")
+wq_snapshot_3 <- data.frame(
+  wq_added = prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %!in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = round(mean(total))), big.mark = ","),
+  wq_removed = prettyNum(wq_vol_removed_week %>% filter(wq_exitedDay %!in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = round(mean(total))), big.mark = ","),
+  wq_added_wknd = prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = sum(total)), big.mark = ",")
 )
 
-createValueBoxes(past_week_wq_snapshot , "#a5a7a5", rows=1)
 
-past_week_wq_snapshot_2 <- data.frame(
-values =
-  c(prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %!in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = round(mean(total))), big.mark = ","),
-    prettyNum(wq_vol_added_week %>% filter(wq_enteredDay %in% c("Saturday","Sunday")) %>% ungroup() %>% summarise(avg = sum(total)), big.mark = ",")),
+reactable(
+    wq_snapshot_1,
+    style = list(fontFamily = 'Calibri', fontSize = '26px'),
+    defaultColDef = colDef(align = "center", 
+                           headerStyle = list(fontWeight = "Bold", fontSize = "12px"),
+                           headerClass = "bar-sort-header"),  
+    highlight = TRUE,
+    pagination = FALSE,
+    wrap = TRUE,
+    bordered = TRUE,
+    columns = list(
+      total = colDef(
+        name = paste0("Total WQ Volume\nas of ",Sys.Date()),
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      wq_days = colDef(
+        name = "Median Days in Workqueue",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      referral_days = colDef(
+        name = "Median Days since Referral Created",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        )
+    ) # Close Columns
+  ) # Close Reactable
 
-infos =
-  c("Total Referrals Aged",
-    "Total Referrals Expired"), 
-icons =
-  c("fa-gear", "fa-diamond")
-)
 
-createValueBoxes(past_week_wq_snapshot_2 , "#a5a7a5", rows=1)
+reactable(
+    wq_snapshot_2,
+    style = list(fontFamily = 'Calibri', fontSize = '26px'),
+    defaultColDef = colDef(align = "center", 
+                           headerStyle = list(fontWeight = "Bold", fontSize = "12px"),
+                           headerClass = "bar-sort-header"),  
+    highlight = TRUE,
+    pagination = FALSE,
+    wrap = TRUE,
+    bordered = TRUE,
+    columns = list(
+      urgent = colDef(
+        name = "% Urgent Referrals in Workqueue",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      contacted = colDef(
+        name = "% Referrals Contacted/ Scheduled <12 Hours\n(Excludes Awaiting Contact Still < 12 Hours)",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        ),
+      aging = colDef(
+        name = "Total Referrals within 7 Days of Aging",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        )
+    ) # Close Columns
+  ) # Close Reactable
+ 
+
+reactable(
+    wq_snapshot_3,
+    style = list(fontFamily = 'Calibri', fontSize = '26px'),
+    defaultColDef = colDef(align = "center", 
+                           headerStyle = list(fontWeight = "Bold", fontSize = "12px"),
+                           headerClass = "bar-sort-header"),  
+    highlight = TRUE,
+    pagination = FALSE,
+    wrap = TRUE,
+    bordered = TRUE,
+    columns = list(
+      wq_added = colDef(
+        name = "Avg Referrals Added per Weekday",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      wq_removed = colDef(
+        name = "Avg Referrals Removed per Weekday",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      wq_added_wknd = colDef(
+        name = "Total Referrals Added during Weekend",
+        minWidth = 300,
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold", color = "red"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        )
+    ) # Close Columns
+  ) # Close Reactable
+
 
 ```
 
 
 ```{r Monthly Resolution Rate, echo = FALSE, warning = FALSE, message = FALSE}
+
+```
+
+
+### 2. ED Referrals
+```{r ED Referrals Analysis, echo = FALSE, warning = FALSE, message = FALSE}
 
 ```
 
