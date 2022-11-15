@@ -475,11 +475,6 @@ referral_vol <- referrals_processed %>%
 
 referral_vol$referral_age <- difftime(report_run_date, as.Date(referral_vol$StartInstant, "%Y-%m%-%d"), units = "days")
   
-status_validation <- referral_vol %>% group_by(Status, SchedulingStatus, CloseReason, ApptStatusFinal) %>% summarise(total = n())
-write.xlsx(status_validation, "/SharedDrive/deans/Presidents/SixSigma/Individual Folders/Current Employees/Engineers/So Youn Kweon/server-upload/Referral Status Validation Updated.xlsx")
-
-# write.xlsx(wq_reasons_validation, "/SharedDrive/deans/Presidents/SixSigma/Individual Folders/Current Employees/Engineers/So Youn Kweon/server-upload/wq_reasons_validation.xlsx")
-
 ```
 
 
