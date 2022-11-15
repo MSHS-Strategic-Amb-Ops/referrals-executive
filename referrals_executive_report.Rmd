@@ -371,7 +371,6 @@ referralFact_raw <- referralFact_conn %>%
   mutate(StartInstant = as.Date(StartInstant)) %>%
   filter(StartInstant >= as.Date("2022-04-01") & StartInstant <= report_run_date) %>%
   group_by(ReferralKey, StartInstant, `_CreationInstant`, `_LastUpdatedInstant`, LastEnteredWorkqueueDateKey_X,
-           FirstEncounterCreatedInstant,
            LastEnteredWorkqueueTimeKey_X, LastEnteredWorkqueueName_X,
            Class, Priority, Redirected, Rejected, TriageRejectionReason, InAnyWorkqueue, StatusReason, SchedulingStatus,
            FirstCallMadeInstant, FirstEncounterCreatedInstant, FirstEncounterInstant, ExpirationInstant,
