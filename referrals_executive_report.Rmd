@@ -378,8 +378,9 @@ referralFact_raw <- referralFact_conn %>%
            WasPatientContactedWithin12Hours_X,
            ProfessionalChargeAmount, ProfessionalChargeEstimate, HospitalChargeEstimate) %>%
   summarise(total = n()) %>%
-  collect() %>%
-  select(-total)
+  collect() 
+
+referralFact_raw$total <- NULL
 
 # referralFact_all <- referralFact_conn %>%
 #   mutate(StartInstant = as.Date(StartInstant)) %>%
