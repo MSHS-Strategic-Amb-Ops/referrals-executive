@@ -756,16 +756,6 @@ wq_reasons_raw <- wq_reasons_raw %>%
 ```
 
 
-```{r Sinai Logo, echo=FALSE, out.width = '30%'}
-knitr::include_graphics("Mount_Sinai_Logo_H.png")
-
-```
-
-# Ambulatory Referrals Summary
-*Report run date: `r report_run_date`*<br/>
-_________________________________________________________________________________________________________________________________________________________________________________________________
-<br/>
-
 ```{r YTD Snapshot Referrals, echo = FALSE, warning = FALSE, message = FALSE}
 
 # Referrals Snapshot 
@@ -894,6 +884,16 @@ referral_rejected_ytd <- referral_vol %>%
 
 ```
 
+```{r Sinai Logo, echo=FALSE, out.width = '30%'}
+# knitr::include_graphics("Mount_Sinai_Logo_H.png")
+
+```
+
+# Ambulatory Referrals Summary
+*Report run date: `r report_run_date`*<br/>
+*Date source: * <br/>
+_________________________________________________________________________________________________________________________________________________________________________________________________
+<br/>
 
 ## MSHS
 ### 1. Snapshot {.tabset .tabset-fade .tabset-pills}
