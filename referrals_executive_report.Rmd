@@ -932,7 +932,7 @@ reactable(
       total = colDef(
         name = "Total Referrals YTD",
         minWidth = 300,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", color = "white", background = "#212070"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -944,7 +944,7 @@ reactable(
       rate = colDef(
         name = "Conversion | Completion Rate",
         minWidth = 300,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", color = "white", background = "#212070"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -956,7 +956,7 @@ reactable(
       charges = colDef(
         name = "Est. Total Charges Generated\nfrom Completed Appointments",
         minWidth = 300,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", color = "white", background = "#212070"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -992,7 +992,7 @@ reactable(
       class = colDef(
         name = "% Incoming | Outgoing Referrals",
         minWidth = 300,
-        headerStyle = list(background = "#a5a7a5", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#a5a7a5", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -1004,7 +1004,7 @@ reactable(
       contacted = colDef(
         name = "% Referrals Contacted/ Scheduled <12 Hours",
         minWidth = 300,
-        headerStyle = list(background = "#a5a7a5", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#a5a7a5", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -1016,7 +1016,7 @@ reactable(
       onTime = colDef(
         name = "% Referrals Scheduled On-Time YTD Based on Priority",
         minWidth = 300,
-        headerStyle = list(background = "#a5a7a5", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#a5a7a5", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -1051,7 +1051,7 @@ reactable(
       expired_cnt = colDef(
         name = "Total Referrals Expired",
         minWidth = 300,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#d80b8c", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -1063,7 +1063,7 @@ reactable(
       expired_perc = colDef(
         name = "% Referrals Expired YTD",
         minWidth = 300,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#d80b8c", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -1075,7 +1075,7 @@ reactable(
       expired_charges = colDef(
         name = "Est. Total Missed Charges\nDue to Expired Referrals",
         minWidth = 300,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#d80b8c", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -1192,7 +1192,7 @@ ytd_demand_specialty_summary <- bind_cols(mshs_ytdReceived_internal_top15, mshs_
     columns = list(
       `Internal Demand` = colDef(
         name = "Top 15 Specialties",
-        maxWidth = 250,
+        minWidth = 70,
         headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
         style = list(fontWeight = "Bold"),
         align = "left"
@@ -1212,7 +1212,7 @@ ytd_demand_specialty_summary <- bind_cols(mshs_ytdReceived_internal_top15, mshs_
         ),
       perc_internal = colDef(
         name = "% of Total Internal Referrals",
-        maxWidth = 120,
+        maxWidth = 100,
         headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "14px"),
         align = "center",
         format = colFormat(percent = TRUE, digits = 1)
@@ -1251,7 +1251,7 @@ ytd_demand_specialty_summary <- bind_cols(mshs_ytdReceived_internal_top15, mshs_
       ),
       `External Demand` = colDef(
         name = "Top 15 Specialties",
-        maxWidth = 250,
+        minWidth = 70,
        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "14px"),
         style = list(fontWeight = "Bold"),
         align = "left"
@@ -1452,7 +1452,7 @@ wq_vol_removed_week <- wq_volume_data %>%
 
 
 #### Workqueues
-```{r WQ Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE, results='hide'}
+```{r WQ Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE}
 
 # Outstanding WQ Snapshot ------------------------------------------------------- 
 ## First Row
@@ -1545,7 +1545,7 @@ reactable(
       total = colDef(
         name = paste0("Total WQ Volume\nas of ",Sys.Date()),
         minWidth = 300,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#212070", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -1557,7 +1557,7 @@ reactable(
       wq_days = colDef(
         name = "Median Days in Workqueue",
         minWidth = 300,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#212070", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -1569,7 +1569,7 @@ reactable(
       referral_days = colDef(
         name = "Median Days since Referral Created",
         minWidth = 300,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#212070", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -1582,7 +1582,7 @@ reactable(
 
 
 
-```{r WQ Snapshot Output 2, echo = FALSE, warning = FALSE, message = FALSE, results='hide'}
+```{r WQ Snapshot Output 2, echo = FALSE, warning = FALSE, message = FALSE}
 
 # Workqueue YTD Snapshot Tables ------------------------------------------------
 wq_snapshot_2 <- data.frame(
@@ -1608,31 +1608,31 @@ reactable(
       urgent = colDef(
         name = "% Urgent Referrals in Workqueue",
         minWidth = 300,
-        headerStyle = list(background = "#a5a7a5", color = "white", fontWeight = "Bold", fontSize = "20px"),
-        style = list(fontWeight = "Bold", background = "#a5a7a5", color = "white"),
+        headerStyle = list(background = "#7f7f7f", color = "white", fontWeight = "Bold", fontSize = "22px"),
+        style = list(fontWeight = "Bold", background = "#7f7f7f", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         ),
       blank_1 = colDef(
         name = "",
-        maxWidth = 80
+        minWidth = 80
       ),
       contacted = colDef(
         name = "% Referrals Contacted/ Scheduled <12 Hours\n(Excludes Awaiting Contact Still < 12 Hours)",
         minWidth = 300,
-        headerStyle = list(background = "#a5a7a5", color = "white", fontWeight = "Bold", fontSize = "20px"),
-        style = list(fontWeight = "Bold", background = "#a5a7a5", color = "white"),
+        headerStyle = list(background = "#7f7f7f", color = "white", fontWeight = "Bold", fontSize = "22px"),
+        style = list(fontWeight = "Bold", background = "#7f7f7f", color = "white"),
         align = "center"
         ),
       blank_2 = colDef(
         name = "",
-        maxWidth = 80
+        minWidth = 80
       ),
       aging = colDef(
         name = "Total Referrals within 7 Days of Aging",
         minWidth = 300,
-        headerStyle = list(background = "#a5a7a5", color = "white", fontWeight = "Bold", fontSize = "20px"),
-        style = list(fontWeight = "Bold", background = "#a5a7a5", color = "white"),
+        headerStyle = list(background = "#7f7f7f", color = "white", fontWeight = "Bold", fontSize = "22px"),
+        style = list(fontWeight = "Bold", background = "#7f7f7f", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         )
@@ -1643,7 +1643,7 @@ reactable(
 ```
 
 
-```{r WQ Snapshot Output 3, echo = FALSE, warning = FALSE, message = FALSE, results='hide'}
+```{r WQ Snapshot Output 3, echo = FALSE, warning = FALSE, message = FALSE}
 
 # Outstanding WQ Snapshot ------------------------------------------------------- 
 
@@ -1670,31 +1670,31 @@ reactable(
       wq_added = colDef(
         name = "Avg Referrals Added per Weekday",
         minWidth = 300,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#d80b8c", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         ),
       blank_1 = colDef(
         name = "",
-        maxWidth = 80
+        minWidth = 80
       ),
       wq_removed = colDef(
         name = "Avg Referrals Removed per Weekday",
         minWidth = 300,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#d80b8c", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         ),
       blank_2 = colDef(
         name = "",
-        maxWidth = 80
+        minWidth = 80
       ),
       wq_added_wknd = colDef(
         name = "Total Referrals Added during Weekend",
         minWidth = 300,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#d80b8c", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
@@ -1713,8 +1713,8 @@ reactable(
 ```
 
 
-### 2. ED Referrals
-
+### 2. ED Referrals {.tabset .tabset-fade .tabset-pills}
+#### Volume
 ```{r Average ED Referrals per Patient, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 referral_per_patient <- referral_vol %>%
@@ -1765,10 +1765,12 @@ hchart(referral_per_patient,
 
 ```
 
-#### Total ED Referrals by Scheduling Priority 
+
+#### Scheduling Priority
+<span style='font-size: 16px; font-weight: bold; color: black'>**ED Referrals by Scheduling Priority**</span><br/>
 ```{r ED Referrals Total Volume by Priority, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
-ed_vol_priority_cnt <- referral_vol %>%
+ed_vol_priority_cnt_rows <- referral_vol %>%
   filter(SentBySite %in% c("ED","PSYCH ED")) %>%
   group_by(createdMonthYear, priority_type) %>%
   summarise(total = n()) %>%
@@ -1781,7 +1783,7 @@ ed_vol_priority_cnt <- referral_vol %>%
   arrange(factor(priority_type, levels = c('Within 2 Days', 'Within 1 Week', 'Within 2 Weeks', 'Patient Convenience', 'Not Specified', 'Total')))
 
 
-ed_vol_priority_cnt <- as.data.frame(ed_vol_priority_cnt)
+ed_vol_priority_cnt <- as.data.frame(ed_vol_priority_cnt_rows)
 rownames(ed_vol_priority_cnt) <- ed_vol_priority_cnt$priority_type
 ed_vol_priority_cnt  <- ed_vol_priority_cnt[,-1]
 
@@ -1795,30 +1797,38 @@ reactable(
     pagination = FALSE,
     wrap = TRUE,
     bordered = TRUE,
-  
-  defaultColDef = colDef(
-    style = function(value) {
-      if (!is.numeric(value)) return()
-      normalized <- (value - min(ed_vol_priority_cnt)) / (max(ed_vol_priority_cnt) - min(ed_vol_priority_cnt))
+  rowStyle = function(index) {
+            if (index %in% nrow(ed_vol_priority_cnt)) {
+              list(`border-top` = "2px solid rgb(184,184,184)",
+                   fontWeight = "Bold",
+                   background = "white")
+            }
+          },
+    defaultColDef = colDef(
+    style = function(value, index) {
+      if (ed_vol_priority_cnt_rows$priority_type[index] == "Total") return()
+      normalized <- (value - min(ed_vol_priority_cnt[1:(nrow(ed_vol_priority_cnt)-1),])) / (max(ed_vol_priority_cnt[1:(nrow(ed_vol_priority_cnt)-1),]) - min(ed_vol_priority_cnt[1:(nrow(ed_vol_priority_cnt)-1),]))
       color <- BuYlRd(normalized)
       list(background = color, fontWeight = "Bold")
     },
     format = colFormat(digits = 0, separators = TRUE),
     align = "center",
-    minWidth = 50
+    minWidth = 50,
+    headerStyle = list(fontWeight = "Bold", fontSize = "16px", color = "white", background = "#212070")
   ),
-  columns = list(
-    .rownames = colDef(name = "Referral Scheduling Priority", sortable = TRUE, align ="left", minWidth = 100)
+    columns = list(
+    .rownames = colDef(name = "Referral Scheduling Priority", sortable = TRUE, align ="left", minWidth = 100, 
+                       style = list(fontWeight = "Bold"))
   )
 )
 
 ```
 
 
-#### % of ED Referrals by Scheduling Priority 
+<span style='font-size: 16px; font-weight: bold; color: black'>**% of ED Referrals by Scheduling Priority**</span><br/>
 ```{r Percent of ED Referrals by Scheduling Priority, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
-ed_vol_priority_perc <- referral_vol %>%
+ed_vol_priority_perc_rows <- referral_vol %>%
   filter(SentBySite %in% c("ED","PSYCH ED")) %>%
   group_by(createdMonthYear, priority_type) %>%
   summarise(total = n()) %>%
@@ -1829,7 +1839,7 @@ ed_vol_priority_perc <- referral_vol %>%
               values_from = perc) %>%
   arrange(factor(priority_type, levels = c('Within 2 Days', 'Within 1 Week', 'Within 2 Weeks', 'Patient Convenience', 'Not Specified')))
 
-ed_vol_priority_perc <- as.data.frame(ed_vol_priority_perc)
+ed_vol_priority_perc <- as.data.frame(ed_vol_priority_perc_rows)
 rownames(ed_vol_priority_perc) <- ed_vol_priority_perc$priority_type
 ed_vol_priority_perc  <- ed_vol_priority_perc[,-1]
 
@@ -1840,7 +1850,6 @@ reactable(
     pagination = FALSE,
     wrap = TRUE,
     bordered = TRUE,
-  
   defaultColDef = colDef(
     style = function(value) {
       if (!is.numeric(value)) return()
@@ -1850,12 +1859,238 @@ reactable(
     },
     format = colFormat(digits = 0, percent = TRUE),
     align = "center",
-    minWidth = 50
+    minWidth = 50,
+    headerStyle = list(fontWeight = "Bold", fontSize = "16px", color = "white", background = "#212070")
   ),
   columns = list(
-    .rownames = colDef(name = "Referral Scheduling Priority", sortable = TRUE, align ="left", minWidth = 100)
+    .rownames = colDef(name = "Referral Scheduling Priority", sortable = TRUE, align ="left", minWidth = 100,
+                       style = list(fontWeight = "Bold"))
   )
 ) 
+
+```
+
+
+#### Conversion Rate 
+```{r ED VS. Non ED Referrals Conversion Rate by Priority, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
+
+ed_conversion_month <- referral_vol %>%
+  mutate(ed = ifelse(SentBySite %in% c("ED","PSYCH ED"), "ED","Non-ED")) %>%
+  group_by(createdMonthYear, ed, priority_type, ApptStatusFinal) %>%
+  summarise(total = n()) %>%
+  pivot_wider(names_from = ApptStatusFinal,
+              values_from = total,
+              values_fill = 0) %>%
+  mutate(Scheduled = Canceled + `No Show` + Scheduled,
+         Total = Arrived + Scheduled + Pending) %>%
+  dplyr::select(-c(Canceled,`No Show`)) %>%
+  mutate(conversion_rate = round((Arrived + Scheduled)/Total,2)*100,
+         completion_rate = round(Arrived/Total,2)*100) %>%
+  arrange(factor(priority_type, levels = c('Within 2 Days', 'Within 1 Week', 'Within 2 Weeks', 'Patient Convenience', 'Not Specified'))) %>%
+  arrange(createdMonthYear)
+
+
+ed_conversion <- referral_vol %>%
+  mutate(ed = ifelse(SentBySite %in% c("ED","PSYCH ED"), "ED","Non-ED")) %>%
+  group_by(ed, priority_type, ApptStatusFinal) %>%
+  summarise(total = n()) %>%
+  pivot_wider(names_from = ApptStatusFinal,
+              values_from = total,
+              values_fill = 0) %>%
+  mutate(Scheduled = Canceled + `No Show` + Scheduled,
+         Total = Arrived + Scheduled + Pending) %>%
+  dplyr::select(-c(Canceled,`No Show`)) %>%
+  mutate(conversion_rate = round((Arrived + Scheduled)/Total,2)*100,
+         completion_rate = round(Arrived/Total,2)*100) %>%
+  arrange(factor(priority_type, levels = c('Within 2 Days', 'Within 1 Week', 'Within 2 Weeks', 'Patient Convenience', 'Not Specified')))
+
+
+hc <- df2 %>% 
+  hchart('column', hcaes(x = 'dose', y = 'len', group = 'supp')) %>%
+  hc_colors(c("#0073C2FF", "#EFC000FF"))
+
+
+ed_conversion_rate_graph <- 
+  hchart(ed_conversion, 
+       hcaes(x = 'priority_type', y = 'conversion_rate', group = 'ed'), 
+       type = 'column',
+       color=c("#a5a7a5", "#212070"),
+       dataLabels = list(enabled = TRUE, format='{point.y%}'), 
+       showInLegend = TRUE) %>%
+  hc_yAxis(
+    title = list(text = "Converesion Rate"),
+    opposite = FALSE
+    # alternateGridColor = "#FAFAFA",
+    # minorTickInterval = "auto",
+    # minorGridLineDashStyle = "LongDashDotDot",
+    # showFirstLabel = FALSE,
+    # showLastLabel = FALSE,
+    # plotBands = list(
+    #   list(
+    #     from = 13,
+    #     to = 17,
+    #     color = "rgba(100, 0, 0, 0.1)",
+    #     label = list(text = "This is a plotBand")
+    #     )
+    #   )
+    ) %>% 
+  hc_xAxis(title = "Referral Scheduling Priority") %>%
+  hc_legend(align = "left", verticalAlign = "top", itemStyle = list(fontFamily ='Calibri',color ='black', fontSize = "14px")) %>%
+  hc_title(text = "ED vs. Non-ED Conversion Rate", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
+  hc_subtitle(text = paste0("Based on referrals created from ","2022-04-01"," to ",report_run_date),
+              align = "left", style = list(fontFace = "italic", fontSize = "16px", fontFamily = "Calibri")) %>%
+  hc_tooltip(shared = TRUE, borderColor = "black")
+
+
+
+ed_completion_rate_graph <- 
+  hchart(ed_conversion, 
+       hcaes(x = 'priority_type', y = 'completion_rate', group = 'ed'), 
+       type = 'column',
+       color=c("#a5a7a5", "#212070"),
+       dataLabels = list(enabled = TRUE, format='{point.y%}'), 
+       showInLegend = TRUE) %>%
+  hc_yAxis(
+    title = list(text = "Completion Rate"),
+    opposite = FALSE
+    # alternateGridColor = "#FAFAFA",
+    # minorTickInterval = "auto",
+    # minorGridLineDashStyle = "LongDashDotDot",
+    # showFirstLabel = FALSE,
+    # showLastLabel = FALSE,
+    # plotBands = list(
+    #   list(
+    #     from = 13,
+    #     to = 17,
+    #     color = "rgba(100, 0, 0, 0.1)",
+    #     label = list(text = "This is a plotBand")
+    #     )
+    #   )
+    ) %>% 
+  hc_xAxis(title = "Referral Scheduling Priority") %>%
+  hc_legend(align = "left", verticalAlign = "top", itemStyle = list(fontFamily ='Calibri',color ='black', fontSize = "14px")) %>%
+  hc_title(text = "ED vs. Non-ED Completion Rate", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
+  hc_subtitle(text = paste0("Based on referrals created from ","2022-04-01"," to ",report_run_date),
+              align = "left", style = list(fontFace = "italic", fontSize = "16px", fontFamily = "Calibri")) %>%
+  hc_tooltip(shared = TRUE, borderColor = "black")
+
+hw_grid(ed_conversion_rate_graph, ed_completion_rate_graph)
+
+```
+
+
+<span style='font-size: 16px; font-weight: bold; color: black'>**ED vs. Non-ED Conversion Rate by Month**</span><br/>
+```{r ED vs. Non ED Converion Rate Table, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
+
+ed_conversion_rate <- ed_conversion_month %>%
+  dplyr::select(createdMonthYear, ed, priority_type, conversion_rate) %>%
+  mutate(conversion_rate = conversion_rate/100) %>%
+  pivot_wider(names_from = createdMonthYear,
+              values_from = conversion_rate) 
+
+ed_conversion_rate <- as.data.frame(ed_conversion_rate)
+rownames(ed_conversion_rate) <- paste0(ed_conversion_rate$priority_type, ": ",ed_conversion_rate$ed)
+ed_conversion_rate  <- ed_conversion_rate[,3:length(ed_conversion_rate)]
+
+reactable(
+  ed_conversion_rate,
+  style = list(fontFamily = 'Calibri', fontSize = 'px14'),
+    highlight = TRUE,
+    pagination = FALSE,
+    wrap = TRUE,
+    bordered = TRUE,
+  defaultColDef = colDef(
+    style = function(value, index) {
+      if (is.na(value)) return()
+      normalized <- (value - min(ed_conversion_rate)) / (max(ed_conversion_rate) - min(ed_conversion_rate))
+      color <- BuYlRd(normalized)
+      list(background = color, fontWeight = "Bold")
+    },
+    format = colFormat(digits = 0, percent = TRUE),
+    align = "center",
+    minWidth = 50,
+    headerStyle = list(fontWeight = "Bold", fontSize = "16px", color = "white", background = "#212070")
+  ),
+  columns = list(
+    .rownames = colDef(name = "Referral Scheduling Priority", sortable = TRUE, align ="left", minWidth = 100,
+                       style = list(fontWeight = "Bold"))
+  )
+)
+
+```
+
+
+<span style='font-size: 16px; font-weight: bold; color: black'>**ED vs. Non-ED Completion Rate by Month**</span><br/>
+```{r ED vs. Non ED Completion Rate Table, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
+
+ed_completion_rate <- ed_conversion_month %>%
+  dplyr::select(createdMonthYear, ed, priority_type, completion_rate) %>%
+  mutate(completion_rate = completion_rate/100) %>%
+  pivot_wider(names_from = createdMonthYear,
+              values_from = completion_rate) 
+
+ed_completion_rate <- as.data.frame(ed_completion_rate)
+rownames(ed_completion_rate) <- paste0(ed_completion_rate$priority_type, ": ",ed_completion_rate$ed)
+ed_completion_rate  <- ed_completion_rate[,3:length(ed_completion_rate)]
+
+reactable(
+  ed_completion_rate,
+  style = list(fontFamily = 'Calibri', fontSize = 'px14'),
+    highlight = TRUE,
+    pagination = FALSE,
+    wrap = TRUE,
+    bordered = TRUE,
+  defaultColDef = colDef(
+    style = function(value, index) {
+      if (is.na(value)) return()
+      normalized <- (value - min(ed_completion_rate)) / (max(ed_completion_rate) - min(ed_completion_rate))
+      color <- BuYlRd(normalized)
+      list(background = color, fontWeight = "Bold")
+    },
+    format = colFormat(digits = 0, percent = TRUE),
+    align = "center",
+    minWidth = 50,
+    headerStyle = list(fontWeight = "Bold", fontSize = "16px", color = "white", background = "#212070")
+  ),
+  columns = list(
+    .rownames = colDef(name = "Referral Scheduling Priority", sortable = TRUE, align ="left", minWidth = 100,
+                       style = list(fontWeight = "Bold"))
+  )
+)
+
+
+```
+
+
+#### Diagnosis 
+```{r ED Referrals Primary Diagnosis by Receiving Specialty, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
+
+top20_ed_diagnosis <- referral_vol %>% 
+  filter(SentBySite %in% c("ED","PSYCH ED")) %>%
+  group_by(ICD_10_Chosen) %>% 
+  summarise(total = n()) %>%
+  arrange(desc(total)) %>%
+  head(20)
+
+ed_referral_vol_diagnosis_specialty <- referral_vol %>%
+  # filter(ICD_10_Chosen %in% as.vector(top20_ed_diagnosis$ICD_10_Chosen)) %>%
+  group_by(ICD_10_Chosen, ReceivedBySpecialty) %>%
+  summarise(total = n()) %>%
+  group_by(ICD_10_Chosen) %>%
+  mutate(perc = total/sum(total)) %>%
+  arrange(desc(total)) %>%
+  arrange(ICD_10_Chosen)
+
+reactable(
+  ed_referral_vol_diagnosis_specialty,
+  groupBy = "ICD_10_Chosen",
+  columns = list(
+    ICD_10_Chosen = colDef(name = "ICD 10 Chosen for Referral"),
+    ReceivedBySpecialty = colDef(name = "Sent To Specialty"),
+    total = colDef(name = "Total Referrals Sent", aggregate = "sum"),
+    perc = colDef(name = "% of Total Referrals Sent with ICD 10")
+    )
+  )
 
 ```
 
