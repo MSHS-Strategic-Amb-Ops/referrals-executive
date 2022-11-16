@@ -853,7 +853,7 @@ ________________________________________________________________________________
 
 ## 1. Snapshot 
 ### Referrals
-```{r Referrals YTD Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE,  results='hide', fig.width=12}
+```{r Referrals YTD Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=12}
 # Referrals YTD Snapshot ------------------------------------------------------- 
 # referrals_ytd_snapshot <- data.frame(
 # values =
@@ -925,6 +925,12 @@ reactable(
     pagination = FALSE,
     wrap = TRUE,
     bordered = FALSE,
+    rowStyle = function(index) {
+            if (index %in% c(1)) {
+              list(`border-top` = "2px solid rgb(255,255,255)",
+                   fontWeight = "Bold")
+            }
+          },
     theme = reactableTheme(
       stripedColor = "white"),
     columns = list(
@@ -938,7 +944,7 @@ reactable(
         ),
       blank_1 = colDef(
         name = "",
-        maxWidth = 80
+        minWidth = 80
       ),
       rate = colDef(
         name = "Conversion | Completion Rate",
@@ -950,7 +956,7 @@ reactable(
         ),
       blank_2 = colDef(
         name = "",
-        maxWidth = 80
+        minWidth = 80
       ),
       charges = colDef(
         name = "Est. Total Charges Generated\nfrom Completed Appointments",
@@ -987,36 +993,42 @@ reactable(
     pagination = FALSE,
     wrap = TRUE,
     bordered = FALSE,
+    rowStyle = function(index) {
+            if (index %in% c(1)) {
+              list(`border-top` = "2px solid rgb(255,255,255)",
+                   fontWeight = "Bold")
+            }
+          },
     columns = list(
       class = colDef(
         name = "% Incoming | Outgoing Referrals",
         minWidth = 300,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", background = "#a5a7a5", color = "white"),
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "22px"),
+        style = list(fontWeight = "Bold", background = "#00aeef", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         ),
       blank_1 = colDef(
         name = "",
-        maxWidth = 80
+        minWidth = 80
       ),
       contacted = colDef(
         name = "% Referrals Contacted/ Scheduled <12 Hours",
         minWidth = 300,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", background = "#a5a7a5", color = "white"),
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "22px"),
+        style = list(fontWeight = "Bold", background = "#00aeef", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         ),
       blank_2 = colDef(
         name = "",
-        maxWidth = 80
+        minWidth = 80
       ),
       onTime = colDef(
         name = "% Referrals Scheduled On-Time YTD Based on Priority",
         minWidth = 300,
-        headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", background = "#a5a7a5", color = "white"),
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "22px"),
+        style = list(fontWeight = "Bold", background = "#00aeef", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         )
@@ -1046,6 +1058,12 @@ reactable(
     pagination = FALSE,
     wrap = TRUE,
     bordered = TRUE,
+    rowStyle = function(index) {
+            if (index %in% c(1)) {
+              list(`border-top` = "2px solid rgb(255,255,255)",
+                   fontWeight = "Bold")
+            }
+          },
     columns = list(
       expired_cnt = colDef(
         name = "Total Referrals Expired",
@@ -1057,7 +1075,7 @@ reactable(
         ),
       blank_1 = colDef(
         name = "",
-        maxWidth = 80
+        minWidth = 80
       ),
       expired_perc = colDef(
         name = "% Referrals Expired YTD",
@@ -1069,7 +1087,7 @@ reactable(
         ),
       blank_2 = colDef(
         name = "",
-        maxWidth = 80
+        minWidth = 80
       ),
       expired_charges = colDef(
         name = "Est. Total Missed Charges\nDue to Expired Referrals",
@@ -1084,6 +1102,8 @@ reactable(
 
 
 ```
+<br/>
+
 
 ```{r YTD Top Sending Specialties, echo = FALSE, warning = FALSE, message = FALSE}
  
@@ -1311,6 +1331,7 @@ ytd_demand_specialty_summary <- bind_cols(mshs_ytdReceived_internal_top15, mshs_
 
   
 ```
+<br/>
 
 
 ```{r Monthly Volume Trending, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
@@ -1381,6 +1402,7 @@ hchart(referral_received_monthly_mshs,
 #          completion_rate = Arrived/Total) 
 
 ```
+<br/>
 
 
 ```{r YTD Snapshot WQ, echo = FALSE, warning = FALSE, message = FALSE}
@@ -1539,7 +1561,13 @@ reactable(
     highlight = TRUE,
     pagination = FALSE,
     wrap = TRUE,
-    bordered = TRUE,
+    bordered = FALSE,
+    rowStyle = function(index) {
+            if (index %in% c(1)) {
+              list(`border-top` = "2px solid rgb(255,255,255)",
+                   fontWeight = "Bold")
+            }
+          },
     columns = list(
       total = colDef(
         name = paste0("Total WQ Volume\nas of ",Sys.Date()),
@@ -1551,7 +1579,7 @@ reactable(
         ),
       blank_1 = colDef(
         name = "",
-        maxWidth = 80
+        minWidth = 80
       ),
       wq_days = colDef(
         name = "Median Days in Workqueue",
@@ -1563,7 +1591,7 @@ reactable(
         ),
       blank_2 = colDef(
         name = "",
-        maxWidth = 80
+        minWidth = 80
       ),
       referral_days = colDef(
         name = "Median Days since Referral Created",
@@ -1602,13 +1630,19 @@ reactable(
     highlight = TRUE,
     pagination = FALSE,
     wrap = TRUE,
-    bordered = TRUE,
+    bordered = FALSE,
+    rowStyle = function(index) {
+            if (index %in% c(1)) {
+              list(`border-top` = "2px solid rgb(255,255,255)",
+                   fontWeight = "Bold")
+            }
+          },
     columns = list(
       urgent = colDef(
         name = "% Urgent Referrals in Workqueue",
         minWidth = 300,
-        headerStyle = list(background = "#7f7f7f", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", background = "#7f7f7f", color = "white"),
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "22px"),
+        style = list(fontWeight = "Bold", background = "#00aeef", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         ),
@@ -1619,8 +1653,8 @@ reactable(
       contacted = colDef(
         name = "% Referrals Contacted/ Scheduled <12 Hours\n(Excludes Awaiting Contact Still < 12 Hours)",
         minWidth = 300,
-        headerStyle = list(background = "#7f7f7f", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", background = "#7f7f7f", color = "white"),
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "22px"),
+        style = list(fontWeight = "Bold", background = "#00aeef", color = "white"),
         align = "center"
         ),
       blank_2 = colDef(
@@ -1630,8 +1664,8 @@ reactable(
       aging = colDef(
         name = "Total Referrals within 7 Days of Aging",
         minWidth = 300,
-        headerStyle = list(background = "#7f7f7f", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", background = "#7f7f7f", color = "white"),
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "22px"),
+        style = list(fontWeight = "Bold", background = "#00aeef", color = "white"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         )
@@ -1664,7 +1698,13 @@ reactable(
     highlight = TRUE,
     pagination = FALSE,
     wrap = TRUE,
-    bordered = TRUE,
+    bordered = FALSE,
+    rowStyle = function(index) {
+            if (index %in% c(1)) {
+              list(`border-top` = "2px solid rgb(255,255,255)",
+                   fontWeight = "Bold")
+            }
+          },
     columns = list(
       wq_added = colDef(
         name = "Avg Referrals Added per Weekday",
@@ -1703,6 +1743,7 @@ reactable(
 
 
 ```
+<br/>
 
 
 ```{r Monthly Resolution Rate, echo = FALSE, warning = FALSE, message = FALSE}
@@ -1714,6 +1755,7 @@ reactable(
 
 ## 2. ED Referrals {.tabset .tabset-fade .tabset-pills}
 ### Volume
+<br/>
 ```{r Average ED Referrals per Patient, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 referral_per_patient <- referral_vol %>%
@@ -1763,10 +1805,11 @@ hchart(referral_per_patient,
   hc_tooltip(shared = TRUE, borderColor = "black")
 
 ```
-
+<br/>
 
 ### Scheduling Priority
 <span style='font-size: 16px; font-weight: bold; color: black'>**ED Referrals by Scheduling Priority**</span><br/>
+<span style='font-size: 12px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
 ```{r ED Referrals Total Volume by Priority, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 ed_vol_priority_cnt_rows <- referral_vol %>%
@@ -1825,6 +1868,7 @@ reactable(
 
 
 <span style='font-size: 16px; font-weight: bold; color: black'>**% of ED Referrals by Scheduling Priority**</span><br/>
+<span style='font-size: 12px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
 ```{r Percent of ED Referrals by Scheduling Priority, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 ed_vol_priority_perc_rows <- referral_vol %>%
@@ -1871,6 +1915,7 @@ reactable(
 
 
 ### Conversion Rate 
+<br/>
 ```{r ED VS. Non ED Referrals Conversion Rate by Priority, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 ed_conversion_month <- referral_vol %>%
@@ -1974,6 +2019,7 @@ hw_grid(ed_conversion_rate_graph, ed_completion_rate_graph)
 
 
 <span style='font-size: 16px; font-weight: bold; color: black'>**ED vs. Non-ED Conversion Rate by Month**</span><br/>
+<span style='font-size: 12px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
 ```{r ED vs. Non ED Converion Rate Table, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 ed_conversion_rate <- ed_conversion_month %>%
@@ -2015,6 +2061,7 @@ reactable(
 
 
 <span style='font-size: 16px; font-weight: bold; color: black'>**ED vs. Non-ED Completion Rate by Month**</span><br/>
+<span style='font-size: 12px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
 ```{r ED vs. Non ED Completion Rate Table, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 ed_completion_rate <- ed_conversion_month %>%
@@ -2056,35 +2103,68 @@ reactable(
 ```
 
 
-### Diagnosis 
+### Sent To Specialty
+<span style='font-size: 16px; font-weight: bold; color: black'>**ED Referrals by Original vs. Final Sent To Specialty**</span><br/>
+<span style='font-size: 12px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
+```{r ED Referrals Original vs. Final Sent To Specialty, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
+
+# ed_referrals_sent_to <- referral_vol %>%
+#   filter(SentBySite %in% c("ED","PSYCH ED"))
+
+  
+
+
+```
+<br/>
+
+
+<span style='font-size: 16px; font-weight: bold; color: black'>**ED Referrals by Primary Diagnosis and Sent To Specialty**</span><br/>
+<span style='font-size: 12px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
 ```{r ED Referrals Primary Diagnosis by Receiving Specialty, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
-top20_ed_diagnosis <- referral_vol %>% 
+top20_ed_diagnosis <- referral_vol %>%
   filter(SentBySite %in% c("ED","PSYCH ED")) %>%
-  group_by(ICD_10_Chosen) %>% 
+  group_by(ICD_10_Chosen) %>%
   summarise(total = n()) %>%
   arrange(desc(total)) %>%
   head(20)
 
 ed_referral_vol_diagnosis_specialty <- referral_vol %>%
-  # filter(ICD_10_Chosen %in% as.vector(top20_ed_diagnosis$ICD_10_Chosen)) %>%
+  filter(ICD_10_Chosen %in% as.vector(top20_ed_diagnosis$ICD_10_Chosen)) %>%
   group_by(ICD_10_Chosen, ReceivedBySpecialty) %>%
   summarise(total = n()) %>%
   group_by(ICD_10_Chosen) %>%
   mutate(perc = total/sum(total)) %>%
-  arrange(desc(total)) %>%
-  arrange(ICD_10_Chosen)
+  arrange(desc(total))
 
 reactable(
   ed_referral_vol_diagnosis_specialty,
+  style = list(fontFamily = 'Calibri', fontSize = 'px14'),
+  defaultColDef = colDef(
+    format = colFormat(digits = 0, percent = TRUE),
+    minWidth = 50,
+    headerStyle = list(fontWeight = "Bold", fontSize = "16px", color = "white", background = "#212070")
+  ),
+    highlight = TRUE,
+    pagination = FALSE,
+    searchable = TRUE,
+    # height = 500,
+    wrap = TRUE,
+    bordered = TRUE,
   groupBy = "ICD_10_Chosen",
   columns = list(
-    ICD_10_Chosen = colDef(name = "ICD 10 Chosen for Referral"),
+    ICD_10_Chosen = colDef(name = "ICD 10 Chosen for Referral",
+                           style = list(fontWeight = "Bold"),
+                           minWidth = 250),
     ReceivedBySpecialty = colDef(name = "Sent To Specialty"),
-    total = colDef(name = "Total Referrals Sent", aggregate = "sum"),
-    perc = colDef(name = "% of Total Referrals Sent with ICD 10")
+    total = colDef(name = "Total Referrals Sent", aggregate = "sum", 
+                   format = colFormat(separators = TRUE),
+                   align = "center"),
+    perc = colDef(name = "% of Total Referrals Sent with ICD 10",
+                  format = colFormat(percent = TRUE, digits = 1),
+                  align = "center")
     )
   )
 
 ```
-
+<br/>
