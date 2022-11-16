@@ -853,6 +853,7 @@ ________________________________________________________________________________
 
 ## 1. Snapshot 
 ### Referrals
+<br/>
 ```{r Referrals YTD Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=12}
 # Referrals YTD Snapshot ------------------------------------------------------- 
 # referrals_ytd_snapshot <- data.frame(
@@ -972,7 +973,7 @@ reactable(
 ```
 
 
-```{r Referrals YTD Snapshot Output 2, echo = FALSE, warning = FALSE, message = FALSE,  results='hide', fig.width=12}
+```{r Referrals YTD Snapshot Output 2, echo = FALSE, warning = FALSE, message = FALSE, fig.width=12}
 
 # Referrals YTD Snapshot Tables ------------------------------------------------
 referrals_snapshot_2 <- data.frame(
@@ -1038,7 +1039,7 @@ reactable(
 ```
 
 
-```{r Referrals YTD Snapshot Output 3, echo = FALSE, warning = FALSE, message = FALSE,  results='hide', fig.width=12}
+```{r Referrals YTD Snapshot Output 3, echo = FALSE, warning = FALSE, message = FALSE, fig.width=12}
 
 referrals_snapshot_3 <- data.frame(
   expired_cnt = prettyNum(referral_expired_ytd$total, big.mark = ","),
@@ -1473,6 +1474,7 @@ wq_vol_removed_week <- wq_volume_data %>%
 
 
 ### Workqueues
+<br/>
 ```{r WQ Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE}
 
 # Outstanding WQ Snapshot ------------------------------------------------------- 
@@ -1651,7 +1653,7 @@ reactable(
         minWidth = 80
       ),
       contacted = colDef(
-        name = "% Referrals Contacted/ Scheduled <12 Hours\n(Excludes Awaiting Contact Still < 12 Hours)",
+        name = "% Referrals Contacted/ Scheduled <12 Hours",
         minWidth = 300,
         headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#00aeef", color = "white"),
@@ -1771,7 +1773,7 @@ hchart(referral_per_patient,
        type = 'column',
        stacking = "normal",
        color=c("#a5a7a5", "#212070"),
-       dataLabels = list(enabled = TRUE, format='{value:,f}'), 
+       dataLabels = list(enabled = TRUE, format='{point.y}'), 
        showInLegend = TRUE) %>%
   hc_yAxis_multiples(
     list(title = list(text = "Total Referrals Created"), lineWidth = 3),
@@ -1808,8 +1810,8 @@ hchart(referral_per_patient,
 <br/>
 
 ### Scheduling Priority
-<span style='font-size: 16px; font-weight: bold; color: black'>**ED Referrals by Scheduling Priority**</span><br/>
-<span style='font-size: 12px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
+<span style='font-size: 122px; font-weight: bold; color: black'>**ED Referrals by Scheduling Priority**</span><br/>
+<span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date`*</span><br/>
 ```{r ED Referrals Total Volume by Priority, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 ed_vol_priority_cnt_rows <- referral_vol %>%
@@ -1868,7 +1870,7 @@ reactable(
 
 
 <span style='font-size: 16px; font-weight: bold; color: black'>**% of ED Referrals by Scheduling Priority**</span><br/>
-<span style='font-size: 12px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
+<span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date`*</span><br/>
 ```{r Percent of ED Referrals by Scheduling Priority, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 ed_vol_priority_perc_rows <- referral_vol %>%
@@ -1954,7 +1956,7 @@ ed_conversion_rate_graph <-
        hcaes(x = 'priority_type', y = 'conversion_rate', group = 'ed'), 
        type = 'column',
        color=c("#a5a7a5", "#212070"),
-       dataLabels = list(enabled = TRUE, format='{point.y%}'), 
+       dataLabels = list(enabled = TRUE, format='{point.y}%'), 
        showInLegend = TRUE) %>%
   hc_yAxis(
     title = list(text = "Converesion Rate"),
@@ -1975,7 +1977,7 @@ ed_conversion_rate_graph <-
     ) %>% 
   hc_xAxis(title = "Referral Scheduling Priority") %>%
   hc_legend(align = "left", verticalAlign = "top", itemStyle = list(fontFamily ='Calibri',color ='black', fontSize = "14px")) %>%
-  hc_title(text = "ED vs. Non-ED Conversion Rate", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
+  hc_title(text = "ED vs. Non-ED Referrals Conversion Rate", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
   hc_subtitle(text = paste0("Based on referrals created from ","2022-04-01"," to ",report_run_date),
               align = "left", style = list(fontFace = "italic", fontSize = "16px", fontFamily = "Calibri")) %>%
   hc_tooltip(shared = TRUE, borderColor = "black")
@@ -1987,7 +1989,7 @@ ed_completion_rate_graph <-
        hcaes(x = 'priority_type', y = 'completion_rate', group = 'ed'), 
        type = 'column',
        color=c("#a5a7a5", "#212070"),
-       dataLabels = list(enabled = TRUE, format='{point.y%}'), 
+       dataLabels = list(enabled = TRUE, format='{point.y}%'), 
        showInLegend = TRUE) %>%
   hc_yAxis(
     title = list(text = "Completion Rate"),
@@ -2008,7 +2010,7 @@ ed_completion_rate_graph <-
     ) %>% 
   hc_xAxis(title = "Referral Scheduling Priority") %>%
   hc_legend(align = "left", verticalAlign = "top", itemStyle = list(fontFamily ='Calibri',color ='black', fontSize = "14px")) %>%
-  hc_title(text = "ED vs. Non-ED Completion Rate", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
+  hc_title(text = "ED vs. Non-ED Referrals Completion Rate", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
   hc_subtitle(text = paste0("Based on referrals created from ","2022-04-01"," to ",report_run_date),
               align = "left", style = list(fontFace = "italic", fontSize = "16px", fontFamily = "Calibri")) %>%
   hc_tooltip(shared = TRUE, borderColor = "black")
@@ -2104,8 +2106,8 @@ reactable(
 
 
 ### Sent To Specialty
-<span style='font-size: 16px; font-weight: bold; color: black'>**ED Referrals by Original vs. Final Sent To Specialty**</span><br/>
-<span style='font-size: 12px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
+<span style='font-size: 22px; font-weight: bold; color: black'>**ED Referrals by Original vs. Final Sent To Specialty**</span><br/>
+<span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date`*</span><br/>
 ```{r ED Referrals Original vs. Final Sent To Specialty, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 # ed_referrals_sent_to <- referral_vol %>%
@@ -2118,8 +2120,8 @@ reactable(
 <br/>
 
 
-<span style='font-size: 16px; font-weight: bold; color: black'>**ED Referrals by Primary Diagnosis and Sent To Specialty**</span><br/>
-<span style='font-size: 12px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
+<span style='font-size: 22px; font-weight: bold; color: black'>*ED Referrals by Primary Diagnosis and Sent To Specialty*</span><br/>
+<span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date`*</span><br/>
 ```{r ED Referrals Primary Diagnosis by Receiving Specialty, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 top20_ed_diagnosis <- referral_vol %>%
