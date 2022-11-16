@@ -385,7 +385,7 @@ referrals_merged <- referrals_merged %>%
                                    ,str_detect(toupper(Priority), "3-6 Days") ~ "Within 1 Week" # Question: Should this be a separate category?
                                    ,str_detect(toupper(Priority), "7-14 Days") ~ "Within 2 Weeks"
                                    ,Priority == "Routine" ~ "Routine"
-                                   , TRUE ~ "Not Specified"))
+                                   ,TRUE ~ "Not Specified"))
 
 ```
 
@@ -846,14 +846,13 @@ referral_rejected_ytd <- referral_vol %>%
 ```
 
 # Ambulatory Referrals Summary
-*Report run date: `r report_run_date`*<br/>
-*Date source: * <br/>
+*Report Run Date: `r report_run_date`*<br/>
+*Data Source: EPIC Caboodle Referrals, ReferralFact, VisitFact, ReferralWorkqueueEventFactX, and ReferralWQReason * <br/>
 _________________________________________________________________________________________________________________________________________________________________________________________________
 <br/>
 
-## MSHS
-### 1. Snapshot {.tabset .tabset-fade .tabset-pills}
-#### Referrals
+## 1. Snapshot 
+### Referrals
 ```{r Referrals YTD Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE,  results='hide', fig.width=12}
 # Referrals YTD Snapshot ------------------------------------------------------- 
 # referrals_ytd_snapshot <- data.frame(
@@ -1451,7 +1450,7 @@ wq_vol_removed_week <- wq_volume_data %>%
 ```
 
 
-#### Workqueues
+### Workqueues
 ```{r WQ Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE}
 
 # Outstanding WQ Snapshot ------------------------------------------------------- 
@@ -1713,8 +1712,8 @@ reactable(
 ```
 
 
-### 2. ED Referrals {.tabset .tabset-fade .tabset-pills}
-#### Volume
+## 2. ED Referrals {.tabset .tabset-fade .tabset-pills}
+### Volume
 ```{r Average ED Referrals per Patient, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 referral_per_patient <- referral_vol %>%
@@ -1766,7 +1765,7 @@ hchart(referral_per_patient,
 ```
 
 
-#### Scheduling Priority
+### Scheduling Priority
 <span style='font-size: 16px; font-weight: bold; color: black'>**ED Referrals by Scheduling Priority**</span><br/>
 ```{r ED Referrals Total Volume by Priority, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
@@ -1871,7 +1870,7 @@ reactable(
 ```
 
 
-#### Conversion Rate 
+### Conversion Rate 
 ```{r ED VS. Non ED Referrals Conversion Rate by Priority, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 ed_conversion_month <- referral_vol %>%
@@ -1903,11 +1902,6 @@ ed_conversion <- referral_vol %>%
   mutate(conversion_rate = round((Arrived + Scheduled)/Total,2)*100,
          completion_rate = round(Arrived/Total,2)*100) %>%
   arrange(factor(priority_type, levels = c('Within 2 Days', 'Within 1 Week', 'Within 2 Weeks', 'Patient Convenience', 'Not Specified')))
-
-
-hc <- df2 %>% 
-  hchart('column', hcaes(x = 'dose', y = 'len', group = 'supp')) %>%
-  hc_colors(c("#0073C2FF", "#EFC000FF"))
 
 
 ed_conversion_rate_graph <- 
@@ -2062,7 +2056,7 @@ reactable(
 ```
 
 
-#### Diagnosis 
+### Diagnosis 
 ```{r ED Referrals Primary Diagnosis by Receiving Specialty, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 top20_ed_diagnosis <- referral_vol %>% 
