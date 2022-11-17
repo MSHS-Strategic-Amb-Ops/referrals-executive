@@ -743,7 +743,7 @@ referral_est_rev_ytd <- referral_vol %>%
 ## Total Referrals Expired + Missed Professional Revenue + Missed Technical Revenue
 referral_expired_ytd <- referral_vol %>%
   filter(createdYear == reporting_year) %>%
-  filter(ApptStatusFinal == "Pending" & referral_age >180) %>%
+  filter(referral_age >180 & ApptStatusFinal == "Pending" & ) %>%
   # filter(ApptStatusFinal == "Pending" & as.Date(ExpirationInstant, "%Y-%m-%d") < report_run_date) %>%
   group_by(createdYear) %>%
   summarise(total = n(),
@@ -820,6 +820,14 @@ referral_aged_ytd <- referral_vol %>%
   group_by(createdYear, referral_aged) %>% 
   summarise(total = n())
 
+referral_aged_ytd <- referral_vol %>%
+  filter(createdYear == reporting_year) %>%
+  mutate(referral_aged = case_when(referral_age >= 90 & referral_age < 180 & ApptStatusFinal == "Pending" ~ 'Yes', 
+                                   TRUE ~ 'No')) %>%
+  group_by(Status, CloseReason) %>%
+  summarise(total = n())
+
+
 
 ## 8. % of Referrals Rejected 
 referral_redirected_ytd <- referral_vol %>%
@@ -856,11 +864,11 @@ referral_rejected_ytd <- referral_vol %>%
 # Ambulatory Referrals Summary
 *Report Run Date: `r report_run_date`*<br/>
 *Data Source: EPIC Caboodle*<br/>
-*--Referrals*<br/>
-*--ReferralFact*<br/>
-*--VisitFact*<br/>
-*--ReferralWorkqueueEventFactX*<br/>
-*--ReferralWQReason*<br/>
+*-- Referrals*<br/>
+*-- ReferralFact*<br/>
+*-- VisitFact*<br/>
+*-- ReferralWorkqueueEventFactX*<br/>
+*-- ReferralWQReason*<br/>
 _________________________________________________________________________________________________________________________________________________________________________________________________
 <br/>
 
@@ -1040,7 +1048,7 @@ reactable(
         minWidth = 80
       ),
       onTime = colDef(
-        name = "% Referrals Scheduled On-Time YTD Based on Priority",
+        name = "% Referrals Scheduled On-Time Based on Scheduling Priority",
         minWidth = 300,
         headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#00aeef", color = "white"),
@@ -2136,7 +2144,7 @@ reactable(
 
 
 ### Sent To Specialty
-<span style='font-size: 22px; font-weight: bold; color: black'>**ED Referrals by Original vs. Final Sent To Specialty**</span><br/>
+<span style='font-size: 22px; font-weight: bold; color: black'>*ED Referrals by Original vs. Final Sent To Specialty*</span><br/>
 <span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date`*</span><br/>
 ```{r ED Referrals Original vs. Final Sent To Specialty, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
