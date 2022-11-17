@@ -455,11 +455,14 @@ referral_vol$referral_age <- difftime(report_run_date, as.Date(referral_vol$Star
 
 # Subset WQ History Data based on Referrals Data -------------------------------
 wq_history_merged <- left_join(referral_vol[,c("ReferralKey", "ReferralEpicId", "Status", "SchedulingStatus", "InAnyWorkqueue", "priority_type")], 
-                               wq_history_conn %>% 
+                               test <- wq_history_conn %>% 
                                  filter(ReferralKey >= 0) %>%
                                  # filter(ReferralType %in% c("TO","FROM")) %>% # Remove unspecified wq types 
                                  filter(`_CreationInstant` >= as.Date("2022-04-01")) %>%
                                  collect())
+
+wq_history_merged <- wq_history_merged %>% # Filter WQ History based on Referral IDs found in Referrals table
+  filter(ReferralKey %in% unique(referral_vol$ReferralKey))
 
 wq_history_merged <- wq_history_merged %>% 
   filter(!is.na(EventDateKey)) %>%
@@ -536,6 +539,10 @@ wq_reasons_raw <- wq_reasons_conn %>%
                              str_detect(WorkqueueName, "AUTHORIZATION REQUIRED") ~ "AUTHORIZATION",
                              str_detect(WorkqueueName, "PAS") ~ "PAS",
                              TRUE ~ ""))
+
+wq_reasons_raw <- wq_reasons_raw %>%
+  filter(ReferralEpicId %in% unique(referral_vol$ReferralEpicId)) # Filter Current WQs by Referrals Found in Referrals Table
+
 
 ## WQ Reasons Grouping ---------------------------------------------------------
 wq_reasons_raw <- wq_reasons_raw %>%
@@ -840,6 +847,7 @@ referral_rejected_ytd <- referral_vol %>%
 
 ```
 
+
 ```{r Sinai Logo, echo=FALSE, out.width = '30%'}
 # knitr::include_graphics("Mount_Sinai_Logo_H.png")
 
@@ -847,13 +855,20 @@ referral_rejected_ytd <- referral_vol %>%
 
 # Ambulatory Referrals Summary
 *Report Run Date: `r report_run_date`*<br/>
-*Data Source: EPIC Caboodle Referrals, ReferralFact, VisitFact, ReferralWorkqueueEventFactX, and ReferralWQReason * <br/>
+*Data Source: EPIC Caboodle*<br/>
+*--Referrals*<br/>
+*--ReferralFact*<br/>
+*--VisitFact*<br/>
+*--ReferralWorkqueueEventFactX*<br/>
+*--ReferralWQReason*<br/>
 _________________________________________________________________________________________________________________________________________________________________________________________________
 <br/>
 
 ## 1. Snapshot 
 ### Referrals
 <br/>
+<span style='font-size: 22px; font-weight: bold; color: black'>*Referrals Snapshot*</span><br/>
+<span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date`*</span><br/>
 ```{r Referrals YTD Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=12}
 # Referrals YTD Snapshot ------------------------------------------------------- 
 # referrals_ytd_snapshot <- data.frame(
@@ -1386,7 +1401,9 @@ hchart(referral_received_monthly_mshs,
   hc_title(text = "MSHS Referral Volume and Outcome", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
   hc_subtitle(text = paste0("Based on referrals created from ","2022-04-01"," to ",report_run_date),
               align = "left", style = list(fontFace = "italic", fontSize = "16px", fontFamily = "Calibri")) %>%
-  hc_tooltip(shared = TRUE, borderColor = "black")
+  hc_tooltip(shared = TRUE, borderColor = "black") %>%
+  hc_caption(text = "<em>*Conversion Rate: Total referrals with visits scheduled/linked / Total referrals created<em/>;
+             Completion Rate: Total referrals with arrived visits / Total referrals created<em/>")
 
 
 # Site Referrals Received + Conversion and Completion Rate ---------------------
@@ -1475,6 +1492,8 @@ wq_vol_removed_week <- wq_volume_data %>%
 
 ### Workqueues
 <br/>
+<span style='font-size: 22px; font-weight: bold; color: black'>*Workqueue Snapshot*</span><br/>
+<span style='font-size: 18px; font-weight: bold; color: black'>*Based on Workqueues as of `r report_run_date`*</span><br/>
 ```{r WQ Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE}
 
 # Outstanding WQ Snapshot ------------------------------------------------------- 
@@ -1709,7 +1728,7 @@ reactable(
           },
     columns = list(
       wq_added = colDef(
-        name = "Avg Referrals Added per Weekday",
+        name = paste0("Avg Referrals Added per Weekday (Week of ", reporting_week,")"),
         minWidth = 300,
         headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#d80b8c", color = "white"),
@@ -1721,7 +1740,7 @@ reactable(
         minWidth = 80
       ),
       wq_removed = colDef(
-        name = "Avg Referrals Removed per Weekday",
+        name = paste0("Avg Referrals Removed per Weekday (Week of ",reporting_week,")"),
         minWidth = 300,
         headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#d80b8c", color = "white"),
@@ -1733,7 +1752,7 @@ reactable(
         minWidth = 80
       ),
       wq_added_wknd = colDef(
-        name = "Total Referrals Added during Weekend",
+        name = paste0("Total Referrals Added during Weekend (Week of ",reporting_week,")"),
         minWidth = 300,
         headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
         style = list(fontWeight = "Bold", background = "#d80b8c", color = "white"),
@@ -1785,7 +1804,7 @@ hchart(referral_per_patient,
            # labels = list(format = '{value:%m/%d}')
            dateTimeLabelFormats = list(month = '%Y-%m')
            ) %>%
-  hc_add_series(name = "ED Avg Referrals per Patient",
+  hc_add_series(name = "Avg ED Referrals per Patient",
                 data = (referral_per_patient %>% filter(ed == "ED Referrals"))$avg_ref_pt,
                 type = "line", yAxis = 1,
                 color='#00aeef',
@@ -1802,15 +1821,18 @@ hchart(referral_per_patient,
                 showInLegend = TRUE) %>%
   hc_legend(align = "left", verticalAlign = "top", itemStyle = list(fontFamily ='Calibri',color ='black', fontSize = "14px")) %>%
   hc_title(text = "ED vs. Non-ED Average Referrals per Patient", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
-  # hc_subtitle(text = paste0("Based on referrals created from ","2022-04-01"," to ",report_run_date),
-  #             align = "left", style = list(fontFace = "italic", fontSize = "16px", fontFamily = "Calibri")) %>%
-  hc_tooltip(shared = TRUE, borderColor = "black")
+  hc_subtitle(text = paste0("Based on referrals created from ","2022-04-01"," to ",report_run_date),
+              align = "left", style = list(fontFace = "italic", fontSize = "16px", fontFamily = "Calibri")) %>%
+  hc_tooltip(shared = TRUE, borderColor = "black") %>%
+  hc_caption(
+    text = "<em>*Average referrals per patient calculated based on Total referrals created / Total unique patients referred</em>"
+  )
 
 ```
 <br/>
 
 ### Scheduling Priority
-<span style='font-size: 122px; font-weight: bold; color: black'>**ED Referrals by Scheduling Priority**</span><br/>
+<span style='font-size: 22px; font-weight: bold; color: black'>*ED Referrals by Scheduling Priority*</span><br/>
 <span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date`*</span><br/>
 ```{r ED Referrals Total Volume by Priority, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
@@ -1869,7 +1891,7 @@ reactable(
 ```
 
 
-<span style='font-size: 16px; font-weight: bold; color: black'>**% of ED Referrals by Scheduling Priority**</span><br/>
+<span style='font-size: 22px; font-weight: bold; color: black'>*% of ED Referrals by Scheduling Priority*</span><br/>
 <span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date`*</span><br/>
 ```{r Percent of ED Referrals by Scheduling Priority, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
@@ -2020,8 +2042,8 @@ hw_grid(ed_conversion_rate_graph, ed_completion_rate_graph)
 ```
 
 
-<span style='font-size: 16px; font-weight: bold; color: black'>**ED vs. Non-ED Conversion Rate by Month**</span><br/>
-<span style='font-size: 12px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
+<span style='font-size: 22px; font-weight: bold; color: black'>*ED vs. Non-ED Conversion Rate by Month*</span><br/>
+<span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
 ```{r ED vs. Non ED Converion Rate Table, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 ed_conversion_rate <- ed_conversion_month %>%
@@ -2062,8 +2084,8 @@ reactable(
 ```
 
 
-<span style='font-size: 16px; font-weight: bold; color: black'>**ED vs. Non-ED Completion Rate by Month**</span><br/>
-<span style='font-size: 12px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
+<span style='font-size: 22px; font-weight: bold; color: black'>*ED vs. Non-ED Completion Rate by Month*</span><br/>
+<span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date``*</span><br/>
 ```{r ED vs. Non ED Completion Rate Table, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 ed_completion_rate <- ed_conversion_month %>%
@@ -2155,10 +2177,11 @@ reactable(
     bordered = TRUE,
   groupBy = "ICD_10_Chosen",
   columns = list(
-    ICD_10_Chosen = colDef(name = "ICD 10 Chosen for Referral",
+    ICD_10_Chosen = colDef(name = "Top 20 ICD 20 Codes Chosen for Referral",
                            style = list(fontWeight = "Bold"),
-                           minWidth = 250),
-    ReceivedBySpecialty = colDef(name = "Sent To Specialty"),
+                           minWidth = 200),
+    ReceivedBySpecialty = colDef(name = "Sent To Specialty",
+                                 minWidth = 150),
     total = colDef(name = "Total Referrals Sent", aggregate = "sum", 
                    format = colFormat(separators = TRUE),
                    align = "center"),
