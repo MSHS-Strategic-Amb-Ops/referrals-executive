@@ -7,8 +7,6 @@ output:
       collapsed: yes
     fig_width: 7
     fig_height: 6
-  resource_files:
-- Logo/Mount_Sinai_Logo_H.png
 ---
 
 
