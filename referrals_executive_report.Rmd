@@ -864,10 +864,9 @@ referral_rejected_ytd <- referral_vol %>%
 _________________________________________________________________________________________________________________________________________________________________________________________________
 <br/>
 
-## 1. Snapshot 
-### Referrals
+## 1. Referrals
+### Snapshot
 <br/>
-<span style='font-size: 22px; font-weight: bold; color: black'>*Referrals Snapshot*</span><br/>
 <span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date`*</span><br/>
 ```{r Referrals YTD Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=12}
 # Referrals YTD Snapshot ------------------------------------------------------- 
@@ -1119,8 +1118,10 @@ reactable(
 
 ```
 <br/>
+<br/>
 
 
+### Top Specialties
 ```{r YTD Top Sending Specialties, echo = FALSE, warning = FALSE, message = FALSE}
  
 # Data for internal received specialties -------------------------
@@ -1348,8 +1349,10 @@ ytd_demand_specialty_summary <- bind_cols(mshs_ytdReceived_internal_top15, mshs_
   
 ```
 <br/>
+<br/>
 
 
+### Conversion Rate
 ```{r Monthly Volume Trending, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
 
 # MSHS Referrals Received + Conversion and Completion Rate ---------------------
@@ -1398,11 +1401,11 @@ hchart(referral_received_monthly_mshs,
                 dataLabels = list(enabled = TRUE, format='{point.y}%'),
                 showInLegend = TRUE) %>%
   hc_legend(align = "left", verticalAlign = "top", itemStyle = list(fontFamily ='Calibri',color ='black', fontSize = "14px")) %>%
-  hc_title(text = "MSHS Referral Volume and Outcome", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
+  hc_title(text = "Referral Conversion and Completion Rate", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
   hc_subtitle(text = paste0("Based on referrals created from ","2022-04-01"," to ",report_run_date),
               align = "left", style = list(fontFace = "italic", fontSize = "16px", fontFamily = "Calibri")) %>%
   hc_tooltip(shared = TRUE, borderColor = "black") %>%
-  hc_caption(text = "<em>*Conversion Rate: Total referrals with visits scheduled/linked / Total referrals created<em/>;
+  hc_caption(text = "<em>*Conversion Rate: Total referrals with visits scheduled / Total referrals created<em/>;
              Completion Rate: Total referrals with arrived visits / Total referrals created<em/>")
 
 
@@ -1420,6 +1423,7 @@ hchart(referral_received_monthly_mshs,
 #          completion_rate = Arrived/Total) 
 
 ```
+<br/>
 <br/>
 
 
@@ -1490,9 +1494,9 @@ wq_vol_removed_week <- wq_volume_data %>%
 ```
 
 
-### Workqueues
+## 2. Workqueues
+### Snapshot
 <br/>
-<span style='font-size: 22px; font-weight: bold; color: black'>*Workqueue Snapshot*</span><br/>
 <span style='font-size: 18px; font-weight: bold; color: black'>*Based on Workqueues as of `r report_run_date`*</span><br/>
 ```{r WQ Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE}
 
@@ -1765,8 +1769,10 @@ reactable(
 
 ```
 <br/>
+<br/>
 
 
+### Resolution Rate
 ```{r Monthly Resolution Rate, echo = FALSE, warning = FALSE, message = FALSE}
 
 
@@ -1774,7 +1780,7 @@ reactable(
 ```
 
 
-## 2. ED Referrals {.tabset .tabset-fade .tabset-pills}
+## 3. ED Referrals 
 ### Volume
 <br/>
 ```{r Average ED Referrals per Patient, echo = FALSE, warning = FALSE, message = FALSE, fig.width=13, fig.align='center'}
@@ -2002,7 +2008,8 @@ ed_conversion_rate_graph <-
   hc_title(text = "ED vs. Non-ED Referrals Conversion Rate", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
   hc_subtitle(text = paste0("Based on referrals created from ","2022-04-01"," to ",report_run_date),
               align = "left", style = list(fontFace = "italic", fontSize = "16px", fontFamily = "Calibri")) %>%
-  hc_tooltip(shared = TRUE, borderColor = "black")
+  hc_tooltip(shared = TRUE, borderColor = "black") %>%
+  hc_caption(text = "<em>*Conversion Rate: Total referrals with visits scheduled / Total referrals created<em/>")
 
 
 
@@ -2010,7 +2017,7 @@ ed_completion_rate_graph <-
   hchart(ed_conversion, 
        hcaes(x = 'priority_type', y = 'completion_rate', group = 'ed'), 
        type = 'column',
-       color=c("#a5a7a5", "#212070"),
+       color=c("#d80b8c", "#00aeef"),
        dataLabels = list(enabled = TRUE, format='{point.y}%'), 
        showInLegend = TRUE) %>%
   hc_yAxis(
@@ -2035,7 +2042,8 @@ ed_completion_rate_graph <-
   hc_title(text = "ED vs. Non-ED Referrals Completion Rate", align = "left", style = list(fontWeight = 'bold', fontSize = "22px", fontFamily = "Calibri")) %>%
   hc_subtitle(text = paste0("Based on referrals created from ","2022-04-01"," to ",report_run_date),
               align = "left", style = list(fontFace = "italic", fontSize = "16px", fontFamily = "Calibri")) %>%
-  hc_tooltip(shared = TRUE, borderColor = "black")
+  hc_tooltip(shared = TRUE, borderColor = "black") %>%
+  hc_caption(text = "<em>*Completion Rate: Total referrals with arrived visits / Total referrals created<em/>")
 
 hw_grid(ed_conversion_rate_graph, ed_completion_rate_graph)
 
@@ -2192,4 +2200,5 @@ reactable(
   )
 
 ```
+<br/>
 <br/>
