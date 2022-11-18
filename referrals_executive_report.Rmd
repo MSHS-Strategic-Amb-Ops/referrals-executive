@@ -743,7 +743,7 @@ referral_est_rev_ytd <- referral_vol %>%
 ## Total Referrals Expired + Missed Professional Revenue + Missed Technical Revenue
 referral_expired_ytd <- referral_vol %>%
   filter(createdYear == reporting_year) %>%
-  filter(referral_age >180 & ApptStatusFinal == "Pending" & ) %>%
+  filter(referral_age >180 & ApptStatusFinal == "Pending") %>%
   # filter(ApptStatusFinal == "Pending" & as.Date(ExpirationInstant, "%Y-%m-%d") < report_run_date) %>%
   group_by(createdYear) %>%
   summarise(total = n(),
