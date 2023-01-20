@@ -299,6 +299,7 @@ reporting_year <- format(as.Date(report_run_date), "%Y")
 reporting_month <- format(as.Date(report_run_date), "%b")
 reporting_monthNum <- format(as.Date(report_run_date), "%m")
 
+prev_year <- as.numeric(format(as.Date(report_run_date), "%Y"))-1
 
 ```
 
@@ -411,7 +412,8 @@ referral_vol <- referrals_processed %>%
            Class, WasPatientContactedWithin12Hours_X, CreationToFirstEncounterDate, ExpirationInstant,
            ProfessionalChargeEstimate, HospitalChargeEstimate, Redirected, Rejected, TriageRejectionReason, InAnyWorkqueue,
            Patient_MRN, ICD_10_Chosen, 
-           Status, CloseReason, SchedulingStatus) %>%
+           Status, CloseReason, SchedulingStatus,
+           IS32BJ_YN) %>%
   summarise(total = n()) %>%
   mutate(SentBySpecialty = case_when(SentByDept %in% c("MS EPICCARE LINK","MS RYAN CENTER LINK") ~ "ECL"
                                 # ,str_detect(toupper(SentByDept), "EMERGENCY") ~ "ED"
@@ -436,6 +438,13 @@ referral_vol$referral_age <- difftime(report_run_date, as.Date(referral_vol$Star
 
 ```{r 32BJ Volume,  echo = FALSE, warning = FALSE, message = FALSE}
 
+# referrals_32bj <- referral_vol %>%
+#   filter(IS32BJ_YN == "Y")
+# 
+# require(openxlsx)
+# write.xlsx(referrals_32bj, "/SharedDrive/deans/Presidents/SixSigma/Individual Folders/Current Employees/Engineers/So Youn Kweon/server-upload/32BJ Referral Data_1.12.2023.xlsx")
+# 
+# 
 # sent_vol_32bj <- referral_vol %>%
 #   filter(IS32BJ_YN == "Y") %>%
 #   group_by(createdMonthYear, SentBySpecialty) %>%
@@ -448,6 +457,39 @@ referral_vol$referral_age <- difftime(report_run_date, as.Date(referral_vol$Star
 # 
 # write.xlsx(sent_vol_32bj, "/SharedDrive/deans/Presidents/SixSigma/Individual Folders/Current Employees/Engineers/So Youn Kweon/server-upload/32BJ Referral Sent Volume.xlsx")
 # write.xlsx(receiving_vol_32bj, "/SharedDrive/deans/Presidents/SixSigma/Individual Folders/Current Employees/Engineers/So Youn Kweon/server-upload/32BJ Referral Received Volume.xlsx")
+
+```
+
+
+```{r Referrals Data Validation Output, echo = FALSE, warning = FALSE, message = FALSE}
+
+# referrals_mss_validation <- referrals_conn %>%
+#   mutate(StartInstant = as.Date(StartInstant)) %>%
+#   filter(StartInstant >= as.Date("2022-07-01") & StartInstant <= as.Date("2022-07-31")) %>%
+#   filter(Status != "Canceled") %>%
+#   collect()
+# 
+# referrals_vol_mss_validation <- referral_vol %>%
+#   filter(StartInstant >= as.Date("2022-07-01") & StartInstant <= as.Date("2022-07-31")) %>%
+#   group_by(SentByDept, SentByDepID, Status) %>%
+#   summarise(total_referrals_created = n())
+# 
+# 
+# require(openxlsx)
+# list_of_datasets <- list("Referrals Raw" = referrals_mss_validation, "Created Vol Jul22" = referrals_vol_mss_validation)
+# write.xlsx(list_of_datasets, file = "/SharedDrive/deans/Presidents/SixSigma/Individual Folders/Current Employees/Engineers/So Youn Kweon/server-upload/MSHS Referrals Data Jul22.xlsx")
+
+```
+
+
+```{r Referrals Status and Reasons, echo = FALSE, warning = FALSE, message = FALSE}
+
+# rfl_status_validation <- referral_vol %>%
+#   group_by(Status, CloseReason, SchedulingStatus, ApptStatusFinal) %>%
+#   summarise(total = n())
+# 
+# write.xlsx(rfl_status_validation, "/SharedDrive/deans/Presidents/SixSigma/Individual Folders/Current Employees/Engineers/So Youn Kweon/server-upload/RFL Status Validation.xlsx")
+
 ```
 
 
@@ -455,14 +497,22 @@ referral_vol$referral_age <- difftime(report_run_date, as.Date(referral_vol$Star
 
 # Subset WQ History Data based on Referrals Data -------------------------------
 wq_history_merged <- left_join(referral_vol[,c("ReferralKey", "ReferralEpicId", "Status", "SchedulingStatus", "InAnyWorkqueue", "priority_type")], 
-                               test <- wq_history_conn %>% 
+                               wq_history_conn %>% 
                                  filter(ReferralKey >= 0) %>%
                                  # filter(ReferralType %in% c("TO","FROM")) %>% # Remove unspecified wq types 
                                  filter(`_CreationInstant` >= as.Date("2022-04-01")) %>%
                                  collect())
 
-wq_history_merged <- wq_history_merged %>% # Filter WQ History based on Referral IDs found in Referrals table
-  filter(ReferralKey %in% unique(referral_vol$ReferralKey))
+
+# Unique Referral ID in Referrals Table 
+# unique_ref <- referral_vol %>%
+#   group_by(ReferralKey) %>%
+#   summarise(inRefData = "Yes") 
+# 
+# wq_history_merged$inRefData <- unique_ref$inRefData[match(wq_history_merged$ReferralKey, unique_ref$ReferralKey)]
+# 
+# wq_history_merged <- wq_history_merged %>% # Filter WQ History based on Referral IDs found in Referrals table
+#   filter(ReferralKey %in% unique(referral_vol$ReferralKey))
 
 wq_history_merged <- wq_history_merged %>% 
   filter(!is.na(EventDateKey)) %>%
@@ -473,14 +523,15 @@ wq_history_merged <- wq_history_merged %>%
          releaseDate = as.Date(lubridate::ymd(ReleaseDateKey))) %>%
   mutate(EventDateTime = as.POSIXct(paste(EventDate, EventTime), format="%Y-%m-%d %H:%M"))
 
-wq_history_merged$releaseDate <- case_when(is.na(wq_history_merged$releaseDate) ~ Sys.Date(),
+
+wq_history_merged$releaseDate <- case_when(is.na(wq_history_merged$releaseDate) ~ Sys.Date() + 100,
                                            TRUE ~ wq_history_merged$releaseDate) 
 
 
 wq_history_merged <- wq_history_merged %>%
-  arrange(EventDateTime, releaseDate) %>%
+  arrange(EventDateTime) %>%
   arrange(ReferralKey) %>%
-  group_by(ReferralKey, EpicWorkqueueId, releaseDate) %>%
+  group_by(ReferralKey, EpicWorkqueueId, EventDateTime) %>%
   mutate(ID = seq_len(n())) %>%
   mutate(wq_entered = min(EventDateTime),
          wq_exited = max(releaseDate),
@@ -519,6 +570,9 @@ wq_volume_data <- wq_history_merged %>%
                                  ReferralType == "TO" & str_detect(wq_latest_reason, " RFL INVALID AUTH NUMBER|W/O LINKED REFERRAL") ~ "Scheduled but Authorization is outstanding",
                                  TRUE ~ "Other"
                                  ))
+
+
+
 wq_volume_data$wq_entered <- format(as.Date(wq_volume_data$wq_entered, "%Y-%m-%d %HH:%MM:%SS"),"%Y-%m-%d")
 wq_volume_data$referral_age <- difftime(wq_volume_data$wq_exited, as.Date(wq_volume_data$wq_entered, "%Y-%m-%d"), units = "days")
 
@@ -719,19 +773,19 @@ wq_reasons_raw <- wq_reasons_raw %>%
 ```
 
 
-```{r YTD Snapshot Referrals, echo = FALSE, warning = FALSE, message = FALSE}
+```{r Referrals Snapshot Processing, echo = FALSE, warning = FALSE, message = FALSE}
 
 # Referrals Snapshot 
 ## 1. Total Referrals Created YTD
 referral_received_ytd <- referral_vol %>%
-  filter(createdYear == reporting_year) %>%
+  # filter(createdYear == reporting_year) %>%
   filter(Class != "Outgoing") %>%
   group_by(createdYear) %>%
   summarise(total =n())
 
 ## Estimated Revenue Generated from Arrived Referrals
 referral_est_rev_ytd <- referral_vol %>%
-  filter(createdYear == reporting_year) %>%
+  # filter(createdYear == reporting_year) %>%
   filter(Class != "Outgoing") %>%
   filter(ApptStatusFinal == "Arrived") %>%
   # filter(ApptStatusFinal == "Pending" & as.Date(ExpirationInstant, "%Y-%m-%d") < report_run_date) %>%
@@ -742,7 +796,7 @@ referral_est_rev_ytd <- referral_vol %>%
 
 ## Total Referrals Expired + Missed Professional Revenue + Missed Technical Revenue
 referral_expired_ytd <- referral_vol %>%
-  filter(createdYear == reporting_year) %>%
+  # filter(createdYear == reporting_year) %>%
   filter(referral_age >180 & ApptStatusFinal == "Pending") %>%
   # filter(ApptStatusFinal == "Pending" & as.Date(ExpirationInstant, "%Y-%m-%d") < report_run_date) %>%
   group_by(createdYear) %>%
@@ -752,8 +806,8 @@ referral_expired_ytd <- referral_vol %>%
 
 ## 2 & 3. % of Incoming and Outgoing Referrals
 referral_vol_class_ytd <- referral_vol %>%
-  filter(createdYear == reporting_year) %>%
-  group_by(Class) %>%
+  # filter(createdYear == reporting_year) %>%
+  group_by(createdYear, Class) %>%
   summarise(total = n()) %>%
   mutate(perc = total/sum(total)) %>%
   filter(Class != "Internal") %>%
@@ -763,9 +817,9 @@ referral_vol_class_ytd <- referral_vol %>%
 
 ## 4 & 5. Average Conversion Rate
 referral_outcome_ytd <- referral_vol %>%
-  filter(createdYear == reporting_year) %>%
+  # filter(createdYear == reporting_year) %>%
   filter(Class != "Outgoing") %>%
-  group_by(ApptStatusFinal) %>%
+  group_by(createdYear, ApptStatusFinal) %>%
   summarise(total = n()) %>%
   pivot_wider(names_from = ApptStatusFinal,
               values_from = total,
@@ -779,7 +833,7 @@ referral_outcome_ytd <- referral_vol %>%
 ## 6. Referrals Contacted/Scheduled <12 Hours
 ### Excludes "*Not Applicable" 
 referral_contacted_ytd <- referral_vol %>%
-  filter(createdYear == reporting_year) %>%
+  # filter(createdYear == reporting_year) %>%
   filter(WasPatientContactedWithin12Hours_X %in% 
            c("Awaiting Contact Past 12 Hours","Appointment Scheduled Without Contact < 12 Hours",
              "Contacted Within 12 Hours", "Contacted After 12 Hours", "Appointment Scheduled Without Contact > 12 Hours")) %>%
@@ -795,7 +849,7 @@ referral_contacted_ytd <- referral_vol %>%
 ## 7. % Urgent Referrals Scheduled Within Priority Timeframe 
 ### Excludes "Not Specified" and "Patient Convenience" and CreationToFirstEncounterDate <0 days
 referral_timeframe_ytd <- referral_vol %>%
-  filter(createdYear == reporting_year) %>%
+  # filter(createdYear == reporting_year) %>%
   filter(priority_type %!in% c("Not Specified", "Routine", "Patient Convenience")) %>%
   filter(CreationToFirstEncounterDate>=0) %>%
   group_by(createdYear, priority_type, CreationToFirstEncounterDate) %>%
@@ -814,7 +868,7 @@ referral_timeframe_ytd <- referral_vol %>%
 
 ## % Referrals Aged (Fallen off from WQ)
 referral_aged_ytd <- referral_vol %>%
-  filter(createdYear == reporting_year) %>%
+  # filter(createdYear == reporting_year) %>%
   mutate(referral_aged = case_when(referral_age >= 90 & referral_age < 180 & ApptStatusFinal == "Pending" ~ 'Yes', 
                                    TRUE ~ 'No')) %>%
   group_by(createdYear, referral_aged) %>% 
@@ -872,11 +926,11 @@ referral_rejected_ytd <- referral_vol %>%
 _________________________________________________________________________________________________________________________________________________________________________________________________
 <br/>
 
-## 1. Referrals
-### Snapshot
+## 1. Referrals Snapshot
+### `r reporting_year` {.tabset .tabset-fade .tabset-pills}
 <br/>
-<span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2022-04-01 to `r report_run_date`*</span><br/>
-```{r Referrals YTD Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=12}
+<span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2023-01-01 to `r report_run_date`*</span><br/>
+```{r Current Year Referrals Snapshot Output 1, echo = FALSE, warning = FALSE, message = FALSE, fig.width=12}
 # Referrals YTD Snapshot ------------------------------------------------------- 
 # referrals_ytd_snapshot <- data.frame(
 # values =
@@ -930,24 +984,26 @@ ________________________________________________________________________________
 
 # Referrals YTD Snapshot Tables ------------------------------------------------
 referrals_snapshot_1 <- data.frame(
-  total = prettyNum(referral_received_ytd$total, big.mark = ","),
+  total = prettyNum((referral_received_ytd %>% filter(createdYear == reporting_year))$total, big.mark = ","), # Total Referrals Created
   blank_1 = "",
-  rate = paste0(paste0(referral_outcome_ytd$conversion_rate,"%")," | ", paste0(referral_outcome_ytd$completion_rate,"%")),
+  rate = paste0(paste0((referral_outcome_ytd %>% filter(createdYear == reporting_year))$conversion_rate,"%")," | ", paste0((referral_outcome_ytd %>% filter(createdYear == reporting_year))$completion_rate,"%")), # Conversion | Completion Rate 
   blank_2 = "",
-  charges = paste0("$",comprss(referral_est_rev_ytd$total_prof_charge_est + referral_est_rev_ytd$total_hosp_charge_est))
+  contacted = paste0(round((referral_contacted_ytd %>% filter(createdYear == reporting_year))$perc,2)*100,"%"), # Contacted/ Scheduled <12 Hours
+  blank_3 = "",
+  onTime = paste0(round((referral_timeframe_ytd %>% filter(createdYear == reporting_year))$perc,2)*100,"%") # Referrals Scheduled on-time based on priority
 )
 
 
 reactable(
     referrals_snapshot_1,
-    style = list(fontFamily = 'Calibri', fontSize = '32px'),
+    style = list(fontFamily = 'Calibri', fontSize = '20px'),
     defaultColDef = colDef(align = "center", 
                            headerStyle = list(fontWeight = "Bold", fontSize = "12px"),
                            headerClass = "bar-sort-header"),  
     highlight = TRUE,
     pagination = FALSE,
     wrap = TRUE,
-    bordered = FALSE,
+    bordered = TRUE,
     rowStyle = function(index) {
             if (index %in% c(1)) {
               list(`border-top` = "2px solid rgb(255,255,255)",
@@ -959,33 +1015,45 @@ reactable(
     columns = list(
       total = colDef(
         name = "Total Referrals YTD",
-        minWidth = 300,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", color = "white", background = "#212070"),
+        maxWidth = 300,
+        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold", color ="black", background = "#ebebf9"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         ),
       blank_1 = colDef(
         name = "",
-        minWidth = 80
+        maxWidth = 40
       ),
       rate = colDef(
         name = "Conversion | Completion Rate",
-        minWidth = 300,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", color = "white", background = "#212070"),
+         maxWidth = 300,
+        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold", color ="black", background = "#ebebf9"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         ),
       blank_2 = colDef(
         name = "",
-        minWidth = 80
+        maxWidth = 40
       ),
-      charges = colDef(
-        name = "Est. Total Charges Generated\nfrom Completed Appointments",
-        minWidth = 300,
-        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", color = "white", background = "#212070"),
+      contacted = colDef(
+        name = "% Referrals Contacted/ Scheduled <12 Hours",
+         maxWidth = 300,
+        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold", color ="black", background = "#ebebf9"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      blank_3 = colDef(
+        name = "",
+        maxWidth = 40
+      ),
+       onTime = colDef(
+        name = "% Referrals Scheduled On-Time",
+        maxWidth = 300,
+        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold", color ="black", background = "#ebebf9"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         )
@@ -995,20 +1063,31 @@ reactable(
 ```
 
 
-```{r Referrals YTD Snapshot Output 2, echo = FALSE, warning = FALSE, message = FALSE, fig.width=12}
+```{r Current Year Referrals Snapshot Output 2, echo = FALSE, warning = FALSE, message = FALSE, fig.width=12}
 
 # Referrals YTD Snapshot Tables ------------------------------------------------
 referrals_snapshot_2 <- data.frame(
-  class = paste0(paste0(round(referral_vol_class_ytd$Incoming,3)*100,"%")," | ", paste0(round(referral_vol_class_ytd$Outgoing,3)*100,"%")),
+  class = paste0(paste0(round((referral_vol_class_ytd %>% filter(createdYear == reporting_year))$Incoming*100,0),"%")," | ", paste0(round((referral_vol_class_ytd %>% filter(createdYear == reporting_year))$Outgoing*100,0),"%")),
   blank_1 = "",
-  contacted = paste0(round(referral_contacted_ytd$perc,2)*100,"%"),
+  
   blank_2 = "",
-  onTime = paste0(round(referral_timeframe_ytd$perc,2)*100,"%")
+  onTime = paste0(round(referral_timeframe_ytd$perc,2)*100,"%"),
+  blank_3 = "",
+  expired = paste0(prettyNum((referral_expired_ytd %>% filter(createdYear == reporting_year))$total, big.mark = ",")," | ", 
+                   paste0(round((referral_expired_ytd %>% filter(createdYear == reporting_year))$total / referral_outcome_ytd$Total,2)*100,"%"))
+  blank_1 = "",
+  expired_perc = paste0(round(referral_expired_ytd$total / referral_outcome_ytd$Total,2)*100,"%"),
+  
+  
+   class = paste0(paste0(round(referral_vol_class_ytd$Incoming,3)*100,"%")," | ", paste0(round(referral_vol_class_ytd$Outgoing,3)*100,"%")), # Incoming | Outgoing Referrals 
+  blank_3 = "",
+  
+  charges = paste0("$",comprss(referral_est_rev_ytd$total_prof_charge_est + referral_est_rev_ytd$total_hosp_charge_est)), # Total estimated charges generated 
 )
 
 reactable(
     referrals_snapshot_2,
-    style = list(fontFamily = 'Calibri', fontSize = '32px'),
+    style = list(fontFamily = 'Calibri', fontSize = '20px'),
     defaultColDef = colDef(align = "center", 
                            headerStyle = list(fontWeight = "Bold", fontSize = "12px"),
                            headerClass = "bar-sort-header"),  
@@ -1025,33 +1104,41 @@ reactable(
     columns = list(
       class = colDef(
         name = "% Incoming | Outgoing Referrals",
-        minWidth = 300,
-        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", background = "#00aeef", color = "white"),
+         maxWidth = 300,
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold", background = "#e6f8ff", color = "black"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         ),
       blank_1 = colDef(
         name = "",
-        minWidth = 80
+        maxWidth = 40
       ),
       contacted = colDef(
         name = "% Referrals Contacted/ Scheduled <12 Hours",
-        minWidth = 300,
-        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", background = "#00aeef", color = "white"),
+         maxWidth = 300,
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold", background = "#e6f8ff", color = "black"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         ),
       blank_2 = colDef(
         name = "",
-        minWidth = 80
+        maxWidth = 40
       ),
       onTime = colDef(
-        name = "% Referrals Scheduled On-Time Based on Scheduling Priority",
-        minWidth = 300,
-        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", background = "#00aeef", color = "white"),
+        name = "% Referrals Scheduled On-Time",
+        maxWidth = 300,
+        headerStyle = list(background = "#00aeef", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold", background = "#e6f8ff", color = "black"),
+        align = "center"
+        # footer = "*Excludes MSDD and NETWORK"
+        ),
+      charges = colDef(
+        name = "Est. Total Charges Generated\nfrom Completed Appointments",
+         maxWidth = 300,
+        headerStyle = list(background = "#212070", color = "white", fontWeight = "Bold", fontSize = "20px"),
+        style = list(fontWeight = "Bold", color ="black", background = "#ebebf9"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         )
@@ -1090,33 +1177,33 @@ reactable(
     columns = list(
       expired_cnt = colDef(
         name = "Total Referrals Expired",
-        minWidth = 300,
+        maxWidth = 300,
         headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", background = "#d80b8c", color = "white"),
+        style = list(fontWeight = "Bold", background = "#fee7f5", color = "black"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         ),
       blank_1 = colDef(
         name = "",
-        minWidth = 80
+        maxWidth = 40
       ),
       expired_perc = colDef(
         name = "% Referrals Expired YTD",
-        minWidth = 300,
+        maxWidth = 300,
         headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", background = "#d80b8c", color = "white"),
+        style = list(fontWeight = "Bold", background = "#fee7f5", color = "black"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         ),
       blank_2 = colDef(
         name = "",
-        minWidth = 80
+        maxWidth = 40
       ),
       expired_charges = colDef(
         name = "Est. Total Missed Charges\nDue to Expired Referrals",
-        minWidth = 300,
+        maxWidth = 300,
         headerStyle = list(background = "#d80b8c", color = "white", fontWeight = "Bold", fontSize = "22px"),
-        style = list(fontWeight = "Bold", background = "#d80b8c", color = "white"),
+        style = list(fontWeight = "Bold", background = "#fee7f5", color = "black"),
         align = "center"
         # footer = "*Excludes MSDD and NETWORK"
         )
@@ -1129,7 +1216,7 @@ reactable(
 <br/>
 
 
-### Top Specialties
+### Internal vs. External Demand
 ```{r YTD Top Sending Specialties, echo = FALSE, warning = FALSE, message = FALSE}
  
 # Data for internal received specialties -------------------------
@@ -1358,6 +1445,14 @@ ytd_demand_specialty_summary <- bind_cols(mshs_ytdReceived_internal_top15, mshs_
 ```
 <br/>
 <br/>
+
+
+### `r reporting_year` {.tabset .tabset-fade .tabset-pills}
+<br/>
+<span style='font-size: 18px; font-weight: bold; color: black'>*Based on Referrals Created from 2023-01-01 to `r report_run_date`*</span><br/>
+```{r}
+
+```
 
 
 ### Conversion Rate
